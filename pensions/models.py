@@ -8,7 +8,7 @@ class VintagedModel(models.Model):
         abstract = True
 
 
-class PensionFund(models.Model, VintagedModel):
+class PensionFund(VintagedModel):
 
     name = models.CharField(max_length=500)
     eligible_for_social_security = models.BooleanField()
@@ -20,7 +20,7 @@ class PensionFund(models.Model, VintagedModel):
 
 class AnnualReport(models.Model):
 
-    fund = models.ForeignKey('Fund', related_name='annual_reports')
+    fund = models.ForeignKey('PensionFund', related_name='annual_reports', on_delete=models.CASCADE)
     total_liability = models.DecimalField(max_digits=20, decimal_places=2)
     assets = models.DecimalField(max_digits=20, decimal_places=2)
     employer_contribution = models.DecimalField(max_digits=20, decimal_places=2)
@@ -35,16 +35,16 @@ class AnnualReport(models.Model):
         return total_liability - assets
 
 
-class Benefit(models.Model, VintagedModel):
+class Benefit(VintagedModel):
 
-    fund = models.ForeignKey('Fund', related_name='benefits')
+    fund = models.ForeignKey('PensionFund', related_name='benefits', on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     start_date = models.DateField(null=True, blank=True)
 
 
 class Beneficiary(models.Model):
 
-    benefit = models.OneToOneField('Benefit')
+    benefit = models.OneToOneField('Benefit', on_delete=models.CASCADE)
     first_name = models.CharField(max_length=256)
     last_name = models.CharField(max_length=256)
     years_of_service = models.IntegerField()
