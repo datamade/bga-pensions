@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  app:
+    image: bga-pensions
+    container_name: bga-pensions
+    restart: always
+    build: .
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    command: python manage.py runserver 0.0.0.0:8000
+
+  migration:
+    container_name: bga-pensions-migration
+    image: bga-pensions:latest
+    depends_on:
+      - app
+    volumes:
+      - .:/app
+    command: python manage.py migrate
+
+  postgres:
+    container_name: bga-pensions-postgres
+    restart: always
+    image: postgres:latest
+    volumes:
+      - bga-pensions-data:/var/lib/postgresql/data
+    ports:
+      - 32001:5432
+
+volumes:
+  bga-pensions-data:
