@@ -1,0 +1,6 @@
+{% load static %}
+{% load compress %}
+
+{% compress js %}
+  <script type="module" src="{% static 'js/base.js' %}"></script>
+{% endcompress %}

@@ -1,0 +1,25 @@
+{
+  "name": "bga-pensions",
+  "version": "0.0.0",
+  "description": "JavaScript development setup for bga-pensions",
+  "dependencies": {
+    "@babel/core": "^7.4.5",
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^7.3.0",
+    "browserify": "^16.2.3",
+    "install": "^0.12.2",
+    "npm": "^6.9.2"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/datamade/bga-pensions.git"
+  },
+  "author": "DataMade",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/datamade/bga-pensions/issues"
+  },
+  "homepage": "https://github.com/datamade/bga-pensions#readme"
+}
