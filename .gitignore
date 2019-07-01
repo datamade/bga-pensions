@@ -125,3 +125,5 @@ dmypy.json
 
 .DS_Store
 data/raw/*.csv
+node_modules/
+bga_database/static/compressor/*

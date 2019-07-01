@@ -1,0 +1,9 @@
+{% load static %}
+{% load compress %}
+
+{% compress js %}
+  <script type="module" src="{% static 'js/base.js' %}"></script>
+  <script type="module">
+    console.log('Hello, inline world!')
+  </script>
+{% endcompress %}

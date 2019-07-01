@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pensions',
+    'compressor',
+    'compressor_toolkit',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +57,7 @@ ROOT_URLCONF = 'bga_database.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,6 +71,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'bga_database.wsgi.application'
+
+COMPRESS_PRECOMPILERS = (
+    ('module', 'compressor_toolkit.precompilers.ES6Compiler'),
+)
+
+COMPRESS_ES6_COMPILER_CMD = (
+    'export NODE_PATH="{paths}" && '
+    '{browserify_bin} "{infile}" -o "{outfile}" '
+    '-t [ "{node_modules}/babelify" --presets="{node_modules}/babel-preset-env" ]'
+)
 
 
 # Database
@@ -123,3 +135,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT =  os.path.join(BASE_DIR, 'bga_database', 'static')
+COMPRESS_OUTPUT_DIR =  'compressor'
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
