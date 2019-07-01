@@ -130,3 +130,4 @@ bga_database/static/compressor/*
 /.blackbox/pubring.gpg~
 /.blackbox/pubring.kbx~
 /.blackbox/secring.gpg
+/configs/bga-pensions-staging.conf.nginx
