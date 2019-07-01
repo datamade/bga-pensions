@@ -76,6 +76,12 @@ COMPRESS_PRECOMPILERS = (
     ('module', 'compressor_toolkit.precompilers.ES6Compiler'),
 )
 
+COMPRESS_ES6_COMPILER_CMD = (
+    'export NODE_PATH="{paths}" && '
+    '{browserify_bin} "{infile}" -o "{outfile}" '
+    '-t [ "{node_modules}/babelify" --presets="{node_modules}/babel-preset-env" ]'
+)
+
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
