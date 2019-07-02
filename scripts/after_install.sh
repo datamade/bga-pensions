@@ -80,3 +80,6 @@ apt-get install -y nodejs npm
 
 # Install npm requirements
 cd $PROJECT_DIR && npm install
+
+# Password-protect the application.
+echo $DOMAIN_USERNAME:$(openssl passwd -crypt "$DOMAIN_PASSWORD") > /etc/nginx/conf/bga-pensions-htpasswd
