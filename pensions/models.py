@@ -19,6 +19,9 @@ class PensionFund(models.Model):
 
     name = models.CharField(max_length=500)
 
+    def __str__(self):
+        return self.name
+
     def median_annual_benefit(self, year):
         # self.benefits.filter(data_year=year)...
         pass
@@ -44,6 +47,9 @@ class AnnualReport(VintagedModel):
     employer_contribution = models.DecimalField(max_digits=20, decimal_places=2)
     employer_normal_cost = models.DecimalField(max_digits=20, decimal_places=2)
     reporting_period = models.CharField(max_length=256, choices=REPORTING_PERIOD_CHOICES)
+
+    def __str__(self):
+        return '{} – {}'.format(self.fund, self.data_year)
 
     @property
     def funded_ratio(self):
