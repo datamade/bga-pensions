@@ -132,4 +132,4 @@ bga_database/static/compressor/*
 /.blackbox/secring.gpg
 /configs/bga-pensions-staging.conf.nginx
 /configs/bga-pensions-staging.conf.supervisor
-/configs/local_settings.production.py
+/configs/local_settings.staging.py
