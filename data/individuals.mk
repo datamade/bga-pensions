@@ -3,8 +3,8 @@ INTERMEDIATE_FILES=$(patsubst %, pensions_%.csv, $(DATA_YEARS))
 .INTERMEDIATE : $(INTERMEDIATE_FILES)
 
 data/finished/pensions_%.csv : pensions_%.csv
-	(echo first_name,last_name,pension_amount,years_served,data_year,agency,salary_at_retirement,benefit_start_date,status; \
-	tail -n +2 $^) > $@
+	(echo first_name,last_name,amount,years_of_service,data_year,fund,final_salary,start_date,status; \
+	tail -n +2 $^ | perl -pe 's/\s{1,},/,/g') > $@
 
 pensions_%.csv : data/raw/pensions_%.csv
 	csvcut -c FirstName,LastName,PensionAmount,YearsServed,DataYear,Agency,SalaryatRetirement,BenefitStart,Status $^ > $@
