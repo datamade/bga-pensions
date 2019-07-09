@@ -4,7 +4,8 @@ INTERMEDIATE_FILES=$(patsubst %, pensions_%.csv, $(DATA_YEARS))
 
 data/finished/pensions_%.csv : pensions_%.csv
 	(echo first_name,last_name,amount,years_of_service,data_year,fund,final_salary,start_date,status; \
-	tail -n +2 $^ | perl -pe 's/\s{1,},/,/g') > $@
+	tail -n +2 $^ | perl -pe 's/\s{1,},/,/g') | \
+	python data/processors/convert_date.py > $@
 
 pensions_%.csv : data/raw/pensions_%.csv
 	csvcut -c FirstName,LastName,PensionAmount,YearsServed,DataYear,Agency,SalaryatRetirement,BenefitStart,Status $^ > $@
