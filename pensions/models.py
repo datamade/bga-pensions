@@ -62,27 +62,21 @@ class AnnualReport(VintagedModel):
 
 class Benefit(VintagedModel):
     '''
-    Individual pension benefit. Both Benefit and Beneficiary are sourced from
-    data on individual benefits reported by each pension fund. Starting in
-    2018, data contain benefit status, e.g., "retiree", "widow/er", or
-    "disability".
+    Individual pension benefit. Benefit data are reported by each pension fund.
+
+    Beneficiaries are not linked year over year, i.e., Beneficiary objects
+    across years may refer to the same person.
+
+
+    Starting in 2018, data contain benefit status, e.g., "retiree", "widow/er",
+    or "disability".
     '''
 
     fund = models.ForeignKey('PensionFund', related_name='benefits', on_delete=models.CASCADE)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    start_date = models.DateField(null=True, blank=True)
-    status = models.CharField(max_length=256, null=True, blank=True)
-
-
-class Beneficiary(models.Model):
-    '''
-    Person receiving individual pension benefit. Beneficiaries are not linked
-    year over year, i.e., Beneficiary objects across years may refer to the
-    same person.
-    '''
-
-    benefit = models.OneToOneField('Benefit', on_delete=models.CASCADE)
     first_name = models.CharField(max_length=256)
     last_name = models.CharField(max_length=256)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
     years_of_service = models.IntegerField()
     final_salary = models.DecimalField(max_digits=10, decimal_places=2)
+    start_date = models.DateField(null=True, blank=True)
+    status = models.CharField(max_length=256, null=True, blank=True)
