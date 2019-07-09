@@ -1,3 +1,4 @@
-django
-psycopg2
-django-compressor-toolkit
+django==2.2.2
+psycopg2==2.8.3
+django-compressor-toolkit==0.6.0
+gunicorn==19.9.0

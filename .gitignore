@@ -127,3 +127,11 @@ dmypy.json
 data/raw/*.csv
 node_modules/
 bga_database/static/compressor/*
+!bga_database/static/compressor/.gitkeep
+/.blackbox/pubring.gpg~
+/.blackbox/pubring.kbx~
+/.blackbox/secring.gpg
+/configs/bga-pensions-staging.conf.nginx
+/configs/bga-pensions-staging.conf.supervisor
+/configs/local_settings.staging.py
+/configs/staging-config.conf

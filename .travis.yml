@@ -1,0 +1,35 @@
+branches:
+  only:
+  - master
+  - "/^v[0-9].*$/"
+
+language: python
+
+python:
+- '3.6'
+
+addons:
+  postgresql: '9.6'
+
+notifications:
+  slack:
+    secure: c4YEim66RTMtF4z8eYPqKLAjSMHoD1oMaP7RXN97p/0Bq57StqXRRbPO/lDXcX4X7OGDbvxpioZgThd1Rb3ChSoI/gHM8T8vQ5hsClR9jGvaGlqVCwi3AjBSO+pQ5HXiSaSYnOD0DN/r98AvVl6BQefPW4BtooUdsw0nBfLsUOJDdpqb1RU9B7+zwR1t0bcZDy1UtO+6kNNVfxGqsKobmNHUKFsoGROr+t/E9GCoxSnEs06B8unwfrPbh+2G2mGPb/GxFcofRZKAyvCG6WgqNPDa8ie6OiplKUC7FDlFsjiUIW1OxNyrt4d+7kS7EuR1Sv3e69zrc+IJBtp51Egvp4Q6w7F/AoGIOQVLyLqAwEtLTI+ot73Tm2u1kc5W9G5RkmeIoEwmNUPaQ1c4JFcGHMdHRcbp10+CVMTvjxCWwHXYSMF8ivcozksxux8FcEOCO/hWtW4RMOrpTv+5M2FdcrOfz25DXI3/D8LcONBa7I7KRZsMVN/N4U8fqxuMR0rD1mcMyKOlqlzIu7QCGSxscETvKZds29MEClKcFATqAJZgnwXlWinGx5MxfPalOIV2AWqhzk9b/5cWYWgXGeB3tj4O3vITENglbiQlQ1/y76L1XHkvINK6C9h1SjflqyushVcsjCCQpS+q37cBGcQI2pJnXziwfPPJaxpYev4q+vk=
+
+install:
+- pip install --upgrade pip
+- pip install --upgrade -r requirements.txt
+
+before_script:
+- mv configs/local_settings.travis.py bga_database/local_settings.py
+
+script: python manage.py migrate
+
+deploy:
+  provider: codedeploy
+  access_key_id: AKIAJNYGDLOJKHOUWCAA
+  secret_access_key:
+    secure: I8K+HO4fDSFVfFFd4yglRhRaAEh/cYbWiDCoYZUvFJ8T1xrbDHHPUKlJry0QXVvJ5NQ1zO4TrcZzwZVrVHN90MTaUoyc+/RljQUxE9WEuVYzJ3+syhX/AxDiKbkAZUvFw7PZWUln8edwu4LOsBsQHDC/xpBMRi3jXwq8G8CuYFGN/yls4JusDJtw+LiK7D9nrY04kqUm75ApEDN2TiAk+ix3v98ZUW4dQX9CtoZ69f5rcrwlVk14Y30nW1iG3zZtFSec6uIz5c6eHJPcOXKTKax+FDKcZ/0r2FcRq45DhdQw/45nJOuHtTy/2YtxvEJvEBI/cUg9YIT1DVI6806yAOn9Y4ncBfknfvA2jWBl9vlGKJ3w3bgLBb51uK69Sa4r6jfokkJbEW57ksuo2P4meu8x58Q3ELPQlBJvp1xZvrZFVX2z93Rukz+ro0nzR8TanLkctpfHew1lzv3l/9s1SpL6+VKdptimpK21+Vqi6AlWXVZetx2oXOPoBQNCI8c63hcnfPeekvpKA22uUfuurI01Vr7xfJhNe9Vg6ZkbcwwDWk1t2ng4QA+YPn90/PWrcAdoC3NomVSaC4O4wIZVmVeunWRKpqBGk1AnQnGlzuVVNIIYGNpvE0fj0rAa5tLuQDt2Bs5zRa5BaWEttqPFRLVGhmQQ8T5KaNH2E4o7SHA=
+  application: bga-pensions
+  deployment_group: staging
+  on:
+    branch: master
