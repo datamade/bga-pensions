@@ -46,6 +46,11 @@ $VENV_DIR/bin/python $PROJECT_DIR/manage.py migrate
 $VENV_DIR/bin/python $PROJECT_DIR/manage.py createcachetable
 $VENV_DIR/bin/python $PROJECT_DIR/manage.py collectstatic --no-input
 
+# Create the directory for compressed files and give the datamade user the
+# appropriate permissions to write to and read from it
+COMPRESSOR_DIR="$PROJECT_DIR/static/compressor"
+mkdir $COMPRESSOR_DIR && chown -R datamade.datamade $COMPRESSOR_DIR && chmod -R g+r $COMPRESSOR_DIR
+
 # Echo a simple nginx configuration into the correct place, and tell
 # certbot to request a cert if one does not already exist.
 # Wondering about the DOMAIN variable? It becomes available by source-ing
