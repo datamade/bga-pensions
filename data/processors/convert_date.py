@@ -11,7 +11,7 @@ writer.writeheader()
 for row in reader:
     try:
         start_date = datetime.strptime(row['start_date'], '%m/%d/%Y')
-    except Exception as e:
+    except ValueError:
         pass
     else:
         row['start_date'] = '{}-{}-{}'.format(start_date.year, start_date.month, start_date.day)
