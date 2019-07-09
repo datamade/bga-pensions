@@ -75,8 +75,11 @@ $VENV_DIR/bin/python $PROJECT_DIR/scripts/render_configs.py $DEPLOYMENT_ID $DEPL
 echo "DEPLOYMENT_ID='$DEPLOYMENT_ID'" > $PROJECT_DIR/bga_database/deployment.py
 
 # Install npm
-apt-get update
-apt-get install -y nodejs npm
+which node || (
+    apt-get update
+    apt-get install -y nodejs npm
+    ln -s /usr/bin/nodejs /usr/bin/node
+)
 
 # Install npm requirements
 cd $PROJECT_DIR && npm install
