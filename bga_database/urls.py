@@ -18,7 +18,9 @@ from django.urls import path
 
 from pensions import views as pension_views
 
+
 urlpatterns = [
     path('', pension_views.Index.as_view()),
+    path('pong/', pension_views.pong),
     path('admin/', admin.site.urls),
 ]
