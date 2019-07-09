@@ -19,7 +19,7 @@ ALLOWED_HOSTS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bga_pensions',
+        'NAME': 'travis',
         'USER': '',
         'PASSWORD': '',
         'HOST': 'localhost',
