@@ -56,17 +56,12 @@ install the Node requirements.
 ## Importing data
 
 The ETL process that supports this app encompasses two phases: formatting the
-data, and importing it into the Django database. By default, these phases will
-be run for every year of data available as of 2019.
+data, and importing it into the Django database. The import includes recipes to
+retrieve and inflate compressed raw data from a public S3 bucket.
 
-To run the complete import, first you need to source the raw data:
-
-- `pensions_2012-2017.csv`
-- `pensions_2018.csv`
-- `pensions_2019.csv`
-
-Next, navigate to the project directory in your shell, activate your virtual
-environment, and run `make`.
+By default, the import will run for every year of data available, as of 2019.
+To run the complete import, navigate to the project directory in your shell,
+activate your virtual environment, and run `make`.
 
 ```bash
 cd /path/to/bga-pensions

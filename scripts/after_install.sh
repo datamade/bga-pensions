@@ -91,8 +91,3 @@ cd $PROJECT_DIR && npm install
 
 # Password-protect the application.
 echo $DOMAIN_USERNAME:$(openssl passwd -crypt "$DOMAIN_PASSWORD") > /etc/nginx/conf/bga-pensions-htpasswd
-
-# Move the AWS credentials to the right place.
-AWS_DIR="/home/datamade/.aws"
-test -d $AWS_DIR || mkdir $AWS_DIR
-cp $PROJECT_DIR/configs/aws.conf $AWS_DIR/config

@@ -141,4 +141,3 @@ bga_database/static/compressor/*
 data/raw/*.csv
 data/finished/*
 !data/finished/.gitkeep
-/configs/aws.conf

@@ -28,4 +28,5 @@ data/raw/pensions_%.csv : data/raw/pensions_%.tar
 	cd $(dir $@) && tar xvfz $(notdir $<)
 
 data/raw/pensions_%.tar :
-	aws s3 cp s3://bga-pensions-database/raw/$(notdir $@) $@
+	wget --no-use-server-timestamps \
+		https://bga-pensions-database.s3.amazonaws.com/raw/$(notdir $@) -O $@
