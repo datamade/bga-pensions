@@ -26,7 +26,7 @@ data/finished/pensions_%.csv : .pensions_%.csv
 $(patsubst %, .pensions_%.csv, $(shell seq 2012 1 2017)) : data/raw/pensions_2012-2017.csv
 	# 1. Grab the rows relating to the given data year, which is parsed from the target filename.
 	# 2. Reorder the rows to conform with the expected format.
-	# 3. Add two additional empty rows for fields not requested prior to 2018.
+	# 3. Add two extra empty columns for fields not requested prior to 2018.
 	csvgrep -c DataYear -m $$(echo $@ | grep -oE '[0-9]+') $^ | \
 	csvcut -c FirstName,LastName,PensionAmount,YearsServed,DataYear,Agency,BenefitStartDateOriginal | \
 	perl -pe 's/$$/,,/' > $@
