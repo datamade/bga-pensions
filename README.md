@@ -57,8 +57,7 @@ install the Node requirements.
 ## Importing data
 
 The ETL process that supports this app encompasses two phases: formatting the
-data, and importing it into the Django database. The import includes recipes to
-retrieve and inflate compressed raw data from a public S3 bucket.
+data, and importing it into the Django database.
 
 By default, the import will run for every year of data available, as of 2019.
 To run the complete import, navigate to the project directory in your shell,
