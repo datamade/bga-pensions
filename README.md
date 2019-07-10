@@ -7,6 +7,7 @@ _Follow the money paid to retired public-sector employees throughout Illinois._
 - Python 3.x
 - PostgreSQL 9.x +
 - Node / `npm`
+- `wget`
 
 ## Getting started
 
