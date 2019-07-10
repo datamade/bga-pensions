@@ -2,4 +2,4 @@ django==2.2.2
 psycopg2==2.8.3
 django-compressor-toolkit==0.6.0
 gunicorn==19.9.0
-aws==1.16.195
+awscli==1.16.195
