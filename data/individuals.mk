@@ -1,23 +1,27 @@
 DELETE_EXISTING=True
 RAW_YEARS=2012-2017 2018 2019
+
 INTERMEDIATE_FILES=$(patsubst %, .pensions_%.csv, $(DATA_YEARS))
 INTERMEDIATE_FILES+=$(patsubst %, pensions_%.tar, $(RAW_YEARS))
 
 .INTERMEDIATE : $(INTERMEDIATE_FILES)
-
 .PRECIOUS : $(patsubst %, data/raw/pensions_%.csv, $(RAW_YEARS))
+.PHONY : $(patsubst %, import_%, $(DATA_YEARS))
 
-.PHONY :
 import_% : data/finished/pensions_%.csv
 	python manage.py import_data $* --delete=$(DELETE_EXISTING)
 
-data/finished/pensions_%.csv : .pensions_%.csv
-	# 1. Rename the header row to correspond to model attributes.
+data/finished/pensions_%.csv : .pensions_%.renamed.csv
+	# 1. Omit rows without an amount.
 	# 2. Remove trailing whitespace from column values.
 	# 3. Convert MM/DD/YYYY dates to YYYY-MM-DD dates.
-	(echo first_name,last_name,amount,years_of_service,data_year,fund,start_date,final_salary,status; tail -n +2 $^ ) | \
+	csvgrep -c amount -r '^$$' -i $< | \
 	perl -pe 's/\s{1,},/,/g' | \
 	python data/processors/convert_date.py > $@
+
+.pensions_%.renamed.csv : .pensions_%.csv
+	# Rename the header row to correspond to model attributes.
+	(echo first_name,last_name,amount,years_of_service,data_year,fund,start_date,final_salary,status; tail -n +2 $^ ) > $@
 
 .pensions_%.csv : data/raw/pensions_%.csv
 	# Reorder the rows to conform with the expected format.
