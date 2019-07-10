@@ -1,6 +1,11 @@
+DELETE_EXISTING=True
 INTERMEDIATE_FILES=$(patsubst %, pensions_%.csv, $(DATA_YEARS))
 
 .INTERMEDIATE : $(INTERMEDIATE_FILES)
+
+.PHONY :
+import_% : data/finished/pensions_%.csv
+	python manage.py import_data $* --delete=$(DELETE_EXISTING)
 
 data/finished/pensions_%.csv : pensions_%.csv
 	(echo first_name,last_name,amount,years_of_service,data_year,fund,final_salary,start_date,status; \

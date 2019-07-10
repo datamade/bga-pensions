@@ -12,26 +12,46 @@ from pensions.models import Benefit, PensionFund
 class Command(BaseCommand):
     help = 'Imports individual benefits for the given data year'
 
+    NULL_FIELDS = (
+        'years_of_service',
+        'final_salary',
+        'start_date',
+        'status'
+    )
+
     def add_arguments(self, parser):
-        parser.add_argument('data_year')
+        parser.add_argument('data_year',
+                            help='Individual data year to import')
+
+        parser.add_argument('--delete',
+                            default='True',
+                            help='Whether to delete existing data for the given year.' +
+                                 'Set to 0 if uploading partial data.')
 
     @transaction.atomic
     def handle(self, *args, **options):
         self.fund_cache = {}
 
-        infile = 'pensions_{}.csv'.format(options['data_year'])
-        filepath = os.path.join(settings.BASE_DIR, 'data', 'finished', infile)
+        data_year = options['data_year']
 
-        n_deleted, _ = Benefit.objects.filter(data_year=options['data_year']).delete()
-        self.stdout.write('deleted {} benefit objects'.format(n_deleted))
+        if options['delete'] == 'True':
+            n_deleted, _ = Benefit.objects.filter(data_year=data_year).delete()
+            self.stdout.write('deleted {0} existing Benefit objects from {1}'.format(n_deleted, data_year))
+
+        filepath = self._get_filepath(data_year)
+
+        self.stdout.write('importing Benefits from {0}'.format(filepath))
 
         with open(filepath, 'r') as f:
             reader = csv.DictReader(f)
-            objects = self._build_generator(reader)
+            objects = self._format_row(reader)
+
             count = 0
             batch_size = 10000
+
             while True:
                 batch = list(islice(objects, batch_size))
+
                 if not batch:
                     break
                 try:
@@ -40,22 +60,31 @@ class Command(BaseCommand):
                     raise
 
                 count += batch_size
-                self.stdout.write('inserted {}'.format(count))
 
-    def _build_generator(self, reader):
+                self.stdout.write('inserted {0} Benefit objects'.format(count))
+
+    def _get_filepath(self, data_year):
+        data_file = 'pensions_{0}.csv'.format(data_year)
+        return os.path.join(settings.BASE_DIR, 'data', 'finished', data_file)
+
+    def _format_row(self, reader):
         for row in reader:
-            fund_key = row['fund']
-
-            try:
-                fund = self.fund_cache[fund_key]
-            except KeyError:
-                fund, _ = PensionFund.objects.get_or_create(name=fund_key)
-                self.fund_cache[fund_key] = fund
-
-            row['fund'] = fund
-
-            for field in ('years_of_service', 'final_salary', 'start_date'):
-                if row[field] == '':
-                    row[field] = None
-
+            row['fund'] = self._hydrate_fund(row['fund'])
+            row = self._cast_to_none(row)
             yield Benefit(**row)
+
+    def _hydrate_fund(self, fund_key):
+        try:
+            fund = self.fund_cache[fund_key]
+        except KeyError:
+            fund, _ = PensionFund.objects.get_or_create(name=fund_key)
+            self.fund_cache[fund_key] = fund
+        finally:
+            return fund
+
+    def _cast_to_none(self, row):
+        for field in self.NULL_FIELDS:
+            if row[field] == '':
+                row[field] = None
+
+        return row
