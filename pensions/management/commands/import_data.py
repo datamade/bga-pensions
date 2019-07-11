@@ -76,11 +76,20 @@ class Command(BaseCommand):
     def _hydrate_fund(self, fund_key):
         try:
             fund = self.fund_cache[fund_key]
+
         except KeyError:
-            fund, _ = PensionFund.objects.get_or_create(name=fund_key)
-            self.fund_cache[fund_key] = fund
-        finally:
-            return fund
+            try:
+                fund = PensionFund.objects.get(name=fund_key)
+
+            except PensionFund.DoesNotExist:
+                existing_funds = ', '.join([fund.name for fund in PensionFund.objects.all()])
+                message = 'Fund name {} does not exist. Existing funds are: {}'.format(fund_key, existing_funds)
+                raise ValueError(message)
+
+            else:
+                self.fund_cache[fund_key] = fund
+
+        return fund
 
     def _cast_to_none(self, row):
         for field in self.NULL_FIELDS:

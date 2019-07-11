@@ -6,7 +6,6 @@ INTERMEDIATE_FILES+=$(patsubst %, pensions_%.tar, $(RAW_YEARS))
 
 .INTERMEDIATE : $(INTERMEDIATE_FILES)
 .PRECIOUS : $(patsubst %, data/raw/pensions_%.csv, $(RAW_YEARS))
-.PHONY : $(patsubst %, import_%, $(DATA_YEARS))
 
 import_% : data/finished/pensions_%.csv
 	python manage.py import_data $* --delete=$(DELETE_EXISTING)

@@ -8,12 +8,15 @@ writer = csv.DictWriter(sys.stdout, fieldnames=reader.fieldnames)
 
 writer.writeheader()
 
+DATE_FORMATS = ('%m/%d/%Y', '%m/%d/%y')
+
 for row in reader:
-    try:
-        start_date = datetime.strptime(row['start_date'], '%m/%d/%Y')
-    except ValueError:
-        pass
-    else:
-        row['start_date'] = '{}-{}-{}'.format(start_date.year, start_date.month, start_date.day)
-    finally:
-        writer.writerow(row)
+    for fmt in DATE_FORMATS:
+        try:
+            start_date = datetime.strptime(row['start_date'], fmt)
+        except ValueError:
+            pass
+        else:
+            row['start_date'] = '{}-{}-{}'.format(start_date.year, start_date.month, start_date.day)
+
+    writer.writerow(row)
