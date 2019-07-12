@@ -20,7 +20,7 @@ clean :
 	rm data/finished/*
 
 import_% : data/finished/pensions_%.csv
-	python manage.py import_data $* --delete=$(DELETE_EXISTING)
+	python manage.py import_data $(realpath $<) $* --delete=$(DELETE_EXISTING)
 
 data/finished/pensions_%.csv : pensions_%.renamed.csv
 	# 1. Omit rows without an amount.

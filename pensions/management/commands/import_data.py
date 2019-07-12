@@ -20,13 +20,16 @@ class Command(BaseCommand):
     )
 
     def add_arguments(self, parser):
+        parser.add_argument('data_file',
+                            help='Absolute path to individal data file to import')
+
         parser.add_argument('data_year',
-                            help='Individual data year to import')
+                            help='Data year to which individual data file pertains')
 
         parser.add_argument('--delete',
                             default='True',
                             help='Whether to delete existing data for the given year.' +
-                                 'Set to 0 if uploading partial data.')
+                                 'Set to False if uploading partial data.')
 
     @transaction.atomic
     def handle(self, *args, **options):
@@ -38,7 +41,7 @@ class Command(BaseCommand):
             n_deleted, _ = Benefit.objects.filter(data_year=data_year).delete()
             self.stdout.write('deleted {0} existing Benefit objects from {1}'.format(n_deleted, data_year))
 
-        filepath = self._get_filepath(data_year)
+        filepath = options['data_file']
 
         self.stdout.write('importing Benefits from {0}'.format(filepath))
 
@@ -54,18 +57,12 @@ class Command(BaseCommand):
 
                 if not batch:
                     break
-                try:
-                    Benefit.objects.bulk_create(batch, batch_size)
-                except:
-                    raise
+
+                Benefit.objects.bulk_create(batch, batch_size)
 
                 count += batch_size
 
                 self.stdout.write('inserted {0} Benefit objects'.format(count))
-
-    def _get_filepath(self, data_year):
-        data_file = 'pensions_{0}.csv'.format(data_year)
-        return os.path.join(settings.BASE_DIR, 'data', 'finished', data_file)
 
     def _format_row(self, reader):
         for row in reader:

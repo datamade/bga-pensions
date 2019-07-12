@@ -17,6 +17,7 @@ for row in reader:
         except ValueError:
             pass
         else:
-            row['start_date'] = '{}-{}-{}'.format(start_date.year, start_date.month, start_date.day)
+            row['start_date'] = start_date.strftime('%Y-%m-%d')
+            break
 
     writer.writerow(row)
