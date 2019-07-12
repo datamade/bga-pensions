@@ -124,7 +124,8 @@ dmypy.json
 .pyre/
 
 .DS_Store
-data/raw/*.csv
+
+# Deployment artifacts
 node_modules/
 bga_database/static/compressor/*
 !bga_database/static/compressor/.gitkeep
@@ -135,3 +136,8 @@ bga_database/static/compressor/*
 /configs/bga-pensions-staging.conf.supervisor
 /configs/local_settings.staging.py
 /configs/staging-config.conf
+
+# Data files
+data/raw/*.csv
+data/finished/*
+!data/finished/.gitkeep

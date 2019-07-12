@@ -86,7 +86,7 @@ which node || (
     ln -s /usr/bin/nodejs /usr/bin/node
 )
 
-# Install npm requirements
+# Install npm requirements.
 cd $PROJECT_DIR && npm install
 
 # Password-protect the application.

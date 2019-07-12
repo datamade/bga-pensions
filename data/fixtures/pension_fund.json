@@ -1,0 +1,98 @@
+[
+    {
+        "model": "pensions.pensionfund",
+        "fields": {
+            "name": "Chicago Firefighters"
+        }
+    },
+    {
+        "model": "pensions.pensionfund",
+        "fields": {
+            "name": "Chicago Parks"
+        }
+    },
+    {
+        "model": "pensions.pensionfund",
+        "fields": {
+            "name": "Chicago Police"
+        }
+    },
+    {
+        "model": "pensions.pensionfund",
+        "fields": {
+            "name": "Chicago Teachers"
+        }
+    },
+    {
+        "model": "pensions.pensionfund",
+        "fields": {
+            "name": "Chicago Transit"
+        }
+    },
+    {
+        "model": "pensions.pensionfund",
+        "fields": {
+            "name": "Downstate/Suburban Municipal (IMRF)"
+        }
+    },
+    {
+        "model": "pensions.pensionfund",
+        "fields": {
+            "name": "Judges/Legislators"
+        }
+    },
+    {
+        "model": "pensions.pensionfund",
+        "fields": {
+            "name": "Chicago Municipal Employees (MEABF)"
+        }
+    },
+    {
+        "model": "pensions.pensionfund",
+        "fields": {
+            "name": "Sanitary District"
+        }
+    },
+    {
+        "model": "pensions.pensionfund",
+        "fields": {
+            "name": "State Employees (SRS)"
+        }
+    },
+    {
+        "model": "pensions.pensionfund",
+        "fields": {
+            "name": "Downstate/Suburban Teachers (TRS)"
+        }
+    },
+    {
+        "model": "pensions.pensionfund",
+        "fields": {
+            "name": "State Universities (SURS)"
+        }
+    },
+    {
+        "model": "pensions.pensionfund",
+        "fields": {
+            "name": "Chicago Laborers"
+        }
+    },
+    {
+        "model": "pensions.pensionfund",
+        "fields": {
+            "name": "Metra, Pace, RTA"
+        }
+    },
+    {
+        "model": "pensions.pensionfund",
+        "fields": {
+            "name": "Chicago Housing Authority"
+        }
+    },
+    {
+        "model": "pensions.pensionfund",
+        "fields": {
+            "name": "Cook County Employees"
+        }
+    }
+]
