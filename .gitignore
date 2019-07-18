@@ -143,4 +143,4 @@ data/finished/*
 !data/finished/.gitkeep
 
 # Dev files
-static/
+static/*

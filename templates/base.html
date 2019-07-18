@@ -1,12 +1,28 @@
 {% load static %}
-{% load compress %}
 
-{% block content %}
-{% endblock %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-{% compress js %}
-  <script type="module" src="{% static 'js/base.js' %}"></script>
-  <script type="module">
-    console.log('Hello, inline world!')
-  </script>
-{% endcompress %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+    <title>{% block title %}{% endblock %} – Illinois Public Pensions Database</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      {% block content %}{% endblock %}
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="{% static 'lib/jquery-3.2.1.slim.min.js' %}"></script>
+    <script src="{% static 'lib/popper.min.js' %}"></script>
+    <script src="{% static 'lib/bootstrap.min.js' %}"></script>
+    {% block extra_js %}
+    {% endblock %}
+  </body>
+</html>
