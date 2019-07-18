@@ -26,3 +26,15 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+SOCIAL_AUTH_TRAILING_SLASH = False  # Remove trailing slash from routes
+SOCIAL_AUTH_AUTH0_DOMAIN = 'your-domain'
+SOCIAL_AUTH_AUTH0_KEY = 'your-key'
+SOCIAL_AUTH_AUTH0_SECRET = 'your-secret'
+
+SOCIAL_AUTH_AUTH0_SCOPE = [
+    'openid',
+    'profile'
+]
+
+SOCIAL_AUTH_POSTGRES_JSONFIELD = True
