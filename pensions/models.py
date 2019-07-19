@@ -16,8 +16,15 @@ class PensionFund(models.Model):
     '''
     One of the pension systems tracked in the database.
     '''
+    FUND_TYPE_CHOICES = [
+        ('STATE', 'State'),
+        ('COUNTY', 'County'),
+        ('CHICAGO', 'Chicago Municipal'),
+        ('DOWNSTATE', 'Downstate'),
+    ]
 
     name = models.CharField(max_length=500)
+    fund_type = models.CharField(max_length=256, choices=FUND_TYPE_CHOICES)
 
     def __str__(self):
         return self.name

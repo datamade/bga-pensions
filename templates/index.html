@@ -30,13 +30,59 @@
     </div>
   </div>
 </div>
+
+<div class="row pt-3">
+  <div class="col-sm-5 offset-sm-1">
+    <div id="state-container"></div>
+  </div>
+  <div class="col-sm-5">
+    <div id="county-container"></div>
+  </div>
+  <div class="col-sm-5 offset-sm-1">
+    <div id="chicago-container"></div>
+  </div>
+  <div class="col-sm-5">
+    <div id="downstate-container"></div>
+  </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
+<script src="{% static 'lib/highcharts.js' %}"></script>
 {% compress js %}
   <script type="module" src="{% static 'js/base.js' %}"></script>
   <script type="module">
     console.log('Hello, inline world!')
+  </script>
+  <script type="module">
+    {% for container, data in chart_data %}
+      Highcharts.chart('{{ container }}', {
+          chart: {
+              plotBackgroundColor: null,
+              plotBorderWidth: null,
+              plotShadow: false,
+              type: 'pie'
+          },
+          title: {
+              text: {{ data|safe }}[0]['name'],
+          },
+          tooltip: {
+              pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+          },
+          plotOptions: {
+              pie: {
+                  allowPointSelect: true,
+                  cursor: 'pointer',
+                  dataLabels: {
+                      enabled: false
+                  },
+                  showInLegend: true,
+                  colors: ['navy', 'silver'],
+              }
+          },
+          series: {{ data|safe }},
+      });
+    {% endfor %}
   </script>
 {% endcompress %}
 {% endblock %}
