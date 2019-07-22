@@ -11,8 +11,8 @@ class Auth0(Auth0OAuth2):
         except AuthFailed as e:
             if 'verify your email' in str(e):
                 return redirect('/?verify_email=true')
-        else:
-            return super().auth_complete(*args, **kwargs)
+
+        return super().auth_complete(*args, **kwargs)
 
 
     def get_user_details(self, response):
