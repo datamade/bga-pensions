@@ -14,9 +14,12 @@
 
       <p>
         {% if not request.user.is_anonymous %}
-          Hello, {{ request.user.first_name }}!<br />
-          <small><em>Not {{ request.user.first_name }}? <a href="/logout">Log out</a>.</em></small>
+          Hello, {{ request.user.email }}!<br />
+          <small><em>Not {{ request.user.email }}? <a href="/logout">Log out</a>.</em></small>
         {% else %}
+          {% if request.GET.verify_email == 'true' %}
+            <strong>Please verify your email address to use the Pensions Database.</strong>
+          {% endif %}
           <a class="btn btn-primary btn-lg btn-success btn-block" href="/login/auth0">Log In</a>
         {% endif %}
       </p>
