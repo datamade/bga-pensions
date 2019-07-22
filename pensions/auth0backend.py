@@ -14,7 +14,6 @@ class Auth0(Auth0OAuth2):
 
         return super().auth_complete(*args, **kwargs)
 
-
     def get_user_details(self, response):
         # Obtain JWT and the keys to validate the signature
         id_token = response.get('id_token')
