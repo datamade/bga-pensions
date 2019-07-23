@@ -5,6 +5,8 @@ from social_core.exceptions import AuthFailed
 
 
 class Auth0(Auth0OAuth2):
+    name = 'auth0'
+
     def auth_complete(self, *args, **kwargs):
         try:
             self.process_error(self.data)
