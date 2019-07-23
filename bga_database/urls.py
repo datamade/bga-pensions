@@ -22,7 +22,7 @@ from pensions import views as pension_views
 urlpatterns = [
     path('', pension_views.Index.as_view()),
     path('admin/', admin.site.urls),
-    path('logout', pension_views.logout),
+    path('logout/', pension_views.logout, name='auth0_logout'),
     path('', include('django.contrib.auth.urls')),
     path('', include('social_django.urls')),
     path('pong/', pension_views.pong),

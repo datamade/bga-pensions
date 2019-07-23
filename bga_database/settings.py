@@ -50,7 +50,7 @@ AUTHENTICATION_BACKENDS = [
 
 ROOT_URLCONF = 'bga_database.urls'
 
-LOGIN_URL = '/login/auth0'
+LOGIN_URL = '/login/auth0/'
 LOGIN_REDIRECT_URL = '/'
 
 TEMPLATES = [
