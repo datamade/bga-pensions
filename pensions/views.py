@@ -32,9 +32,10 @@ class Index(TemplateView):
 
         chart_data = {
             'container': 'aggregate-funding-container',
-            'name': 'Funding Level by Pension System',
+            'name': '<b>Funding Level by Pension System</b>',
             'label_format': r'{point.y:.1f}%',
             'x_axis_categories': [],
+            'axis_label': 'Percent',
             'funded': {
                 'name': 'Funded',
                 'data': [],
@@ -82,17 +83,21 @@ class Index(TemplateView):
                     },
                     'amortization_cost': {
                         'container': 'amortization-cost',
-                        'name': '<b>Employer Contrbution Distribution</b><br /><span class="small">{0}<span><br /><span class="small">{1}</span>'.format(fund.name.upper(), data_year),
+                        'name': '<b>Employer Contribution Distribution</b><br /><span class="small">{0}<span><br /><span class="small">{1}</span>'.format(fund.name.upper(), data_year),
+                        'name_align': 'left',
                         'label_format': r'${point.y:,.0f}',
                         'x_axis_categories': [''],
+                        'axis_label': 'Dollars',
                         'funded': {
                             'name': 'Amortization Cost',
                             'data': [annual_report.amortization_cost],
+                            'color': '#dc3545',
                             'legendIndex': 1,
                         },
                         'unfunded': {
                             'name': 'Employer Normal Cost',
                             'data': [float(annual_report.employer_normal_cost)],
+                            'color': '#01406c',
                             'legendIndex': 0,
                         },
                         'stacked': 'true',

@@ -1,12 +1,32 @@
-class DataYearController {
-    constructor (yearData) {
+class PensionsController {
+    constructor (yearData, selectedYear, selectedFund, chartHelper) {
         this.yearData = yearData
+        this.selectedYear = selectedYear
+        this.selectedFund = selectedFund
+        this.chartHelper = chartHelper
     }
     selectYear (year) {
+        this.selectedYear = year
+
+        var data = this.yearData[year]
+
+        this.chartHelper.makeBarChart(data.aggregate_funding);
+
         return this.yearData[year]
     }
-    selectFund (year, fund) {
-        return this.selectYear(year)['data_by_fund'][fund]
+    selectFund (fund) {
+        this.selectedFund = fund
+
+        var data = this.selectYear(this.selectedYear)['data_by_fund'][fund]
+
+        $('#fundDropdownMenuButton').text(fund);
+
+        this.chartHelper.makePieChart(data.aggregate_funding);
+        this.chartHelper.makeBarChart(data.amortization_cost);
+
+        $('#funding-level').text(data.funding_level + '%');
+
+        return data
     }
 }
 
@@ -16,7 +36,7 @@ class ChartHelper {
             lang: {
               thousandsSep: ',',
             },
-            colors: ['#01406c', '#eaebee'],
+            colors: ['#01406c', '#dc3545'],
         });
     }
     makeBarChart (data) {
@@ -29,7 +49,9 @@ class ChartHelper {
                     },
                     enableMouseTracking: false,
                 },
-                series: data.stacked ? {'stacking': 'normal'} : {},
+                series: {
+                    stacking: data.stacked ? 'normal' : undefined,
+                },
             },
             chart: {
                 plotBackgroundColor: null,
@@ -39,17 +61,25 @@ class ChartHelper {
             },
             title: {
                 text: data.name,
+                align: data.name_align ? data.name_align : 'center',
             },
             xAxis: {
                 categories: data.x_axis_categories,
                 title: {
                     text: null
-                }
+                },
+                labels: {
+                    style: {
+                        fontSize: '15px',
+                    }
+                },
             },
             yAxis: {
                 min: 0,
+                max: data.stacked ? (data.funded.data[0] + data.unfunded.data[0]) : null,
+                endOnTick: false,
                 title: {
-                    text: 'Percent',
+                    text: data.axis_label,
                 },
             },
             legend: {
@@ -90,4 +120,4 @@ class ChartHelper {
     }
 }
 
-export { DataYearController, ChartHelper };
+export { PensionsController, ChartHelper };

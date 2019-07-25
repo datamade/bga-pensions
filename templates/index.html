@@ -14,7 +14,7 @@
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         {% for year in data_years %}
-          <a class="dropdown-item" href="#{{ year }}">{{ year }}</a>
+          <a class="dropdown-item year-dropdown-item" href="#{{ year }}">{{ year }}</a>
         {% endfor %}
       </div>
     </div>
@@ -35,7 +35,7 @@
 
     <p>Cras volutpat lectus quis laoreet gravida. Nullam venenatis neque vel pretium efficitur. Mauris accumsan lectus ac eros rutrum, vitae aliquet lorem porta. Duis sit amet neque lectus. Morbi quis nibh est. Sed sed sem non elit venenatis posuere vitae vitae eros. Duis sed elit nec urna ultricies feugiat ac luctus velit. Vestibulum pulvinar malesuada lectus, vitae mattis lacus. Integer ultrices sem quis tortor cursus bibendum. Suspendisse at pretium justo.</p>
 
-    <div class="bg-dark mb-3" style="height: 33vh;"></div>
+    <div class="bg-dark mb-3" style="height: 50vh;"></div>
 
     <p>Etiam semper, ex eget egestas auctor, arcu neque lacinia justo, et dapibus elit tellus quis sem. Maecenas facilisis nisi vel velit pulvinar pulvinar. Vivamus id nisl lobortis, euismod augue et, rhoncus libero. Vestibulum porta faucibus aliquam. Donec tempor erat eget mi pellentesque auctor. Phasellus enim lorem, efficitur pulvinar mi sagittis, tempor pharetra magna. Nullam suscipit elementum quam, nec posuere erat feugiat sit amet.</p>
 
@@ -53,7 +53,7 @@
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           {% for fund in pension_funds %}
-            <a class="dropdown-item" href="#{{ year }}">{{ fund }}</a>
+            <a class="dropdown-item fund-dropdown-item" href="#{{ fund }}">{{ fund }}</a>
           {% endfor %}
         </div>
       </div>
@@ -61,30 +61,24 @@
   </div>
 </div>
 
-<div class="row pt-3">
+<div class="row pt-3 h-100 text-center">
   <div class="col-sm-6 offset-sm-1">
     <div id="fund-container"></div>
   </div>
-  <div class="col-sm-4 text-center">
+  <div class="col-sm-4 my-auto">
     <small>FUNDING LEVEL</small><br />
     <h1><span id="funding-level" class="badge badge-danger"></span></h1>
   </div>
 </div>
 
-<div class="row pt-3">
+<div class="row pt-5">
   <div class="col-sm-10 offset-sm-1">
     <div id="amortization-cost"></div>
   </div>
 </div>
 
-<div class="row pt-3">
-  <div class="col-sm-10 offset-sm-1">
-    <div class="bg-dark mb-3" style="height: 33vh;"></div>
-  </div>
-</div>
-
-<div class="row pt-3">
-  <div class="col-sm-6 offset-sm-3 text-center">
+<div class="row p-5">
+  <div class="col-sm-4 offset-sm-4 text-center">
       <p>
         {% if not request.user.is_anonymous %}
           Hello, {{ request.user.email }}!<br />
@@ -109,44 +103,31 @@
 {% compress js %}
   <script type="module" src="{% static 'js/base.js' %}"></script>
   <script type="module">
-    import { DataYearController, ChartHelper } from "js/base"
+    import { PensionsController, ChartHelper } from "js/base"
 
-    var controller = new DataYearController({{ data_by_year|safe }});
-    var chartHelper = new ChartHelper();
-
-    var dataYear = {{ data_years.0 }};
+    var yearData = {{ data_by_year|safe }};
+    var selectedYear = {{ data_years.0 }};
     var selectedFund = 'Downstate/Suburban Teachers (TRS)';
 
-    var yearData = controller.selectYear(dataYear);
+    var chartHelper = new ChartHelper();
+    var controller = new PensionsController(yearData, selectedYear, selectedFund, chartHelper);
 
-    chartHelper.makeBarChart(yearData.aggregate_funding);
+    controller.selectYear(selectedYear);
+    controller.selectFund(selectedFund);
 
-    $('#fundDropdownMenuButton').text(selectedFund);
-
-    var fundData = controller.selectFund(dataYear, selectedFund);
-
-    chartHelper.makePieChart(fundData.aggregate_funding);
-    chartHelper.makeBarChart(fundData.amortization_cost);
-
-    $('#funding-level').text(fundData.funding_level + '%');
-
-    console.log(fundData.funding_level);
-
-    $('.dropdown-item').click(function () {
+    $('.year-dropdown-item').click(function () {
       var selectedYear = $(this).text();
 
-      $('#dropdownMenuButton').text(selectedYear);
+      controller.selectYear(selectedYear);
+      controller.selectFund(controller.selectedFund);
+    });
 
-      yearData = controller.selectYear(parseInt(selectedYear));
+    $('.fund-dropdown-item').click(function () {
+      var selectedFund = $(this).text();
 
-      $.each(yearData.aggregate_funding, function (i, data) {
-        chartHelper.makeBarChart(data);
-      });
-
-      var fundData = controller.selectFund(dataYear, selectedFund).aggregate_funding;
-
-      chartHelper.makePieChart(fundData);
-    })
+      controller.selectYear(controller.selectedYear);
+      controller.selectFund(selectedFund);
+    });
   </script>
 {% endcompress %}
 {% endblock %}
