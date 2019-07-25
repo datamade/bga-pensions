@@ -14,7 +14,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+lib/*
 lib64/
 parts/
 sdist/
@@ -141,3 +141,6 @@ bga_database/static/compressor/*
 data/raw/*.csv
 data/finished/*
 !data/finished/.gitkeep
+
+# Dev files
+static/*

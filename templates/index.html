@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load compress %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="row pt-3">
+  <div class="col-sm-6 offset-sm-3 text-center">
+    <div class="jumbotron py-2">
+      <h3>Illinois Public Pensions Database</h3>
+      <p><em>Follow the money paid to retired public-sector employees throughout Illinois.</em></p>
+
+      <p>
+        {% if not request.user.is_anonymous %}
+          Hello, {{ request.user.email }}!<br />
+          <small><em>Not {{ request.user.email }}? <a href="{% url 'auth0_logout' %}">Log out</a>.</em></small>
+        {% else %}
+          {% if request.GET.verify_email == 'true' %}
+            <strong>Please verify your email address to use the Pensions Database.</strong>
+          {% endif %}
+          <a class="btn btn-primary btn-lg btn-success btn-block" href="{% url 'social:begin' 'auth0' %}">Log In</a>
+        {% endif %}
+      </p>
+
+      <p>
+        <a href="https://auth0.com/?utm_source=oss&amp;utm_medium=gp&amp;utm_campaign=oss" target="_blank" alt="Single Sign On &amp; Token Based Authentication - Auth0"><img src="{% static 'img/a0-badge-dark.png' %}" width="150" height="50" /></a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% compress js %}
+  <script type="module" src="{% static 'js/base.js' %}"></script>
+  <script type="module">
+    console.log('Hello, inline world!')
+  </script>
+{% endcompress %}
+{% endblock %}
