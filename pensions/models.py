@@ -60,11 +60,18 @@ class AnnualReport(VintagedModel):
 
     @property
     def funded_ratio(self):
-        return assets / total_liability
+        return float(self.assets / self.total_liability)
 
     @property
     def unfunded_liability(self):
-        return total_liability - assets
+        return float(self.total_liability - self.assets)
+
+    @property
+    def amortization_cost(self):
+        if self.employer_contribution > self.employer_normal_cost:
+            return float(self.employer_contribution - self.employer_normal_cost)
+        else:
+            return 0
 
 
 class Benefit(VintagedModel):

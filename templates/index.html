@@ -62,6 +62,31 @@
     <div id="downstate-container"></div>
   </div>
 </div>
+
+<div class="row pt-3">
+  <div class="col-sm-12 text-center p-5">
+    <div id="fund-toggle">
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="fundDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          {% for fund in pension_funds %}
+            <a class="dropdown-item" href="#{{ year }}">{{ fund }}</a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-5 offset-sm-1">
+    <div id="fund-container"></div>
+  </div>
+  <div class="col-sm-5">
+    <div id="fund-ratio" class="label"></div>
+  </div>
+  <div class="col-sm-10 offset-sm-1">
+    <div id="fund-amortization"></div>
+  </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
@@ -74,20 +99,38 @@
     var controller = new DataYearController({{ data_by_year|safe }});
     var chartHelper = new ChartHelper();
 
-    var yearData = controller.select({{ data_years.0 }});
+    var dataYear = {{ data_years.0 }};
+    var selectedFund = 'Downstate/Suburban Teachers (TRS)';
+
+    var yearData = controller.selectYear(dataYear);
 
     $.each(yearData.aggregate_funding, function (i, data) {
       chartHelper.makeChart(data);
     });
 
-    $('.dropdown-item').click(function () {
-      var selectedYear = parseInt($(this).text());
+    $('#fundDropdownMenuButton').text(selectedFund);
 
-      yearData = controller.select(selectedYear);
+    var fundData = controller.selectFund(dataYear, selectedFund);
+
+    chartHelper.makeChart(fundData.aggregate_funding);
+
+    $('#fund-ratio').text(fundData.funding_level);
+    $('#fund-amortization').text(fundData.employer_normal_cost + ' ' + fundData.amortization_cost);
+
+    $('.dropdown-item').click(function () {
+      var selectedYear = $(this).text();
+
+      $('#dropdownMenuButton').text(selectedYear);
+
+      yearData = controller.selectYear(parseInt(selectedYear));
 
       $.each(yearData.aggregate_funding, function (i, data) {
         chartHelper.makeChart(data);
       });
+
+      var fundData = controller.selectFund(dataYear, selectedFund).aggregate_funding;
+
+      chartHelper.makeChart(fundData);
     })
   </script>
 {% endcompress %}

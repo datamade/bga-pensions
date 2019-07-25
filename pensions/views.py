@@ -21,11 +21,12 @@ class Index(TemplateView):
         return self._data_years
 
     def _aggregate_funding(self, data_year):
-        percent_funded = Sum('annual_reports__assets') / Sum('annual_reports__total_liability')
+        funded_liability = Sum('annual_reports__assets')
+        unfunded_liability = Sum('annual_reports__total_liability') - Sum('annual_reports__assets')
         funding_levels = PensionFund.objects.values('fund_type')\
                                             .filter(annual_reports__data_year=data_year)\
-                                            .annotate(percent_funded=percent_funded,
-                                                      percent_unfunded=Value(1.0) - percent_funded)
+                                            .annotate(funded=funded_liability,
+                                                      unfunded=unfunded_liability)
 
         chart_data = []
 
@@ -36,12 +37,12 @@ class Index(TemplateView):
                 'name': level['fund_type'].title(),
                 'container': container_name,
                 'data': [{
-                    'name': 'Percent Funded',
-                    'y': float(level['percent_funded']),
+                    'name': 'Funded Liability',
+                    'y': float(level['funded']),
                     'legendIndex': 1,
                 }, {
-                    'name': 'Percent Unfunded',
-                    'y': float(level['percent_unfunded']),
+                    'name': 'Unfunded Liability',
+                    'y': float(level['unfunded']),
                     'legendIndex': 0,
                 }],
             }]
@@ -50,12 +51,48 @@ class Index(TemplateView):
 
         return chart_data
 
+    def _fund_metadata(self, data_year):
+        data_by_fund = {}
+
+        for fund in PensionFund.objects.all():
+            try:
+                annual_report = fund.annual_reports.get(data_year=data_year)
+            except AnnualReport.DoesNotExist:
+                annual_report = None
+
+            fund_data = {}
+
+            if annual_report:
+                fund_data = {
+                    'aggregate_funding': [{
+                        'name': fund.name,
+                        'container': 'fund-container',
+                        'data': [{
+                            'name': 'Funded Liability',
+                            'y': float(annual_report.assets),
+                            'legendIndex': 1,
+                        }, {
+                            'name': 'Unfunded Liability',
+                            'y': float(annual_report.unfunded_liability),
+                            'legendIndex': 0,
+                        }],
+                    }],
+                    'funding_level': annual_report.funded_ratio * 100,
+                    'employer_normal_cost': float(annual_report.employer_normal_cost),
+                    'amortization_cost': annual_report.amortization_cost,
+                }
+
+            data_by_fund[fund.name] = fund_data
+
+        return data_by_fund
+
     def _data_by_year(self):
         data_by_year = {}
 
         for year in self.data_years:
             year_data = {
-                'aggregate_funding': self._aggregate_funding(year)
+                'aggregate_funding': self._aggregate_funding(year),
+                'data_by_fund': self._fund_metadata(year),
             }
 
             data_by_year[year] = year_data
@@ -65,6 +102,7 @@ class Index(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['data_years'] = list(self.data_years)
+        context['pension_funds'] = list(PensionFund.objects.all())
         context['data_by_year'] = self._data_by_year()
 
         return context
