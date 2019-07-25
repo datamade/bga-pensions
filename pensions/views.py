@@ -7,26 +7,34 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from pensions.models import PensionFund
+from pensions.models import PensionFund, AnnualReport
 
 
 class Index(TemplateView):
     template_name = 'index.html'
 
-    def _aggregate_funding(self):
-        '''
-        TODO: Filter by data year
-        '''
+    @property
+    def data_years(self):
+        if not getattr(self, '_data_years', None):
+            self._data_years = AnnualReport.objects.distinct('data_year')\
+                                                   .values_list('data_year', flat=True)
+        return self._data_years
+
+    def _aggregate_funding(self, data_year):
         percent_funded = Sum('annual_reports__assets') / Sum('annual_reports__total_liability')
         funding_levels = PensionFund.objects.values('fund_type')\
+                                            .filter(annual_reports__data_year=data_year)\
                                             .annotate(percent_funded=percent_funded,
                                                       percent_unfunded=Value(1.0) - percent_funded)
 
         chart_data = []
 
         for level in funding_levels:
+            container_name = '{}-container'.format(level['fund_type'].lower())
+
             level_data = [{
                 'name': level['fund_type'].title(),
+                'container': container_name,
                 'data': [{
                     'name': 'Percent Funded',
                     'y': float(level['percent_funded']),
@@ -37,17 +45,29 @@ class Index(TemplateView):
                     'legendIndex': 0,
                 }],
             }]
-            container_name = '{}-container'.format(level['fund_type'].lower())
-            chart_data.append((container_name, level_data))
+
+            chart_data.append(level_data)
 
         return chart_data
 
+    def _data_by_year(self):
+        data_by_year = {}
+
+        for year in self.data_years:
+            year_data = {
+                'aggregate_funding': self._aggregate_funding(year)
+            }
+
+            data_by_year[year] = year_data
+
+        return data_by_year
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['chart_data'] = self._aggregate_funding()
-        return context
+        context['data_years'] = list(self.data_years)
+        context['data_by_year'] = self._data_by_year()
 
+        return context
 
 
 def logout(request):
