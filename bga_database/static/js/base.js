@@ -16,34 +16,76 @@ class ChartHelper {
             lang: {
               thousandsSep: ',',
             },
+            colors: ['#01406c', '#eaebee'],
         });
     }
-    makeChart (data) {
-        Highcharts.chart(data[0].container, {
+    makeBarChart (data) {
+        Highcharts.chart(data.container, {
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true,
+                        format: data.label_format,
+                    },
+                    enableMouseTracking: false,
+                },
+                series: data.stacked ? {'stacking': 'normal'} : {},
+            },
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: false,
+                type: 'bar',
+            },
+            title: {
+                text: data.name,
+            },
+            xAxis: {
+                categories: data.x_axis_categories,
+                title: {
+                    text: null
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Percent',
+                },
+            },
+            legend: {
+                verticalAlign: 'top',
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>' + data.label_format + '</b>'
+            },
+            series: [data.funded, data.unfunded],
+        });
+    }
+    makePieChart (data) {
+        Highcharts.chart(data.container, {
+            chart: {
                 type: 'pie'
             },
             title: {
-                text: data[0].name,
+                text: data.name,
+                align: 'left',
             },
             tooltip: {
-                pointFormat: '{series.name}: <b>${point.y}</b>'
+                enabled: false,
+            },
+            legend: {
+                enabled: false,
             },
             plotOptions: {
                 pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
                     dataLabels: {
-                        enabled: false
+                        enabled: true,
+                        format: '<b>{point.name}</b>:<br />' + data.label_format,
                     },
-                    showInLegend: true,
-                    colors: ['navy', 'silver'],
+                    enableMouseTracking: false,
                 }
             },
-            series: data,
+            series: [data.series_data],
         });
     }
 }

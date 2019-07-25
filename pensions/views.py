@@ -21,33 +21,34 @@ class Index(TemplateView):
         return self._data_years
 
     def _aggregate_funding(self, data_year):
-        funded_liability = Sum('annual_reports__assets')
-        unfunded_liability = Sum('annual_reports__total_liability') - Sum('annual_reports__assets')
+        percent_funded = Sum('annual_reports__assets') / Sum('annual_reports__total_liability')
         funding_levels = PensionFund.objects.values('fund_type')\
                                             .filter(annual_reports__data_year=data_year)\
-                                            .annotate(funded=funded_liability,
-                                                      unfunded=unfunded_liability)
+                                            .annotate(percent_funded=percent_funded,
+                                                      percent_unfunded=Value(1.0) - percent_funded)
 
-        chart_data = []
+        funded_data = []
+        unfunded_data = []
 
-        for level in funding_levels:
-            container_name = '{}-container'.format(level['fund_type'].lower())
+        chart_data = {
+            'container': 'aggregate-funding-container',
+            'name': 'Funding Level by Pension System',
+            'label_format': r'{point.y:.1f}%',
+            'x_axis_categories': [],
+            'funded': {
+                'name': 'Funded',
+                'data': [],
+            },
+            'unfunded': {
+                'name': 'Unfunded',
+                'data': []
+            },
+        }
 
-            level_data = [{
-                'name': level['fund_type'].title(),
-                'container': container_name,
-                'data': [{
-                    'name': 'Funded Liability',
-                    'y': float(level['funded']),
-                    'legendIndex': 1,
-                }, {
-                    'name': 'Unfunded Liability',
-                    'y': float(level['unfunded']),
-                    'legendIndex': 0,
-                }],
-            }]
-
-            chart_data.append(level_data)
+        for level in sorted(funding_levels, key=lambda x: x['percent_funded']):
+            chart_data['x_axis_categories'].append(level['fund_type'].title())
+            chart_data['funded']['data'].append(float(level['percent_funded']) * 100)
+            chart_data['unfunded']['data'].append(float(level['percent_unfunded']) * 100)
 
         return chart_data
 
@@ -64,22 +65,39 @@ class Index(TemplateView):
 
             if annual_report:
                 fund_data = {
-                    'aggregate_funding': [{
-                        'name': fund.name,
+                    'aggregate_funding': {
                         'container': 'fund-container',
-                        'data': [{
-                            'name': 'Funded Liability',
-                            'y': float(annual_report.assets),
+                        'name': '<b>Funding Distribution</b><br /><span class="small">{0}<span><br /><span class="small">{1}</span>'.format(fund.name.upper(), data_year),
+                        'label_format': r'${point.y:,.0f}',
+                        'series_data': {
+                            'name': 'Data',
+                            'data': [{
+                                'name': 'Funded liability',
+                                'y': float(annual_report.assets),
+                            }, {
+                                'name': 'Unfunded liability',
+                                'y': annual_report.unfunded_liability,
+                            }],
+                        },
+                    },
+                    'amortization_cost': {
+                        'container': 'amortization-cost',
+                        'name': '<b>Employer Contrbution Distribution</b><br /><span class="small">{0}<span><br /><span class="small">{1}</span>'.format(fund.name.upper(), data_year),
+                        'label_format': r'${point.y:,.0f}',
+                        'x_axis_categories': [''],
+                        'funded': {
+                            'name': 'Amortization Cost',
+                            'data': [annual_report.amortization_cost],
                             'legendIndex': 1,
-                        }, {
-                            'name': 'Unfunded Liability',
-                            'y': float(annual_report.unfunded_liability),
+                        },
+                        'unfunded': {
+                            'name': 'Employer Normal Cost',
+                            'data': [float(annual_report.employer_normal_cost)],
                             'legendIndex': 0,
-                        }],
-                    }],
-                    'funding_level': annual_report.funded_ratio * 100,
-                    'employer_normal_cost': float(annual_report.employer_normal_cost),
-                    'amortization_cost': annual_report.amortization_cost,
+                        },
+                        'stacked': 'true',
+                    },
+                    'funding_level': int(annual_report.funded_ratio * 100),
                 }
 
             data_by_fund[fund.name] = fund_data
