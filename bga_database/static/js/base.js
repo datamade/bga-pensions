@@ -10,7 +10,12 @@ class PensionsController {
 
         var data = this.yearData[year]
 
-        this.chartHelper.makeBarChart(data.aggregate_funding);
+        // Set local variable for this access within loop.
+        var self = this;
+
+        data.aggregate_funding.forEach(function (el) {
+            self.chartHelper.makePieChart(el);
+        })
 
         return this.yearData[year]
     }
@@ -48,6 +53,7 @@ class ChartHelper {
                         format: data.label_format,
                     },
                     enableMouseTracking: false,
+                    pointWidth: 75,
                 },
                 series: {
                     stacking: data.stacked ? 'normal' : undefined,
@@ -98,7 +104,7 @@ class ChartHelper {
             },
             title: {
                 text: data.name,
-                align: 'left',
+                align: data.name_align ? data.name_align : 'left',
             },
             tooltip: {
                 enabled: false,
@@ -113,6 +119,7 @@ class ChartHelper {
                         format: '<b>{point.name}</b>:<br />' + data.label_format,
                     },
                     enableMouseTracking: false,
+                    size: '75%',
                 }
             },
             series: [data.series_data],

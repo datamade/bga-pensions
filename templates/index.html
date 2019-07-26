@@ -24,13 +24,32 @@
 <div class="clearfix"></div>
 
 <div class="row pt-3">
-  <div class="col-sm-8 offset-sm-2">
+  <div class="col-lg-8 offset-lg-2">
     <h3>Illinois Public Pensions Database</h3>
 
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla gravida tristique arcu eget suscipit. Etiam arcu libero, eleifend eu aliquam in, bibendum et magna. In vel arcu nulla. Vivamus lacinia leo justo, in maximus eros feugiat eu.</p>
 
-    <div id="aggregate-funding-container"></div>
+    <h3 class="py-3"><strong>Funding Distribution by Pension System</strong></h3>
+  </div>
+</div>
 
+<div class="row pt-1 pb-5">
+  <div class="col-lg-5 offset-lg-1">
+    <div id="state-container"></div>
+  </div>
+  <div class="col-lg-5">
+    <div id="county-container"></div>
+  </div>
+  <div class="col-lg-5 offset-lg-1">
+    <div id="chicago-container"></div>
+  </div>
+  <div class="col-lg-5">
+    <div id="downstate-container"></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-8 offset-lg-2">
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a elit lectus. Integer ac sapien leo. Nulla urna ex, semper mollis dictum a, bibendum at augue. Cras odio diam, gravida efficitur elit non, suscipit dignissim tellus.</p>
 
     <p>Cras volutpat lectus quis laoreet gravida. Nullam venenatis neque vel pretium efficitur. Mauris accumsan lectus ac eros rutrum, vitae aliquet lorem porta. Duis sit amet neque lectus. Morbi quis nibh est. Sed sed sem non elit venenatis posuere vitae vitae eros. Duis sed elit nec urna ultricies feugiat ac luctus velit. Vestibulum pulvinar malesuada lectus, vitae mattis lacus. Integer ultrices sem quis tortor cursus bibendum. Suspendisse at pretium justo.</p>
@@ -44,7 +63,7 @@
 </div>
 
 <div class="row py-3">
-  <div class="col-sm-12 text-center">
+  <div class="col-lg-12 text-center">
     <p><em>Select a fund to explore the present cost of past decisions:</em></p>
 
     <div id="fund-toggle">
@@ -62,23 +81,23 @@
 </div>
 
 <div class="row pt-3 h-100 text-center">
-  <div class="col-sm-6 offset-sm-1">
+  <div class="col-lg-6 offset-lg-1">
     <div id="fund-container"></div>
   </div>
-  <div class="col-sm-4 my-auto">
+  <div class="col-lg-4 my-auto">
     <small>FUNDING LEVEL</small><br />
     <h1><span id="funding-level" class="badge badge-danger"></span></h1>
   </div>
 </div>
 
 <div class="row pt-5">
-  <div class="col-sm-10 offset-sm-1">
+  <div class="col-lg-10 offset-lg-1">
     <div id="amortization-cost"></div>
   </div>
 </div>
 
 <div class="row p-5">
-  <div class="col-sm-4 offset-sm-4 text-center">
+  <div class="col-lg-4 offset-lg-4 text-center">
       <p>
         {% if not request.user.is_anonymous %}
           Hello, {{ request.user.email }}!<br />

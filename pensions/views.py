@@ -21,35 +21,31 @@ class Index(TemplateView):
         return self._data_years
 
     def _aggregate_funding(self, data_year):
-        percent_funded = Sum('annual_reports__assets') / Sum('annual_reports__total_liability')
         funding_levels = PensionFund.objects.values('fund_type')\
                                             .filter(annual_reports__data_year=data_year)\
-                                            .annotate(percent_funded=percent_funded,
-                                                      percent_unfunded=Value(1.0) - percent_funded)
+                                            .annotate(funded_liability=Sum('annual_reports__assets'),
+                                                      unfunded_liability=Sum('annual_reports__total_liability') - Sum('annual_reports__assets'))
 
-        funded_data = []
-        unfunded_data = []
+        chart_data = []
 
-        chart_data = {
-            'container': 'aggregate-funding-container',
-            'name': '<b>Funding Level by Pension System</b>',
-            'label_format': r'{point.y:.1f}%',
-            'x_axis_categories': [],
-            'axis_label': 'Percent',
-            'funded': {
-                'name': 'Funded',
-                'data': [],
-            },
-            'unfunded': {
-                'name': 'Unfunded',
-                'data': []
-            },
-        }
-
-        for level in sorted(funding_levels, key=lambda x: x['percent_funded']):
-            chart_data['x_axis_categories'].append(level['fund_type'].title())
-            chart_data['funded']['data'].append(float(level['percent_funded']) * 100)
-            chart_data['unfunded']['data'].append(float(level['percent_unfunded']) * 100)
+        for level in funding_levels:
+            container_name = '{}-container'.format(level['fund_type'].lower())
+            chart_title = '<b>{0} Pension System</b><br />{1}'.format(level['fund_type'].title(), data_year)
+            chart_data.append({
+                'container': container_name,
+                'name': chart_title,
+                'label_format': r'${point.y:,.0f}',
+                'series_data': {
+                    'Name': 'Data',
+                    'data': [{
+                        'name': 'Funded liability',
+                        'y': float(level['funded_liability']),
+                    }, {
+                        'name': 'Unfunded liability',
+                        'y': float(level['unfunded_liability']),
+                    }],
+                },
+            })
 
         return chart_data
 
