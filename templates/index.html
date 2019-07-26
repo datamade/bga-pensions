@@ -6,6 +6,21 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+<div class="row pt-3 pr-5 text-right">
+  <div class="col-sm-12">
+    <p>
+      {% if not request.user.is_anonymous %}
+        Hello, {{ request.user.email }}! <small><em>Not {{ request.user.email }}? <a href="{% url 'auth0_logout' %}">Log out</a>.</em></small>
+      {% else %}
+        {% if request.GET.verify_email == 'true' %}
+          <strong>Please verify your email address to use the Pensions Database.</strong>
+        {% endif %}
+        <a href="{% url 'social:begin' 'auth0' %}">Log In</a>
+      {% endif %}
+    </p>
+  </div>
+</div>
+
 <div class="sticky-top float-right pt-5 pr-5">
   <div id="year-toggle">
     <div class="dropdown">
@@ -21,9 +36,7 @@
   </div>
 </div>
 
-<div class="clearfix"></div>
-
-<div class="row pt-3">
+<div class="row pt-5">
   <div class="col-lg-8 offset-lg-2">
     <h3>Illinois Public Pensions Database</h3>
 
@@ -98,18 +111,6 @@
 
 <div class="row p-5">
   <div class="col-lg-4 offset-lg-4 text-center">
-      <p>
-        {% if not request.user.is_anonymous %}
-          Hello, {{ request.user.email }}!<br />
-          <small><em>Not {{ request.user.email }}? <a href="{% url 'auth0_logout' %}">Log out</a>.</em></small>
-        {% else %}
-          {% if request.GET.verify_email == 'true' %}
-            <strong>Please verify your email address to use the Pensions Database.</strong>
-          {% endif %}
-          <a class="btn btn-primary btn-lg btn-success btn-block" href="{% url 'social:begin' 'auth0' %}">Log In</a>
-        {% endif %}
-      </p>
-
       <p>
         <a href="https://auth0.com/?utm_source=oss&amp;utm_medium=gp&amp;utm_campaign=oss" target="_blank" alt="Single Sign On &amp; Token Based Authentication - Auth0"><img src="{% static 'img/a0-badge-dark.png' %}" width="150" height="50" /></a>
       </p>
