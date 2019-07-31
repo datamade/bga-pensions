@@ -30,7 +30,7 @@ class Index(TemplateView):
 
         for level in funding_levels:
             container_name = '{}-container'.format(level['fund_type'].lower())
-            chart_title = '<b>{0} Pension System</b><br />{1}'.format(level['fund_type'].title(), data_year)
+            chart_title = '<b>{0} Pension System</b><br /><span class="small">{1}</span>'.format(level['fund_type'].title(), data_year)
             chart_data.append({
                 'container': container_name,
                 'name': chart_title,
