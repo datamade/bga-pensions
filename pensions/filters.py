@@ -30,5 +30,8 @@ class BenefitFilter(django_filters.FilterSet):
 
 '''
 TO-DO: Wire up AJAX endpoint that returns the filter queryset. Handle options
-for pagination and sorted. See: https://datatables.net/manual/server-side
+for pagination and sorted.
+
+See: https://datatables.net/manual/server-side
+See also: https://pypi.org/project/django-datatables-view/
 '''
