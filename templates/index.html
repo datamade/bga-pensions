@@ -180,6 +180,18 @@
   <div class="col-lg-10 offset-lg-1">No data :-(</div>
 </div>
 
+<!-- See https://simpleisbetterthancomplex.com/tutorial/2016/11/28/how-to-filter-querysets-dynamically.html for nicer view examples -->
+<div class="row pt-5">
+  <div class="col-lg-10 offset-lg-1">
+    <form action="" method="get">
+        {{ person_filter.form.as_p }}
+        <input type="submit" />
+    </form>
+    {% for obj in person_filter.qs %}
+        {{ obj }}<br />
+    {% endfor %}
+  </div>
+
 <div class="row p-5">
   <div class="col-lg-4 offset-lg-4 text-center">
       <p>

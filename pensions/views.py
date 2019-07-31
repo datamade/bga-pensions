@@ -144,11 +144,17 @@ class Index(TemplateView):
         return data_by_year
 
     def get_context_data(self, *args, **kwargs):
+        from pensions.filters import BenefitFilter
+        from pensions.models import Benefit
+
         context = super().get_context_data(*args, **kwargs)
 
         context['data_years'] = list(self.data_years)
         context['pension_funds'] = self.pension_funds
         context['data_by_year'] = self._data_by_year()
+
+        context['person_filter'] = BenefitFilter(request=self.request.GET,
+                                                 queryset=Benefit.objects.all())
 
         return context
 
