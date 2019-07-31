@@ -26,3 +26,9 @@ class BenefitFilter(django_filters.FilterSet):
             year = self.request.get('year', year)
 
         return super().qs.filter(fund=fund, data_year=year)
+
+
+'''
+TO-DO: Wire up AJAX endpoint that returns the filter queryset. Handle options
+for pagination and sorted. See: https://datatables.net/manual/server-side
+'''
