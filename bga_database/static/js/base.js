@@ -95,6 +95,19 @@ class ChartHelper {
                 pointFormat: '{series.name}: <b>' + data.label_format + '</b>'
             },
             series: [data.funded, data.unfunded],
+        }, function(chart) { // on complete
+            var rightTop = [chart.plotWidth, chart.plotTop - 100];
+
+            // Generate offset from rendered element
+            var element = chart.renderer.text(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore', 0, 0
+            ).add();
+            var boundingBox = element.getBBox();
+            element.destroy();
+
+            chart.renderer.text(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore', rightTop[0] - boundingBox.width, rightTop[1]
+            ).add();
         });
     }
     makePieChart (data) {

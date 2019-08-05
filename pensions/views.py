@@ -97,6 +97,7 @@ class Index(TemplateView):
                             'legendIndex': 0,
                         },
                         'stacked': 'true',
+                        'total_cost': annual_report.amortization_cost + float(annual_report.employer_normal_cost),
                     },
                     'funding_level': int(annual_report.funded_ratio * 100),
                 }
