@@ -40,11 +40,11 @@ class PensionsController {
 
         var data = this.get(this.selectedYear)['data_by_fund'][fund];
 
+        $('#fundDropdownMenuButton').text(fund);
+
         if ( Object.entries(data).length > 0 ) {
             $('#fund-detail').show();
             $('#fund-detail-no-data').hide();
-
-            $('#fundDropdownMenuButton').text(fund);
 
             this.chartHelper.makePieChart(data.aggregate_funding);
             this.chartHelper.makeBarChart(data.amortization_cost);
