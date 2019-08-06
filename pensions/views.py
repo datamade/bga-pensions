@@ -1,5 +1,6 @@
 from urllib.parse import urlencode
 
+from django.contrib.humanize.templatetags.humanize import intword
 from django.contrib.auth import logout as log_out
 from django.conf import settings
 from django.db.models import Max, Sum, Value
@@ -15,10 +16,10 @@ class Index(TemplateView):
 
     @property
     def data_years(self):
-        if not getattr(self, '_data_years', None):
-            self._data_years = AnnualReport.objects.distinct('data_year')\
-                                                   .values_list('data_year', flat=True)
-        return self._data_years
+        '''
+        TODO: Tie this to individual data
+        '''
+        return list(range(2012, 2019))
 
     def _aggregate_funding(self, data_year):
         funding_levels = PensionFund.objects.values('fund_type')\
@@ -34,15 +35,18 @@ class Index(TemplateView):
             chart_data.append({
                 'container': container_name,
                 'name': chart_title,
-                'label_format': r'${point.y:,.0f}',
+                'label_format': r'${point.label}',
+                'total_liability': intword(int(level['funded_liability']) + int(level['unfunded_liability'])),
                 'series_data': {
                     'Name': 'Data',
                     'data': [{
                         'name': 'Funded liability',
                         'y': float(level['funded_liability']),
+                        'label': intword(int(level['funded_liability'])),
                     }, {
                         'name': 'Unfunded liability',
                         'y': float(level['unfunded_liability']),
+                        'label': intword(int(level['unfunded_liability'])),
                     }],
                 },
             })
@@ -65,15 +69,17 @@ class Index(TemplateView):
                     'aggregate_funding': {
                         'container': 'fund-container',
                         'name': '<b>Funding Distribution</b><br /><span class="small">{0}<span><br /><span class="small">{1}</span>'.format(fund.name.upper(), data_year),
-                        'label_format': r'${point.y:,.0f}',
+                        'label_format': r'${point.label}',
                         'series_data': {
                             'name': 'Data',
                             'data': [{
                                 'name': 'Funded liability',
                                 'y': float(annual_report.assets),
+                                'label': intword(int(annual_report.assets))
                             }, {
                                 'name': 'Unfunded liability',
                                 'y': annual_report.unfunded_liability,
+                                'label': intword(int(annual_report.unfunded_liability))
                             }],
                         },
                     },
@@ -81,24 +87,25 @@ class Index(TemplateView):
                         'container': 'amortization-cost',
                         'name': '<b>Employer Contribution Distribution</b><br /><span class="small">{0}<span><br /><span class="small">{1}</span>'.format(fund.name.upper(), data_year),
                         'name_align': 'left',
-                        'label_format': r'${point.y:,.0f}',
+                        'pretty_amortization_cost': intword(int(annual_report.amortization_cost)),
+                        'pretty_employer_normal_cost': intword(int(annual_report.employer_normal_cost)),
                         'x_axis_categories': [''],
                         'axis_label': 'Dollars',
                         'funded': {
-                            'name': 'Amortization Cost',
+                            'name': '<strong>Amortization Cost:</strong> Present cost of paying down past debt',
                             'data': [annual_report.amortization_cost],
                             'color': '#dc3545',
                             'legendIndex': 1,
                         },
                         'unfunded': {
-                            'name': 'Employer Normal Cost',
+                            'name': '<strong>Employer Normal Cost:</strong> Projected cost to cover future benefits for current employees',
                             'data': [float(annual_report.employer_normal_cost)],
                             'color': '#01406c',
                             'legendIndex': 0,
                         },
                         'stacked': 'true',
-                        'total_cost': annual_report.amortization_cost + float(annual_report.employer_normal_cost),
                     },
+                    'employer_contribution': intword(annual_report.amortization_cost + float(annual_report.employer_normal_cost)),
                     'funding_level': int(annual_report.funded_ratio * 100),
                 }
 
