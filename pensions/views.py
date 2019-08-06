@@ -105,6 +105,7 @@ class Index(TemplateView):
                         },
                         'stacked': 'true',
                     },
+                    'total_liability': intword(int(annual_report.assets) + int(annual_report.unfunded_liability)),
                     'employer_contribution': intword(annual_report.amortization_cost + float(annual_report.employer_normal_cost)),
                     'funding_level': int(annual_report.funded_ratio * 100),
                 }

@@ -51,8 +51,9 @@ class PensionsController {
 
             $('#funding-level').text(data.funding_level + '%');
 
-            $('#employer-name').text(this.selectedFund);
-            $('#employer-data-year').text(this.selectedYear);
+            $('.employer-name').text(this.selectedFund);
+            $('.employer-data-year').text(this.selectedYear);
+            $('#employer-liability-amount').text(data.total_liability);
             $('#employer-contribution-amount').text(data.employer_contribution);
         } else {
             $('#fund-detail').hide();
@@ -87,7 +88,7 @@ class ChartHelper {
                         },
                     },
                     enableMouseTracking: false,
-                    pointWidth: 75,
+                    pointWidth: 100,
                 },
                 series: {
                     stacking: data.stacked ? 'normal' : undefined,
@@ -98,6 +99,7 @@ class ChartHelper {
                 plotBorderWidth: null,
                 plotShadow: false,
                 type: 'bar',
+                margin: [0, 0, 0, 0],
             },
             title: {
                 text: '', // data.name,
@@ -161,6 +163,9 @@ class ChartHelper {
                         enabled: true,
                         format: '<b>{point.name}</b>:<br />' + data.label_format,
                         distance: 10,
+                        style: {
+                            'fontWeight': 'normal',
+                        },
                     },
                     enableMouseTracking: false,
                     size: '75%',

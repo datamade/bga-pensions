@@ -137,6 +137,20 @@
 </div>
 
 <div id="fund-detail">
+  <div class="row pt-5">
+    <div class="col-lg-6 offset-lg-1">
+      <div class="row">
+        <div class="col-lg-6">
+          <h4 class="chart-title">Funding Distribution</h4>
+          <h4 class="chart-subtitle"><span class="employer-name"></span> – <span class="employer-data-year"></span></h4>
+        </div>
+        <div class="col-lg-4 text-center my-auto">
+          <small>TOTAL LIABILITY</small><br />
+          <h2>$<span id="employer-liability-amount"></span></h2>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="row pt-3 h-100 text-center">
     <div class="col-lg-6 offset-lg-1">
       <div id="fund-container"></div>
@@ -149,13 +163,12 @@
 
   <div class="row py-5">
     <div class="col-lg-6 offset-lg-1">
-      <h2 class="chart-title">Distribution of Employer Contribution</h2>
-      <h3 class="chart-subtitle"><span id="employer-name"></span> – <span id="employer-data-year"></span></h3>
+      <h4 class="chart-title">Distribution of Employer Contribution</h4>
+      <h4 class="chart-subtitle"><span class="employer-name"></span> – <span class="employer-data-year"></span></h4>
     </div>
-    <div class="clearfix"></div>
     <div class="col-lg-4 text-center my-auto">
       <small>TOTAL EMPLOYER CONTRIBUTION</small><br />
-      <h1>$<span id="employer-contribution-amount"></span></h1>
+      <h2>$<span id="employer-contribution-amount"></span></h2>
     </div>
   </div>
   <div class="row">
@@ -203,7 +216,6 @@
     $('.fund-dropdown-item').click(function () {
       var selectedFund = $(this).text();
 
-      controller.selectYear(controller.selectedYear);
       controller.selectFund(selectedFund);
     });
   </script>
