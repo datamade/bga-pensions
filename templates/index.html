@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load compress %}
+{% load cache %}
 
 {% block title %}Home{% endblock %}
 
@@ -46,6 +47,7 @@
   </div>
 </div>
 
+{% cache 10000 system_charts %}
 <div class="row pt-5 pb-5" id="funding-by-system">
   <div class="col-lg-10 offset-lg-1">
     <h3 class="pl-2 pb-4"><strong>Funding Distribution by Pension System</strong></h3>
@@ -103,6 +105,7 @@
     <div id="downstate-container"></div>
   </div>
 </div>
+{% endcache %}
 
 <div class="row pt-5 pb-5 hidden" id="funding-by-system-no-data">
   <div class="col-lg-10 offset-lg-1">No data :-(</div>
