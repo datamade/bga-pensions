@@ -22,6 +22,7 @@ from pensions import views as pension_views
 
 urlpatterns = [
     path('', pension_views.Index.as_view()),
+    path('benefits/', pension_views.BenefitListJson.as_view(), name='benefit_list_json'),
     path('admin/', admin.site.urls),
     path('logout/', pension_views.logout, name='auth0_logout'),
     path('', include('django.contrib.auth.urls')),

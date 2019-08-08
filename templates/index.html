@@ -180,17 +180,26 @@
   <div class="col-lg-10 offset-lg-1">No data :-(</div>
 </div>
 
-<!-- See https://simpleisbetterthancomplex.com/tutorial/2016/11/28/how-to-filter-querysets-dynamically.html for nicer view examples -->
 <div class="row pt-5">
   <div class="col-lg-10 offset-lg-1">
-    <form action="" method="get">
-        {{ person_filter.form.as_p }}
-        <input type="submit" />
-    </form>
-    {% for obj in person_filter.qs %}
-        {{ obj }}<br />
-    {% endfor %}
+    <table class="table table-striped table-bordered" id="benefit-table">
+      <thead>
+        <tr>
+          <th scope="col">Fund</th>
+          <th scope="col">First name</th>
+          <th scope="col">Last name</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Years of Service</th>
+          <th scope="col">Final Salary</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
   </div>
+</div>
 
 <div class="row p-5">
   <div class="col-lg-4 offset-lg-4 text-center">
@@ -203,13 +212,15 @@
 
 {% block extra_js %}
 <script src="{% static 'lib/highcharts.js' %}"></script>
+<script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
 {% compress js %}
   <script type="module" src="{% static 'js/base.js' %}"></script>
   <script type="module">
     import { PensionsController, ChartHelper } from "js/base"
 
     var yearData = {{ data_by_year|safe }};
-    var selectedYear = 2017;
+    var selectedYear = 2018;
     var selectedFund = 'Downstate/Suburban Teachers (TRS)';
 
     var chartHelper = new ChartHelper();
@@ -229,6 +240,15 @@
       var selectedFund = $(this).text();
 
       controller.selectFund(selectedFund);
+    });
+
+    $('#benefit-table').DataTable({
+      "dom": "Bfrtip",
+      "order": [[ 3, "desc" ]],
+      "columnDefs": [{ "orderable": false, "targets": [0, 7] }],
+      "processing": true,
+      "serverSide": true,
+      "ajax": "{% url 'benefit_list_json' %}" + '?data_year=' + controller.selectedYear + '&fund=' + controller.selectedFund
     });
   </script>
 {% endcompress %}

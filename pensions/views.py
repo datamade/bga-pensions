@@ -5,12 +5,14 @@ from django.contrib.humanize.templatetags.humanize import intword
 from django.contrib.auth import logout as log_out
 from django.conf import settings
 from django.db import connection
-from django.db.models import Max, Sum, Value
+from django.db.models import Max, Sum, Value, Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from pensions.models import PensionFund, AnnualReport
+from django_datatables_view.base_datatable_view import BaseDatatableView
+
+from pensions.models import PensionFund, AnnualReport, Benefit
 
 
 class Index(TemplateView):
@@ -153,10 +155,57 @@ class Index(TemplateView):
         context['pension_funds'] = self.pension_funds
         context['data_by_year'] = self._data_by_year()
 
-        context['person_filter'] = BenefitFilter(request=self.request.GET,
-                                                 queryset=Benefit.objects.all())
-
         return context
+
+
+class BenefitListJson(BaseDatatableView):
+    model = Benefit
+
+    # define the columns that will be returned
+    columns = [
+        'fund',
+        'first_name',
+        'last_name',
+        'amount',
+        'years_of_service',
+        'final_salary',
+        'start_date',
+        'status'
+    ]
+
+    # max number of records returned at a time; protects site from large
+    # requests
+    max_display_length = 500
+
+    def filter_queryset(self, qs):
+        qs = qs.filter(fund__name=self.request.GET['fund'],
+                       data_year=int(self.request.GET['data_year']))
+
+        search = self.request.GET.get('search[value]', None)
+
+        if search:
+            first_name = Q(first_name__istartswith=search)
+            last_name = Q(last_name__istartswith=search)
+            qs = qs.filter(first_name | last_name)
+
+        return qs
+
+    def prepare_results(self, qs):
+        json_data = []
+
+        for item in qs.select_related('fund'):
+            json_data.append([
+                item.fund.name,
+                item.first_name,
+                item.last_name,
+                item.amount,
+                item.years_of_service,
+                item.final_salary,
+                item.start_date,
+                item.status,
+            ])
+
+        return json_data
 
 
 def logout(request):
