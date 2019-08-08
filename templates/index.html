@@ -182,6 +182,29 @@
 
 <div class="row pt-5">
   <div class="col-lg-10 offset-lg-1">
+    <h2>Search <span class="employer-name"></span> Individual Pension Data</h2>
+  </div>
+</div>
+
+<div class="row pt-5">
+  <div class="col-lg-4 offset-lg-1 text-center my-auto">
+    <p>
+      <small>MEDIAN ANNUAL BENEFIT</small><br />
+      <h2 class="pb-3">$<span id="median-benefit-amount">XXX</span></h2>
+    </p>
+
+    <p>
+      <small>NUMBER OF BENEFITS</small><br />
+      <h2><span id="total-benefits">XXX</span></h2>
+    </p>
+  </div>
+  <div class="col-lg-6">
+    <div id="benefit-distribution-chart"></div>
+  </div>
+</div>
+
+<div class="row pt-5">
+  <div class="col-lg-10 offset-lg-1">
     <table class="table table-striped table-bordered" id="benefit-table">
       <thead>
         <tr>
@@ -224,31 +247,41 @@
     var selectedFund = 'Downstate/Suburban Teachers (TRS)';
 
     var chartHelper = new ChartHelper();
-    var controller = new PensionsController(yearData, selectedYear, selectedFund, chartHelper);
+    var controller = new PensionsController(yearData, selectedYear, selectedFund, chartHelper, benefitTable);
+
+    function makeAjaxUrl (currentController) {
+      return "{% url 'benefit_list_json' %}" +
+        '?data_year=' + controller.selectedYear +
+        '&fund=' + controller.selectedFund;
+    }
 
     controller.selectYear(selectedYear);
     controller.selectFund(selectedFund);
+
+    var benefitTable = $('#benefit-table').DataTable({
+      "dom": "Bfrtip",
+      "order": [[ 3, "desc" ]],
+      "columnDefs": [{ "orderable": false, "targets": [0, 7] }],
+      "processing": true,
+      "serverSide": true,
+      "ajax": makeAjaxUrl(controller)
+    });
 
     $('.year-dropdown-item').click(function () {
       var selectedYear = $(this).text();
 
       controller.selectYear(selectedYear);
       controller.selectFund(controller.selectedFund);
+
+      benefitTable.ajax.url(makeAjaxUrl(controller)).load();
     });
 
     $('.fund-dropdown-item').click(function () {
       var selectedFund = $(this).text();
 
       controller.selectFund(selectedFund);
-    });
 
-    $('#benefit-table').DataTable({
-      "dom": "Bfrtip",
-      "order": [[ 3, "desc" ]],
-      "columnDefs": [{ "orderable": false, "targets": [0, 7] }],
-      "processing": true,
-      "serverSide": true,
-      "ajax": "{% url 'benefit_list_json' %}" + '?data_year=' + controller.selectedYear + '&fund=' + controller.selectedFund
+      benefitTable.ajax.url(makeAjaxUrl(controller)).load();
     });
   </script>
 {% endcompress %}

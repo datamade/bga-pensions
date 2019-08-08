@@ -18,16 +18,16 @@ class Index(TemplateView):
 
     @property
     def data_years(self):
-        '''
-        TODO: Tie this to individual data
-        '''
         return list(range(2012, 2019))
+#        if not hasattr(self, '_data_years'):
+#            self._data_years = Benefit.objects.distinct('data_year')\
+#                                              .values_list('data_year', flat=True)
+#        return self._data_years
 
     @property
     def pension_funds(self):
         if not hasattr(self, '_pension_funds'):
             self._pension_funds = PensionFund.objects.all()
-
         return self._pension_funds
 
     def _aggregate_funding(self):
