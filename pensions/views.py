@@ -1,3 +1,4 @@
+import itertools
 from urllib.parse import urlencode
 
 from django.contrib.humanize.templatetags.humanize import intword
@@ -21,54 +22,68 @@ class Index(TemplateView):
         '''
         return list(range(2012, 2019))
 
-    def _aggregate_funding(self, data_year):
-        funding_levels = PensionFund.objects.values('fund_type')\
-                                            .filter(annual_reports__data_year=data_year)\
-                                            .annotate(funded_liability=Sum('annual_reports__assets'),
-                                                      unfunded_liability=Sum('annual_reports__total_liability') - Sum('annual_reports__assets'))
+    @property
+    def pension_funds(self):
+        if not hasattr(self, '_pension_funds'):
+            self._pension_funds = PensionFund.objects.all()
 
-        chart_data = []
+        return self._pension_funds
 
-        for level in funding_levels:
-            container_name = '{}-container'.format(level['fund_type'].lower())
-            chart_title = '<b>{0} Pension System</b><br /><span class="small">{1}</span>'.format(level['fund_type'].title(), data_year)
-            chart_data.append({
-                'container': container_name,
-                'name': chart_title,
-                'label_format': r'${point.label}',
-                'total_liability': intword(int(level['funded_liability']) + int(level['unfunded_liability'])),
-                'series_data': {
-                    'Name': 'Data',
-                    'data': [{
-                        'name': 'Funded liability',
-                        'y': float(level['funded_liability']),
-                        'label': intword(int(level['funded_liability'])),
-                    }, {
-                        'name': 'Unfunded liability',
-                        'y': float(level['unfunded_liability']),
-                        'label': intword(int(level['unfunded_liability'])),
-                    }],
-                },
-            })
+    def _aggregate_funding(self):
+        '''
+        {2017: [list, of, level, data]}
+        '''
+        data_by_level = {year: [] for year in self.data_years}
 
-        return chart_data
+        annual_reports = AnnualReport.objects.all()\
+                                             .select_related('fund')\
+                                             .order_by('fund__fund_type')
 
-    def _fund_metadata(self, data_year):
-        data_by_fund = {}
+        for fund_type, fund_group in itertools.groupby(annual_reports, lambda x: x.fund.fund_type):
+            fund_group = sorted(fund_group, key=lambda x: x.data_year)
 
-        for fund in PensionFund.objects.all():
-            try:
-                annual_report = fund.annual_reports.get(data_year=data_year)
-            except AnnualReport.DoesNotExist:
-                annual_report = None
+            for data_year, year_group in itertools.groupby(fund_group, lambda x: x.data_year):
+                year_group = list(year_group)
 
-            fund_data = {}
+                container_name = '{}-container'.format(fund_type.lower())
+                chart_title = '<b>{0} Pension System</b><br /><span class="small">{1}</span>'.format(fund_type, data_year)
 
-            if annual_report:
-                fund_data = {
+                funded_liability = sum(g.assets for g in year_group)
+                unfunded_liability = sum(g.unfunded_liability for g in year_group)
+
+                data_by_level[data_year].append({
+                    'container': container_name,
+                    'name': chart_title,
+                    'label_format': r'${point.label}',
+                    'total_liability': intword(int(funded_liability) + int(unfunded_liability)),
+                    'series_data': {
+                        'Name': 'Data',
+                        'data': [{
+                            'name': 'Funded liability',
+                            'y': float(funded_liability),
+                            'label': intword(int(funded_liability)),
+                        }, {
+                            'name': 'Unfunded liability',
+                            'y': float(unfunded_liability),
+                            'label': intword(int(unfunded_liability)),
+                        }],
+                    },
+                })
+
+        return data_by_level
+
+    def _fund_metadata(self):
+        '''
+        {2017: {'fund': {}, 'fund': {}}}
+        '''
+        data_by_fund = {year: {} for year in self.data_years}
+
+        for fund in self.pension_funds.prefetch_related('annual_reports'):
+            for annual_report in fund.annual_reports.all():
+                data_by_fund[annual_report.data_year][fund.name] = {
                     'aggregate_funding': {
                         'container': 'fund-container',
-                        'name': '<b>Funding Distribution</b><br /><span class="small">{0}<span><br /><span class="small">{1}</span>'.format(fund.name.upper(), data_year),
+                        'name': '<b>Funding Distribution</b><br /><span class="small">{0}<span><br /><span class="small">{1}</span>'.format(fund.name.upper(), annual_report.data_year),
                         'label_format': r'${point.label}',
                         'series_data': {
                             'name': 'Data',
@@ -85,7 +100,7 @@ class Index(TemplateView):
                     },
                     'amortization_cost': {
                         'container': 'amortization-cost',
-                        'name': '<b>Employer Contribution Distribution</b><br /><span class="small">{0}<span><br /><span class="small">{1}</span>'.format(fund.name.upper(), data_year),
+                        'name': '<b>Employer Contribution Distribution</b><br /><span class="small">{0}<span><br /><span class="small">{1}</span>'.format(fund.name.upper(), annual_report.data_year),
                         'name_align': 'left',
                         'pretty_amortization_cost': intword(int(annual_report.amortization_cost)),
                         'pretty_employer_normal_cost': intword(int(annual_report.employer_normal_cost)),
@@ -110,17 +125,18 @@ class Index(TemplateView):
                     'funding_level': int(annual_report.funded_ratio * 100),
                 }
 
-            data_by_fund[fund.name] = fund_data
-
         return data_by_fund
 
     def _data_by_year(self):
         data_by_year = {}
 
+        data_by_fund = self._fund_metadata()
+        aggregate_funding = self._aggregate_funding()
+
         for year in self.data_years:
             year_data = {
-                'aggregate_funding': self._aggregate_funding(year),
-                'data_by_fund': self._fund_metadata(year),
+                'aggregate_funding': aggregate_funding[year],
+                'data_by_fund': data_by_fund[year],
             }
 
             data_by_year[year] = year_data
@@ -129,8 +145,9 @@ class Index(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
+
         context['data_years'] = list(self.data_years)
-        context['pension_funds'] = list(PensionFund.objects.all())
+        context['pension_funds'] = self.pension_funds
         context['data_by_year'] = self._data_by_year()
 
         return context

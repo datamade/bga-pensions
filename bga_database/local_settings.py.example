@@ -27,6 +27,27 @@ DATABASES = {
     }
 }
 
+
+# Caching
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'pensions_cache',
+    }
+}
+
+# Uncomment for local development
+#
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+#     }
+# }
+
+
+# Auth0
+
 SOCIAL_AUTH_TRAILING_SLASH = True  # Expect trailing slash in URLs
 SOCIAL_AUTH_AUTH0_DOMAIN = 'your-domain'
 SOCIAL_AUTH_AUTH0_KEY = 'your-key'
