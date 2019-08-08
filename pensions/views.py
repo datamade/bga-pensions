@@ -3,6 +3,7 @@ from urllib.parse import urlencode
 from django.contrib.humanize.templatetags.humanize import intword
 from django.contrib.auth import logout as log_out
 from django.conf import settings
+from django.core.cache import cache
 from django.db import connection
 from django.db.models import Q
 from django.http import HttpResponseRedirect
@@ -36,53 +37,58 @@ class Index(TemplateView):
 
         bin_size = DISTRIBUTION_MAX / DISTRIBUTION_BIN_NUM
 
-        with connection.cursor() as cursor:
-            cursor.execute('''
-                SELECT
-                  data_year,
-                  fund.name AS fund_name,
-                  width_bucket(amount, 0, 250000, 10) AS bucket_index,
-                  MAX(amount) AS max_value,
-                  COUNT(*)
-                FROM pensions_benefit AS benefit
-                JOIN pensions_pensionfund AS fund
-                ON benefit.fund_id = fund.id
-                GROUP BY data_year, fund.name, bucket_index
-                ORDER BY data_year, fund.name, bucket_index
-            ''')
+        benefit_json = cache.get('binned_benefit_data', {})
 
-            binned_data = {}
+        if not benefit_json:
+            with connection.cursor() as cursor:
+                cursor.execute('''
+                    SELECT
+                      data_year,
+                      fund.name AS fund_name,
+                      width_bucket(amount, 0, 250000, 10) AS bucket_index,
+                      MAX(amount) AS max_value,
+                      COUNT(*)
+                    FROM pensions_benefit AS benefit
+                    JOIN pensions_pensionfund AS fund
+                    ON benefit.fund_id = fund.id
+                    GROUP BY data_year, fund.name, bucket_index
+                    ORDER BY data_year, fund.name, bucket_index
+                ''')
 
-            for row in cursor:
-                data_year, fund, bucket_index, max_value, value = row
-                binned_data[(data_year, fund, bucket_index)] = (value, max_value)
+                binned_data = {}
 
-        benefit_json = {year: {} for year in self.data_years}
+                for row in cursor:
+                    data_year, fund, bucket_index, max_value, value = row
+                    binned_data[(data_year, fund, bucket_index)] = (value, max_value)
 
-        for year in benefit_json.keys():
-            year_data = {}
+            benefit_json = {year: {} for year in self.data_years}
 
-            for fund in self.pension_funds:
-                fund_data = []
+            for year in benefit_json.keys():
+                year_data = {}
 
-                for i in range(DISTRIBUTION_BIN_NUM + 1):
-                    value, max_value = binned_data.get((year, fund.name, i + 1), (0, 0))
+                for fund in self.pension_funds:
+                    fund_data = []
 
-                    lower = int(i * bin_size)
-                    upper = int(lower + bin_size)
+                    for i in range(DISTRIBUTION_BIN_NUM + 1):
+                        value, max_value = binned_data.get((year, fund.name, i + 1), (0, 0))
 
-                    if i == DISTRIBUTION_BIN_NUM and max_value > upper:
-                        upper = max_value
+                        lower = int(i * bin_size)
+                        upper = int(lower + bin_size)
 
-                    fund_data.append({
-                        'y': int(value),  # number of salaries in given bin
-                        'lower_edge': intword(lower),
-                        'upper_edge': intword(upper),
-                    })
+                        if i == DISTRIBUTION_BIN_NUM and max_value > upper:
+                            upper = max_value
 
-                year_data[fund.name] = fund_data
+                        fund_data.append({
+                            'y': int(value),  # number of salaries in given bin
+                            'lower_edge': intword(lower),
+                            'upper_edge': intword(upper),
+                        })
 
-            benefit_json[year] = year_data
+                    year_data[fund.name] = fund_data
+
+                benefit_json[year] = year_data
+
+            cache.set('binned_benefit_data', benefit_json, 600)
 
         return benefit_json
 
