@@ -15,7 +15,11 @@ class PensionsController {
 
         $('#yearDropdownMenuButton').text(year);
 
-        if ( data.aggregate_funding.length > 0 ) {
+        var yearHasData = (data !== undefined &&
+            data.hasOwnProperty('aggregate_funding') &&
+            data.aggregate_funding.length > 0);
+
+        if ( yearHasData ) {
             $('#funding-by-system').show();
             $('#funding-by-system-no-data').hide();
 
@@ -42,7 +46,7 @@ class PensionsController {
 
         $('#fundDropdownMenuButton').text(fund);
 
-        if ( Object.entries(data).length > 0 ) {
+        if ( data !== undefined ) {
             $('#fund-detail').show();
             $('#fund-detail-no-data').hide();
 
