@@ -21,6 +21,31 @@ CACHE_TIMEOUT = 600
 class Index(TemplateView):
     template_name = 'index.html'
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        context['data_years'] = list(self.data_years)
+        context['pension_funds'] = self.pension_funds
+        context['data_by_year'] = self.data_by_year()
+
+        return context
+
+     def data_by_year(self):
+        data_by_year = {}
+
+        data_by_fund = self.fund_metadata
+        funding_aggregates = self.funding_aggregates
+
+        for year in self.data_years:
+            year_data = {
+                'aggregate_funding': funding_aggregates[year],
+                'data_by_fund': data_by_fund[year],
+            }
+
+            data_by_year[year] = year_data
+
+        return data_by_year
+
     @property
     def data_years(self):
         return list(range(2012, 2020))
@@ -47,7 +72,7 @@ class Index(TemplateView):
             data = {year: {} for year in self.data_years}
 
             for year in data.keys():
-                agg = aggregates.filter(data_year=year)
+                agg = [a for a in aggregates if a['data_year'] == year]
                 for a in agg:
                     data[year][a['fund__name']] = {
                         'median': a['median'],
@@ -107,7 +132,7 @@ class Index(TemplateView):
                             upper = max_value
 
                         fund_data.append({
-                            'y': int(value),  # number of salaries in given bin
+                            'y': int(value),  # number of benefits in given bin
                             'lower_edge': intword(lower),
                             'upper_edge': intword(upper),
                         })
@@ -121,38 +146,68 @@ class Index(TemplateView):
         return data
 
     @property
-    def aggregate_funding(self):
+    def funding_aggregates(self):
         '''
         {2017: [list, of, level, data]}
         '''
-        data = cache.get('aggregate_funding', {})
+        data = {year: [] for year in self.data_years}
 
-        if not data:
-            data = {year: [] for year in self.data_years}
+        with connection.cursor() as cursor:
+            cursor.execute('''
+                SELECT
+                  data_year,
+                  fund_type,
+                  SUM(assets) AS funded_liability,
+                  SUM(total_liability - assets) AS unfunded_liability
+                FROM pensions_pensionfund AS fund
+                JOIN pensions_annualreport AS report
+                ON fund.id = report.fund_id
+                GROUP BY data_year, fund_type
+            ''')
 
-            with connection.cursor() as cursor:
-                cursor.execute('''
-                    SELECT
-                      data_year,
-                      fund_type,
-                      SUM(assets) AS funded_liability,
-                      SUM(total_liability - assets) AS unfunded_liability
-                    FROM pensions_pensionfund AS fund
-                    JOIN pensions_annualreport AS report
-                    ON fund.id = report.fund_id
-                    GROUP BY data_year, fund_type
-                ''')
+            annual_reports = cursor.fetchall()
 
-                annual_reports = cursor.fetchall()
+        for data_year, fund_type, funded_liability, unfunded_liability in annual_reports:
+            container_name = '{}-container'.format(fund_type.lower())
+            funded_liability = float(funded_liability)
+            unfunded_liability = float(unfunded_liability)
 
-            for data_year, fund_type, funded_liability, unfunded_liability in annual_reports:
-                container_name = '{}-container'.format(fund_type.lower())
-                funded_liability = float(funded_liability)
-                unfunded_liability = float(unfunded_liability)
+            data[data_year].append(self._make_pie_chart(container_name, funded_liability, unfunded_liability))
 
-                data[data_year].append(self._make_pie_chart(container_name, funded_liability, unfunded_liability))
+        return data
 
-            cache.set('aggregate_funding', data, CACHE_TIMEOUT)
+    @property
+    def fund_metadata(self):
+        data = {year: {} for year in self.data_years}
+
+        binned_benefit_data = self.binned_benefit_data
+        median_benefits = self.benefit_aggregates
+
+        for fund in self.pension_funds.prefetch_related('annual_reports'):
+            for annual_report in fund.annual_reports.all():
+                funded_liability = float(annual_report.assets)
+                unfunded_liability = float(annual_report.unfunded_liability)
+                normal_cost = float(annual_report.employer_normal_cost)
+                amortization_cost = float(annual_report.amortization_cost)
+
+                data[annual_report.data_year][fund.name] = {
+                    'aggregate_funding': self._make_pie_chart('fund-container', funded_liability, unfunded_liability),
+                    'amortization_cost': self._make_bar_chart('amortization-cost', normal_cost, amortization_cost),
+                    'total_liability': intword(int(annual_report.total_liability)),
+                    'employer_contribution': intword(int(annual_report.employer_contribution)),
+                    'funding_level': int(annual_report.funded_ratio * 100),
+                }
+
+            for year in self.data_years:
+                fund_data = data[year].get(fund.name, {})
+
+                fund_data.update({
+                    'binned_benefit_data': binned_benefit_data[year][fund.name],
+                    'median_benefit': median_benefits[year].get(fund.name, {}).get('median', 0),
+                    'total_benefits': median_benefits[year].get(fund.name, {}).get('count', 0),
+                })
+
+                data[year][fund.name] = fund_data
 
         return data
 
@@ -196,65 +251,6 @@ class Index(TemplateView):
             },
             'stacked': 'true',
         }
-
-    def _fund_metadata(self):
-        data_by_fund = {year: {} for year in self.data_years}
-
-        binned_benefit_data = self.binned_benefit_data
-        median_benefits = self.benefit_aggregates
-
-        for fund in self.pension_funds.prefetch_related('annual_reports'):
-            for annual_report in fund.annual_reports.all():
-                funded_liability = float(annual_report.assets)
-                unfunded_liability = float(annual_report.unfunded_liability)
-                normal_cost = float(annual_report.employer_normal_cost)
-                amortization_cost = float(annual_report.amortization_cost)
-
-                data_by_fund[annual_report.data_year][fund.name] = {
-                    'aggregate_funding': self._make_pie_chart('fund-container', funded_liability, unfunded_liability),
-                    'amortization_cost': self._make_bar_chart('amortization-cost', normal_cost, amortization_cost),
-                    'total_liability': intword(int(annual_report.total_liability)),
-                    'employer_contribution': intword(int(annual_report.employer_contribution)),
-                    'funding_level': int(annual_report.funded_ratio * 100),
-                }
-
-            for year in self.data_years:
-                fund_data = data_by_fund[year].get(fund.name, {})
-
-                fund_data.update({
-                    'binned_benefit_data': binned_benefit_data[year][fund.name],
-                    'median_benefit': median_benefits[year].get(fund.name, {}).get('median', 0),
-                    'total_benefits': median_benefits[year].get(fund.name, {}).get('count', 0),
-                })
-
-                data_by_fund[year][fund.name] = fund_data
-
-        return data_by_fund
-
-    def _data_by_year(self):
-        data_by_year = {}
-
-        data_by_fund = self._fund_metadata()
-        aggregate_funding = self.aggregate_funding
-
-        for year in self.data_years:
-            year_data = {
-                'aggregate_funding': aggregate_funding[year],
-                'data_by_fund': data_by_fund[year],
-            }
-
-            data_by_year[year] = year_data
-
-        return data_by_year
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-
-        context['data_years'] = list(self.data_years)
-        context['pension_funds'] = self.pension_funds
-        context['data_by_year'] = self._data_by_year()
-
-        return context
 
 
 class BenefitListJson(BaseDatatableView):
