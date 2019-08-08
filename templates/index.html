@@ -46,22 +46,66 @@
   </div>
 </div>
 
-<div class="row pt-5 pb-5">
+<div class="row pt-5 pb-5" id="funding-by-system">
   <div class="col-lg-10 offset-lg-1">
-    <h3 class="pl-2 pb-4"><strong>Funding Distribution by Pension System</strong></h3>
+    <h3 class="pl-2 pb-4"><strong>Pension Liability by System</strong></h3>
   </div>
   <div class="col-lg-5 offset-lg-1">
+    <div class="row">
+      <div class="col-lg-6">
+        <h4 class="chart-title">State Pension Liability</h4>
+        <h4 class="chart-subtitle"><span class="data-year"></span></h4>
+      </div>
+      <div class="col-lg-6 text-center">
+        <small>TOTAL LIABILITY</small><br />
+        <h2>$<span id="total-state-liability"></span></h2>
+      </div>
+    </div>
     <div id="state-container"></div>
   </div>
   <div class="col-lg-5">
+    <div class="row">
+      <div class="col-lg-6">
+        <h4 class="chart-title">County Pension Liability</h4>
+        <h4 class="chart-subtitle"><span class="data-year"></span></h4>
+      </div>
+      <div class="col-lg-6 text-center">
+        <small>TOTAL LIABILITY</small><br />
+        <h2>$<span id="total-county-liability"></span></h2>
+      </div>
+    </div>
     <div id="county-container"></div>
   </div>
   <div class="col-lg-5 offset-lg-1">
+    <div class="row">
+      <div class="col-lg-6">
+        <h4 class="chart-title">Chicago Municipal Pension Liability</h4>
+        <h4 class="chart-subtitle"><span class="data-year"></span></h4>
+      </div>
+      <div class="col-lg-6 text-center">
+        <small>TOTAL LIABILITY</small><br />
+        <h2>$<span id="total-chicago-liability"></span></h2>
+      </div>
+    </div>
     <div id="chicago-container"></div>
   </div>
   <div class="col-lg-5">
+    <div class="row">
+      <div class="col-lg-6">
+        <h4 class="chart-title">Downstate Municipal Pension Liability</h4>
+        <h4 class="chart-subtitle"><span class="data-year"></span></h4>
+      </div>
+      <div class="col-lg-6 text-center">
+        <small>TOTAL LIABILITY</small><br />
+        <h2>$<span id="total-downstate-liability"></span></h2>
+      </div>
+    </div>
     <div id="downstate-container"></div>
   </div>
+</div>
+
+<div class="row pt-5 pb-5 hidden" id="funding-by-system-no-data">
+  <div class="col-lg-10 offset-lg-1">No data :-(</div>
 </div>
 
 <div class="row">
@@ -69,10 +113,6 @@
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a elit lectus. Integer ac sapien leo. Nulla urna ex, semper mollis dictum a, bibendum at augue. Cras odio diam, gravida efficitur elit non, suscipit dignissim tellus.</p>
 
     <p>Cras volutpat lectus quis laoreet gravida. Nullam venenatis neque vel pretium efficitur. Mauris accumsan lectus ac eros rutrum, vitae aliquet lorem porta. Duis sit amet neque lectus. Morbi quis nibh est. Sed sed sem non elit venenatis posuere vitae vitae eros. Duis sed elit nec urna ultricies feugiat ac luctus velit. Vestibulum pulvinar malesuada lectus, vitae mattis lacus. Integer ultrices sem quis tortor cursus bibendum. Suspendisse at pretium justo.</p>
-
-    <div class="bg-dark my-5" style="height: 400px;"></div>
-
-    <p>Etiam semper, ex eget egestas auctor, arcu neque lacinia justo, et dapibus elit tellus quis sem. Maecenas facilisis nisi vel velit pulvinar pulvinar. Vivamus id nisl lobortis, euismod augue et, rhoncus libero. Vestibulum porta faucibus aliquam. Donec tempor erat eget mi pellentesque auctor. Phasellus enim lorem, efficitur pulvinar mi sagittis, tempor pharetra magna. Nullam suscipit elementum quam, nec posuere erat feugiat sit amet.</p>
 
     <p>Etiam turpis justo, sodales nec mauris eu, luctus mattis nunc. Vivamus tristique vel purus vel rhoncus. Proin purus justo, aliquet eu tempus eu, eleifend pellentesque sapien. Sed vestibulum gravida vulputate.</p>
   </div>
@@ -96,20 +136,48 @@
   </div>
 </div>
 
-<div class="row pt-3 h-100 text-center">
-  <div class="col-lg-6 offset-lg-1">
-    <div id="fund-container"></div>
+<div id="fund-detail">
+  <div class="row pt-5">
+    <div class="col-lg-6 offset-lg-1">
+      <div class="row">
+        <div class="col-lg-6">
+          <h4 class="chart-title">Pension Liability</h4>
+          <h4 class="chart-subtitle"><span class="employer-name"></span> – <span class="employer-data-year"></span></h4>
+        </div>
+        <div class="col-lg-4 text-center my-auto">
+          <small>TOTAL LIABILITY</small><br />
+          <h2>$<span id="employer-liability-amount"></span></h2>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="col-lg-4 my-auto">
-    <small>FUNDING LEVEL</small><br />
-    <h1><span id="funding-level" class="badge badge-danger"></span></h1>
+  <div class="row pt-3 h-100 text-center">
+    <div class="col-lg-6 offset-lg-1">
+      <div id="fund-container"></div>
+    </div>
+    <div class="col-lg-4 my-auto">
+      <small>FUNDING LEVEL</small><br />
+      <h1><span id="funding-level" class="badge badge-danger"></span></h1>
+    </div>
+  </div>
+
+  <div class="row py-5">
+    <div class="col-lg-6 offset-lg-1">
+      <h4 class="chart-title">Distribution of Employer Contribution</h4>
+      <h4 class="chart-subtitle"><span class="employer-name"></span> – <span class="employer-data-year"></span></h4>
+    </div>
+    <div class="col-lg-4 text-center my-auto">
+      <small>TOTAL EMPLOYER CONTRIBUTION</small><br />
+      <h2>$<span id="employer-contribution-amount"></span></h2>
+    </div>
+  </div>
+  <div class="row">
+    <div id="amortization-cost" class="col-lg-10 offset-lg-1"></div>
   </div>
 </div>
 
-<div class="row pt-5">
-  <div class="col-lg-10 offset-lg-1">
-    <div id="amortization-cost"></div>
-  </div>
+<div class="row pt-5 pb-5 hidden" id="fund-detail-no-data">
+  <div class="col-lg-10 offset-lg-1">No data :-(</div>
 </div>
 
 <div class="row p-5">
@@ -129,7 +197,7 @@
     import { PensionsController, ChartHelper } from "js/base"
 
     var yearData = {{ data_by_year|safe }};
-    var selectedYear = {{ data_years.0 }};
+    var selectedYear = 2017;
     var selectedFund = 'Downstate/Suburban Teachers (TRS)';
 
     var chartHelper = new ChartHelper();
@@ -148,7 +216,6 @@
     $('.fund-dropdown-item').click(function () {
       var selectedFund = $(this).text();
 
-      controller.selectYear(controller.selectedYear);
       controller.selectFund(selectedFund);
     });
   </script>

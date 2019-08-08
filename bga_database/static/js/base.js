@@ -5,33 +5,66 @@ class PensionsController {
         this.selectedFund = selectedFund
         this.chartHelper = chartHelper
     }
+    get (year) {
+        return this.yearData[year];
+    }
     selectYear (year) {
-        this.selectedYear = year
+        this.selectedYear = year;
 
-        var data = this.yearData[year]
+        var data = this.get(year);
 
-        // Set local variable for this access within loop.
-        var self = this;
+        $('#yearDropdownMenuButton').text(year);
 
-        data.aggregate_funding.forEach(function (el) {
-            self.chartHelper.makePieChart(el);
-        })
+        var yearHasData = (data !== undefined &&
+            data.hasOwnProperty('aggregate_funding') &&
+            data.aggregate_funding.length > 0);
 
-        return this.yearData[year]
+        if ( yearHasData ) {
+            $('#funding-by-system').show();
+            $('#funding-by-system-no-data').hide();
+
+            // Set local variable for this access within loop.
+            var self = this;
+
+            data.aggregate_funding.forEach(function (el) {
+                self.chartHelper.makePieChart(el);
+                $('#' + el.container).prev().find('span[id^="total"]').text(el.total_liability);
+            })
+
+            $('span.data-year').text(this.selectedYear);
+        } else {
+            $('#funding-by-system').hide();
+            $('#funding-by-system-no-data').show();
+        };
+
+        return data;
     }
     selectFund (fund) {
-        this.selectedFund = fund
+        this.selectedFund = fund;
 
-        var data = this.selectYear(this.selectedYear)['data_by_fund'][fund]
+        var data = this.get(this.selectedYear)['data_by_fund'][fund];
 
         $('#fundDropdownMenuButton').text(fund);
 
-        this.chartHelper.makePieChart(data.aggregate_funding);
-        this.chartHelper.makeBarChart(data.amortization_cost);
+        if ( data !== undefined ) {
+            $('#fund-detail').show();
+            $('#fund-detail-no-data').hide();
 
-        $('#funding-level').text(data.funding_level + '%');
+            this.chartHelper.makePieChart(data.aggregate_funding);
+            this.chartHelper.makeBarChart(data.amortization_cost);
 
-        return data
+            $('#funding-level').text(data.funding_level + '%');
+
+            $('.employer-name').text(this.selectedFund);
+            $('.employer-data-year').text(this.selectedYear);
+            $('#employer-liability-amount').text(data.total_liability);
+            $('#employer-contribution-amount').text(data.employer_contribution);
+        } else {
+            $('#fund-detail').hide();
+            $('#fund-detail-no-data').show();
+        };
+
+        return data;
     }
 }
 
@@ -50,10 +83,16 @@ class ChartHelper {
                 bar: {
                     dataLabels: {
                         enabled: true,
-                        format: data.label_format,
+                        formatter: function () {
+                            if ( this.point.series.name.indexOf('Amortization Cost') > 0 ) {
+                                return '$' + data.pretty_amortization_cost
+                            } else {
+                                return '$' + data.pretty_employer_normal_cost
+                            };
+                        },
                     },
                     enableMouseTracking: false,
-                    pointWidth: 75,
+                    pointWidth: 100,
                 },
                 series: {
                     stacking: data.stacked ? 'normal' : undefined,
@@ -64,15 +103,16 @@ class ChartHelper {
                 plotBorderWidth: null,
                 plotShadow: false,
                 type: 'bar',
+                margin: [0, 0, 0, 0],
             },
             title: {
-                text: data.name,
+                text: '', // data.name,
                 align: data.name_align ? data.name_align : 'center',
             },
             xAxis: {
                 categories: data.x_axis_categories,
                 title: {
-                    text: null
+                    text: null,
                 },
                 labels: {
                     style: {
@@ -85,11 +125,20 @@ class ChartHelper {
                 max: data.stacked ? (data.funded.data[0] + data.unfunded.data[0]) : null,
                 endOnTick: false,
                 title: {
-                    text: data.axis_label,
+                    text: null,
                 },
+                labels: {
+                    enabled: false,
+                },
+                lineWidth: 0,
+                gridLineWidth: 0,
             },
             legend: {
                 verticalAlign: 'top',
+                align: 'center',
+                itemStyle: {
+                    'fontWeight': 'normal',
+                },
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>' + data.label_format + '</b>'
@@ -103,7 +152,7 @@ class ChartHelper {
                 type: 'pie'
             },
             title: {
-                text: data.name,
+                text: '', // data.name,
                 align: data.name_align ? data.name_align : 'left',
             },
             tooltip: {
@@ -117,6 +166,10 @@ class ChartHelper {
                     dataLabels: {
                         enabled: true,
                         format: '<b>{point.name}</b>:<br />' + data.label_format,
+                        distance: 10,
+                        style: {
+                            'fontWeight': 'normal',
+                        },
                     },
                     enableMouseTracking: false,
                     size: '75%',
