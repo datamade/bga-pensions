@@ -30,7 +30,7 @@ class Index(TemplateView):
 
         return context
 
-     def data_by_year(self):
+    def data_by_year(self):
         data_by_year = {}
 
         data_by_fund = self.fund_metadata
@@ -198,7 +198,7 @@ class Index(TemplateView):
                     'funding_level': int(annual_report.funded_ratio * 100),
                 }
 
-            for year in self.data_years:
+            for year in data.keys():
                 fund_data = data[year].get(fund.name, {})
 
                 fund_data.update({
