@@ -1,18 +1,16 @@
-import itertools
 from urllib.parse import urlencode
 
 from django.contrib.humanize.templatetags.humanize import intword
 from django.contrib.auth import logout as log_out
 from django.conf import settings
 from django.db import connection
-from django.db.models import Max, Sum, Value, Q
+from django.db.models import Q
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
 from django.views.generic import TemplateView
 
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
-from pensions.models import PensionFund, AnnualReport, Benefit
+from pensions.models import PensionFund, Benefit
 
 
 class Index(TemplateView):
@@ -146,9 +144,6 @@ class Index(TemplateView):
         return data_by_year
 
     def get_context_data(self, *args, **kwargs):
-        from pensions.filters import BenefitFilter
-        from pensions.models import Benefit
-
         context = super().get_context_data(*args, **kwargs)
 
         context['data_years'] = list(self.data_years)

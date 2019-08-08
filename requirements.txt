@@ -4,6 +4,7 @@ django-compressor-toolkit==0.6.0
 django-datatables-view==1.18.0
 django-debug-toolbar==2.0
 django-filter==2.2.0
+flake8==3.7.8
 gunicorn==19.9.0
 csvkit==1.0.4
 social-auth-app-django~=3.1

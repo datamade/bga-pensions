@@ -13,7 +13,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='pensionfund',
             name='fund_type',
-            field=models.CharField(choices=[('STATE', 'State'), ('COUNTY', 'County'), ('CHICAGO', 'Chicago Municipal'), ('DOWNSTATE', 'Downstate')], default='STATE', max_length=256),
+            field=models.CharField(choices=[
+                ('STATE', 'State'),
+                ('COUNTY', 'County'),
+                ('CHICAGO', 'Chicago Municipal'),
+                ('DOWNSTATE', 'Downstate')
+            ], default='STATE', max_length=256),
             preserve_default=False,
         ),
     ]

@@ -1,9 +1,7 @@
 import csv
 from itertools import islice
-import os
 
-from django.core.management.base import BaseCommand, CommandError
-from django.conf import settings
+from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from pensions.models import Benefit, PensionFund
@@ -28,7 +26,7 @@ class Command(BaseCommand):
 
         parser.add_argument('--delete',
                             default='True',
-                            help='Whether to delete existing data for the given year.' +
+                            help='Whether to delete existing data for the given year.'
                                  'Set to False if uploading partial data.')
 
     @transaction.atomic
