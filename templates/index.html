@@ -46,61 +46,69 @@
   </div>
 </div>
 
-<div class="row pt-5 pb-5" id="funding-by-system">
-  <div class="col-lg-10 offset-lg-1">
-    <h3 class="pl-2 pb-4"><strong>Pension Liability by System</strong></h3>
-  </div>
-  <div class="col-lg-5 offset-lg-1">
-    <div class="row">
-      <div class="col-lg-6">
-        <h4 class="chart-title">State Pension Liability</h4>
-        <h4 class="chart-subtitle"><span class="data-year"></span></h4>
-      </div>
-      <div class="col-lg-6 text-center">
-        <small>TOTAL LIABILITY</small><br />
-        <h2>$<span id="total-state-liability"></span></h2>
-      </div>
+<div id="funding-by-system">
+  <div class="row pt-5 pb-5">
+
+    <div class="col-lg-10 offset-lg-1">
+      <h3 class="pl-2 pb-4"><strong>Pension Liability by System</strong></h3>
     </div>
-    <div id="state-container"></div>
-  </div>
-  <div class="col-lg-5">
-    <div class="row">
-      <div class="col-lg-6">
-        <h4 class="chart-title">County Pension Liability</h4>
-        <h4 class="chart-subtitle"><span class="data-year"></span></h4>
+
+    <div class="col-lg-5 offset-lg-1">
+      <div class="row">
+        <div class="col-lg-6">
+          <h4 class="chart-title">State Pension Liability</h4>
+          <h4 class="chart-subtitle"><span class="data-year"></span></h4>
+        </div>
+        <div class="col-lg-6 text-center">
+          <small>TOTAL LIABILITY</small><br />
+          <h2>$<span id="total-state-liability"></span></h2>
+        </div>
       </div>
-      <div class="col-lg-6 text-center">
-        <small>TOTAL LIABILITY</small><br />
-        <h2>$<span id="total-county-liability"></span></h2>
-      </div>
+      <div id="state-container"></div>
     </div>
-    <div id="county-container"></div>
-  </div>
-  <div class="col-lg-5 offset-lg-1">
-    <div class="row">
-      <div class="col-lg-6">
-        <h4 class="chart-title">Chicago Municipal Pension Liability</h4>
-        <h4 class="chart-subtitle"><span class="data-year"></span></h4>
+
+    <div class="col-lg-5">
+      <div class="row">
+        <div class="col-lg-6">
+          <h4 class="chart-title">County Pension Liability</h4>
+          <h4 class="chart-subtitle"><span class="data-year"></span></h4>
+        </div>
+        <div class="col-lg-6 text-center">
+          <small>TOTAL LIABILITY</small><br />
+          <h2>$<span id="total-county-liability"></span></h2>
+        </div>
       </div>
-      <div class="col-lg-6 text-center">
-        <small>TOTAL LIABILITY</small><br />
-        <h2>$<span id="total-chicago-liability"></span></h2>
-      </div>
+      <div id="county-container"></div>
     </div>
-    <div id="chicago-container"></div>
-  </div>
-  <div class="col-lg-5">
-    <div class="row">
-      <div class="col-lg-6">
-        <h4 class="chart-title">Downstate Municipal Pension Liability</h4>
-        <h4 class="chart-subtitle"><span class="data-year"></span></h4>
+
+    <div class="col-lg-5 offset-lg-1">
+      <div class="row">
+        <div class="col-lg-6">
+          <h4 class="chart-title">Chicago Municipal Pension Liability</h4>
+          <h4 class="chart-subtitle"><span class="data-year"></span></h4>
+        </div>
+        <div class="col-lg-6 text-center">
+          <small>TOTAL LIABILITY</small><br />
+          <h2>$<span id="total-chicago-liability"></span></h2>
+        </div>
       </div>
-      <div class="col-lg-6 text-center">
-        <small>TOTAL LIABILITY</small><br />
-        <h2>$<span id="total-downstate-liability"></span></h2>
-      </div>
+      <div id="chicago-container"></div>
     </div>
-    <div id="downstate-container"></div>
+
+    <div class="col-lg-5">
+      <div class="row">
+        <div class="col-lg-6">
+          <h4 class="chart-title">Downstate Municipal Pension Liability</h4>
+          <h4 class="chart-subtitle"><span class="data-year"></span></h4>
+        </div>
+        <div class="col-lg-6 text-center">
+          <small>TOTAL LIABILITY</small><br />
+          <h2>$<span id="total-downstate-liability"></span></h2>
+        </div>
+      </div>
+      <div id="downstate-container"></div>
+    </div>
+
   </div>
 </div>
 
@@ -137,6 +145,7 @@
 <div class="clearfix"></div>
 
 <div id="fund-detail">
+
   <div class="row pt-5">
     <div class="col-lg-6 offset-lg-1">
       <div class="row">
@@ -151,6 +160,7 @@
       </div>
     </div>
   </div>
+
   <div class="row pt-3 h-100 text-center">
     <div class="col-lg-6 offset-lg-1">
       <div id="fund-container"></div>
@@ -171,9 +181,11 @@
       <h2>$<span id="employer-contribution-amount"></span></h2>
     </div>
   </div>
+
   <div class="row">
     <div id="amortization-cost" class="col-lg-10 offset-lg-1"></div>
   </div>
+
 </div>
 
 <div class="row pt-5 pb-5 hidden" id="fund-detail-no-data">
@@ -256,6 +268,10 @@
 
     controller.selectYear(selectedYear);
     controller.selectFund(selectedFund);
+
+    // TODO: Maybe don't do this on mobile?
+    $('#funding-by-system-no-data').css('min-height', $('#funding-by-system').height());
+    $('#fund-detail-no-data').css('min-height', $('#fund-detail').height());
 
     var benefitTable = $('#benefit-table').DataTable({
       "dom": "Bfrtip",
