@@ -50,6 +50,8 @@ class PensionsController {
 
         if ( data.binned_benefit_data !== undefined ) {
             this.chartHelper.makeDistributionChart(data.binned_benefit_data);
+            $('#median-benefit-amount').text(data.median_benefit);
+            $('#total-benefits').text(data.total_benefits);
         }
 
         if ( data.aggregate_funding !== undefined ) {
@@ -111,7 +113,6 @@ class ChartHelper {
             },
             title: {
                 text: '', // data.name,
-                align: data.name_align ? data.name_align : 'center',
             },
             xAxis: {
                 categories: data.x_axis_categories,
