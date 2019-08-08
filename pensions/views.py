@@ -4,6 +4,7 @@ from urllib.parse import urlencode
 from django.contrib.humanize.templatetags.humanize import intword
 from django.contrib.auth import logout as log_out
 from django.conf import settings
+from django.db import connection
 from django.db.models import Max, Sum, Value
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -35,40 +36,41 @@ class Index(TemplateView):
         '''
         data_by_level = {year: [] for year in self.data_years}
 
-        annual_reports = AnnualReport.objects.all()\
-                                             .select_related('fund')\
-                                             .order_by('fund__fund_type')
+        with connection.cursor() as cursor:
+            cursor.execute('''
+                SELECT
+                  data_year,
+                  fund_type,
+                  SUM(assets) AS funded_liability,
+                  SUM(total_liability - assets) AS unfunded_liability
+                FROM pensions_pensionfund AS fund
+                JOIN pensions_annualreport AS report
+                ON fund.id = report.fund_id
+                GROUP BY data_year, fund_type
+            ''')
 
-        for fund_type, fund_group in itertools.groupby(annual_reports, lambda x: x.fund.fund_type):
-            fund_group = sorted(fund_group, key=lambda x: x.data_year)
+            annual_reports = cursor.fetchall()
 
-            for data_year, year_group in itertools.groupby(fund_group, lambda x: x.data_year):
-                year_group = list(year_group)
+        for data_year, fund_type, funded_liability, unfunded_liability in annual_reports:
+            container_name = '{}-container'.format(fund_type.lower())
 
-                container_name = '{}-container'.format(fund_type.lower())
-                chart_title = '<b>{0} Pension System</b><br /><span class="small">{1}</span>'.format(fund_type, data_year)
-
-                funded_liability = sum(g.assets for g in year_group)
-                unfunded_liability = sum(g.unfunded_liability for g in year_group)
-
-                data_by_level[data_year].append({
-                    'container': container_name,
-                    'name': chart_title,
-                    'label_format': r'${point.label}',
-                    'total_liability': intword(int(funded_liability) + int(unfunded_liability)),
-                    'series_data': {
-                        'Name': 'Data',
-                        'data': [{
-                            'name': 'Funded liability',
-                            'y': float(funded_liability),
-                            'label': intword(int(funded_liability)),
-                        }, {
-                            'name': 'Unfunded liability',
-                            'y': float(unfunded_liability),
-                            'label': intword(int(unfunded_liability)),
-                        }],
-                    },
-                })
+            data_by_level[data_year].append({
+                'container': container_name,
+                'label_format': r'${point.label}',
+                'total_liability': intword(int(funded_liability + unfunded_liability)),
+                'series_data': {
+                    'Name': 'Data',
+                    'data': [{
+                        'name': 'Funded',
+                        'y': float(funded_liability),
+                        'label': intword(int(funded_liability)),
+                    }, {
+                        'name': 'Unfunded',
+                        'y': float(unfunded_liability),
+                        'label': intword(int(unfunded_liability)),
+                    }],
+                },
+            })
 
         return data_by_level
 
@@ -83,16 +85,15 @@ class Index(TemplateView):
                 data_by_fund[annual_report.data_year][fund.name] = {
                     'aggregate_funding': {
                         'container': 'fund-container',
-                        'name': '<b>Funding Distribution</b><br /><span class="small">{0}<span><br /><span class="small">{1}</span>'.format(fund.name.upper(), annual_report.data_year),
                         'label_format': r'${point.label}',
                         'series_data': {
                             'name': 'Data',
                             'data': [{
-                                'name': 'Funded liability',
+                                'name': 'Funded',
                                 'y': float(annual_report.assets),
                                 'label': intword(int(annual_report.assets))
                             }, {
-                                'name': 'Unfunded liability',
+                                'name': 'Unfunded',
                                 'y': annual_report.unfunded_liability,
                                 'label': intword(int(annual_report.unfunded_liability))
                             }],
@@ -100,7 +101,6 @@ class Index(TemplateView):
                     },
                     'amortization_cost': {
                         'container': 'amortization-cost',
-                        'name': '<b>Employer Contribution Distribution</b><br /><span class="small">{0}<span><br /><span class="small">{1}</span>'.format(fund.name.upper(), annual_report.data_year),
                         'name_align': 'left',
                         'pretty_amortization_cost': intword(int(annual_report.amortization_cost)),
                         'pretty_employer_normal_cost': intword(int(annual_report.employer_normal_cost)),
