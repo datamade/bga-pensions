@@ -16,8 +16,15 @@ class PensionFund(models.Model):
     '''
     One of the pension systems tracked in the database.
     '''
+    FUND_TYPE_CHOICES = [
+        ('STATE', 'State'),
+        ('COUNTY', 'County'),
+        ('CHICAGO', 'Chicago Municipal'),
+        ('DOWNSTATE', 'Downstate'),
+    ]
 
     name = models.CharField(max_length=500)
+    fund_type = models.CharField(max_length=256, choices=FUND_TYPE_CHOICES)
 
     def __str__(self):
         return self.name
@@ -53,11 +60,18 @@ class AnnualReport(VintagedModel):
 
     @property
     def funded_ratio(self):
-        return assets / total_liability
+        return float(self.assets / self.total_liability)
 
     @property
     def unfunded_liability(self):
-        return total_liability - assets
+        return float(self.total_liability - self.assets)
+
+    @property
+    def amortization_cost(self):
+        if self.employer_contribution > self.employer_normal_cost:
+            return float(self.employer_contribution - self.employer_normal_cost)
+        else:
+            return 0
 
 
 class Benefit(VintagedModel):
