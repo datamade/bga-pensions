@@ -33,3 +33,14 @@ deploy:
   deployment_group: staging
   on:
     branch: master
+
+deploy:
+  - provider: codedeploy
+    access_key_id: AKIAI46US37BJ27ZPPSQ
+    secret_access_key:
+      secure: emtM7EPBxje2RDU5yAbsjSznSeQTSuKQHU5doB/fHgrjA78+sdBSe1uPq6UlaZIAgaMUHSx8ZBWaZFsJ/AdbZ2wsS5rnM+Nx/KO9mLtJWpcfC27DymlvSA1V21TWUTzUJFwwsD5tVUc/Sljqm6GKXmWWyZdFnvtWTr0qIuPsSTE=
+    revision_type: github
+    application: bga-pensions
+    deployment_group: production
+    on:
+      tags: true
