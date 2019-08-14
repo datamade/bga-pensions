@@ -147,3 +147,4 @@ static/*
 /configs/local_settings.production.py
 /configs/bga-pensions-production.conf.nginx
 /configs/bga-pensions-production.conf.supervisor
+/configs/production-config.conf

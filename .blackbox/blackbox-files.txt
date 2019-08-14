@@ -4,4 +4,5 @@ configs/bga-pensions-staging.conf.nginx
 configs/bga-pensions-staging.conf.supervisor
 configs/local_settings.production.py
 configs/local_settings.staging.py
+configs/production-config.conf
 configs/staging-config.conf
