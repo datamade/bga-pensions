@@ -25,16 +25,15 @@ before_script:
 script: python manage.py migrate
 
 deploy:
-  provider: codedeploy
-  access_key_id: AKIAJNYGDLOJKHOUWCAA
-  secret_access_key:
-    secure: I8K+HO4fDSFVfFFd4yglRhRaAEh/cYbWiDCoYZUvFJ8T1xrbDHHPUKlJry0QXVvJ5NQ1zO4TrcZzwZVrVHN90MTaUoyc+/RljQUxE9WEuVYzJ3+syhX/AxDiKbkAZUvFw7PZWUln8edwu4LOsBsQHDC/xpBMRi3jXwq8G8CuYFGN/yls4JusDJtw+LiK7D9nrY04kqUm75ApEDN2TiAk+ix3v98ZUW4dQX9CtoZ69f5rcrwlVk14Y30nW1iG3zZtFSec6uIz5c6eHJPcOXKTKax+FDKcZ/0r2FcRq45DhdQw/45nJOuHtTy/2YtxvEJvEBI/cUg9YIT1DVI6806yAOn9Y4ncBfknfvA2jWBl9vlGKJ3w3bgLBb51uK69Sa4r6jfokkJbEW57ksuo2P4meu8x58Q3ELPQlBJvp1xZvrZFVX2z93Rukz+ro0nzR8TanLkctpfHew1lzv3l/9s1SpL6+VKdptimpK21+Vqi6AlWXVZetx2oXOPoBQNCI8c63hcnfPeekvpKA22uUfuurI01Vr7xfJhNe9Vg6ZkbcwwDWk1t2ng4QA+YPn90/PWrcAdoC3NomVSaC4O4wIZVmVeunWRKpqBGk1AnQnGlzuVVNIIYGNpvE0fj0rAa5tLuQDt2Bs5zRa5BaWEttqPFRLVGhmQQ8T5KaNH2E4o7SHA=
-  application: bga-pensions
-  deployment_group: staging
-  on:
-    branch: master
+  - provider: codedeploy
+    access_key_id: AKIAJNYGDLOJKHOUWCAA
+    secret_access_key:
+      secure: I8K+HO4fDSFVfFFd4yglRhRaAEh/cYbWiDCoYZUvFJ8T1xrbDHHPUKlJry0QXVvJ5NQ1zO4TrcZzwZVrVHN90MTaUoyc+/RljQUxE9WEuVYzJ3+syhX/AxDiKbkAZUvFw7PZWUln8edwu4LOsBsQHDC/xpBMRi3jXwq8G8CuYFGN/yls4JusDJtw+LiK7D9nrY04kqUm75ApEDN2TiAk+ix3v98ZUW4dQX9CtoZ69f5rcrwlVk14Y30nW1iG3zZtFSec6uIz5c6eHJPcOXKTKax+FDKcZ/0r2FcRq45DhdQw/45nJOuHtTy/2YtxvEJvEBI/cUg9YIT1DVI6806yAOn9Y4ncBfknfvA2jWBl9vlGKJ3w3bgLBb51uK69Sa4r6jfokkJbEW57ksuo2P4meu8x58Q3ELPQlBJvp1xZvrZFVX2z93Rukz+ro0nzR8TanLkctpfHew1lzv3l/9s1SpL6+VKdptimpK21+Vqi6AlWXVZetx2oXOPoBQNCI8c63hcnfPeekvpKA22uUfuurI01Vr7xfJhNe9Vg6ZkbcwwDWk1t2ng4QA+YPn90/PWrcAdoC3NomVSaC4O4wIZVmVeunWRKpqBGk1AnQnGlzuVVNIIYGNpvE0fj0rAa5tLuQDt2Bs5zRa5BaWEttqPFRLVGhmQQ8T5KaNH2E4o7SHA=
+    application: bga-pensions
+    deployment_group: staging
+    on:
+      branch: master
 
-deploy:
   - provider: codedeploy
     access_key_id: AKIAI46US37BJ27ZPPSQ
     secret_access_key:
