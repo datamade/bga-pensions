@@ -145,3 +145,4 @@ data/finished/*
 # Dev files
 static/*
 /configs/local_settings.production.py
+/configs/bga-pensions-production.conf.nginx
