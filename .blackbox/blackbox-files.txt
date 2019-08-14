@@ -1,4 +1,5 @@
 configs/bga-pensions-production.conf.nginx
+configs/bga-pensions-production.conf.supervisor
 configs/bga-pensions-staging.conf.nginx
 configs/bga-pensions-staging.conf.supervisor
 configs/local_settings.production.py
