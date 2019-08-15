@@ -58,7 +58,7 @@ service nginx reload || service nginx start
 # by sending the TERM signal to old gunicorn processes.
 # This code block iterates over deployments for a particular deployment group,
 # checks each status (is it "RUNNING"?), and terminates the old, running deployment.
-old_deployments=`ls /opt/codedeploy-agent/deployment-root/$DEPLOYMENT_GROUP_ID | grep -Po "d-[A-Z0-9]{9}"`
+old_deployments=`(ls /opt/codedeploy-agent/deployment-root/$DEPLOYMENT_GROUP_ID | grep -Po "d-[A-Z0-9]{9}") || echo ''`
 for deployment in $old_deployments; do
     if [[ ! $deployment == $DEPLOYMENT_ID ]]; then
         echo "Signalling application processes from $deployment"
@@ -76,7 +76,7 @@ done;
 # names that are for our project and reduces them down to the top three in the
 # list (which should be the most recent)
 
-old_versions=`find /home/datamade -maxdepth 1 -type d -printf '%TY-%Tm-%Td %TT %p\n' | sort -r | grep -Po "/home/datamade/$APP_NAME-d-[A-Z0-9]{9}" | tail -n +4`
+old_versions=`(find /home/datamade -maxdepth 1 -type d -printf '%TY-%Tm-%Td %TT %p\n' | sort -r | grep -Po "/home/datamade/$APP_NAME-d-[A-Z0-9]{9}" | tail -n +4) || echo ''`
 for version in $old_versions; do
     echo "Removing $version"
     rm -rf $version
@@ -84,7 +84,7 @@ done;
 
 # Cleanup virtualenvs except the most recent 3. This uses the same approach as
 # above but for virtual environments rather than the code directories.
-old_venvs=`find /home/datamade/.virtualenvs -maxdepth 1 -type d -printf '%TY-%Tm-%Td %TT %p\n' | sort -r | grep -Po "/home/datamade/\.virtualenvs/$APP_NAME-d-[A-Z0-9]{9}" | tail -n +4`
+old_venvs=`(find /home/datamade/.virtualenvs -maxdepth 1 -type d -printf '%TY-%Tm-%Td %TT %p\n' | sort -r | grep -Po "/home/datamade/\.virtualenvs/$APP_NAME-d-[A-Z0-9]{9}" | tail -n +4) || echo ''`
 for venv in $old_venvs; do
     echo "Removing $venv"
     rm -rf $venv
@@ -95,7 +95,7 @@ done;
 # their own and look for the ones that are for our project. The processes that we
 # sent the TERM signal to above should be amongst these.
 
-old_procs=`supervisorctl status | grep -P '(EXITED|STOPPED|FATAL)' | grep -Po "$APP_NAME-d-[A-Z0-9]{9}"`
+old_procs=`(supervisorctl status | grep -P '(EXITED|STOPPED|FATAL)' | grep -Po "$APP_NAME-d-[A-Z0-9]{9}") || echo ''`
 for proc in $old_procs; do
     echo "Removing $proc"
     supervisorctl remove $proc
