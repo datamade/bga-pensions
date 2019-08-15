@@ -83,11 +83,11 @@ echo "DEPLOYMENT_ID='$DEPLOYMENT_ID'" > $PROJECT_DIR/bga_database/deployment.py
 which node || (
     apt-get update
     apt-get install -y nodejs npm
-    ln -s /usr/bin/nodejs /usr/bin/node
+    ln -s /usr/bin/nodejs /usr/bin/node 2&>1 || echo '/usr/bin/node already exists'
 )
 
 # Install npm requirements.
 cd $PROJECT_DIR && npm install
 
 # Password-protect the application.
-echo $DOMAIN_USERNAME:$(openssl passwd -crypt "$DOMAIN_PASSWORD") > /etc/nginx/conf/bga-pensions-htpasswd
+echo $DOMAIN_USERNAME:$(openssl passwd -crypt "$DOMAIN_PASSWORD") > /etc/nginx/conf.d/bga-pensions-htpasswd
