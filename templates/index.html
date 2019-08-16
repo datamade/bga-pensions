@@ -29,7 +29,7 @@
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         {% for year in data_years %}
-          <a class="dropdown-item year-dropdown-item" href="#{{ year }}">{{ year }}</a>
+          <span class="dropdown-item year-dropdown-item">{{ year }}</span>
         {% endfor %}
       </div>
     </div>
@@ -135,7 +135,7 @@
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         {% for fund in pension_funds %}
-          <a class="dropdown-item fund-dropdown-item" href="#{{ fund }}">{{ fund }}</a>
+          <span class="dropdown-item fund-dropdown-item">{{ fund }}</span>
         {% endfor %}
       </div>
     </div>
@@ -246,16 +246,18 @@
 
 {% block extra_js %}
 <script src="{% static 'lib/highcharts.js' %}"></script>
-<script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+<script src="{% static 'lib/URI.js' %}"></script>
+<script src="{% static 'lib/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'lib/dataTables.bootstrap4.min.js' %}"></script>
 {% compress js %}
   <script type="module" src="{% static 'js/base.js' %}"></script>
   <script type="module">
     import { PensionsController, ChartHelper } from "js/base"
 
     var yearData = {{ data_by_year|safe }};
-    var selectedYear = 2018;
-    var selectedFund = 'Downstate/Suburban Teachers (TRS)';
+
+    var selectedYear = URI(window.location).search(true).year ? URI(window.location).search(true).year : 2018;
+    var selectedFund = URI(window.location).search(true).fund ? URI(window.location).search(true).fund : 'Downstate/Suburban Teachers (TRS)';
 
     var chartHelper = new ChartHelper();
     var controller = new PensionsController(yearData, selectedYear, selectedFund, chartHelper, benefitTable);

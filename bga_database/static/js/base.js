@@ -8,12 +8,17 @@ class PensionsController {
     get (year) {
         return this.yearData[year];
     }
+    updateURI () {
+        var newUrl = URI(window.location).query({'year': this.selectedYear, 'fund': this.selectedFund}).toString()
+        window.history.replaceState({}, '', newUrl);
+    }
     selectYear (year) {
         this.selectedYear = year;
 
         var data = this.get(year);
 
         $('#yearDropdownMenuButton').text(year);
+        this.updateURI();
 
         var yearHasData = (data !== undefined &&
             data.hasOwnProperty('aggregate_funding') &&
@@ -43,6 +48,7 @@ class PensionsController {
         this.selectedFund = fund;
 
         var data = this.get(this.selectedYear)['data_by_fund'][fund];
+        this.updateURI();
 
         $('#fundDropdownMenuButton').text(fund);
         $('.employer-name').text(this.selectedFund);
