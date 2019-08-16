@@ -1,6 +1,7 @@
 import csv
 from itertools import islice
 
+from django.core.cache import cache
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
@@ -61,6 +62,8 @@ class Command(BaseCommand):
                 count += batch_size
 
                 self.stdout.write('inserted {0} Benefit objects'.format(count))
+
+        cache.clear()
 
     def _format_row(self, reader):
         for row in reader:

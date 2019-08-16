@@ -28,6 +28,7 @@ urlpatterns = [
     path('', include('django.contrib.auth.urls')),
     path('', include('social_django.urls')),
     path('pong/', pension_views.pong),
+    path('flush/', pension_views.flush_cache),
 ]
 
 if settings.DEBUG:

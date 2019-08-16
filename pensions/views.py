@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.cache import cache
 from django.db import connection
 from django.db.models import Q, FloatField, Count
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import TemplateView
 
 from django_datatables_view.base_datatable_view import BaseDatatableView
@@ -15,7 +15,7 @@ from postgres_stats.aggregates import Percentile
 from pensions.models import PensionFund, Benefit
 
 
-CACHE_TIMEOUT = 600
+CACHE_TIMEOUT = 86400
 
 
 class Index(TemplateView):
@@ -47,12 +47,27 @@ class Index(TemplateView):
         return data_by_year
 
     @property
+    def _cache(self):
+        if not hasattr(self, '_kache'):
+            self._kache = cache.get_many([
+                'data_years',
+                'benefit_aggregates',
+                'binned_benefit_data'
+            ])
+
+        return self._kache
+
+    @property
     def data_years(self):
-        return list(range(2012, 2020))
-#        if not hasattr(self, '_data_years'):
-#            self._data_years = Benefit.objects.distinct('data_year')\
-#                                              .values_list('data_year', flat=True)
-#        return self._data_years
+        data = self._cache.get('data_years', [])
+
+        if not data:
+            data = Benefit.objects.distinct('data_year')\
+                                  .values_list('data_year', flat=True)
+
+            cache.set('data_years', data, CACHE_TIMEOUT)
+
+        return data
 
     @property
     def pension_funds(self):
@@ -62,7 +77,7 @@ class Index(TemplateView):
 
     @property
     def benefit_aggregates(self):
-        data = cache.get('benefit_aggregates', {})
+        data = self._cache.get('benefit_aggregates', {})
 
         if not data:
             aggregates = Benefit.objects\
@@ -85,7 +100,7 @@ class Index(TemplateView):
 
     @property
     def binned_benefit_data(self):
-        data = cache.get('binned_benefit_data', {})
+        data = self._cache.get('binned_benefit_data', {})
 
         if not data:
             DISTRIBUTION_BIN_NUM = 10
@@ -310,11 +325,16 @@ def logout(request):
 
 
 def pong(request):
-    from django.http import HttpResponse
-
     try:
         from bga_database.deployment import DEPLOYMENT_ID
     except ImportError as e:
         return HttpResponse('Bad deployment: {}'.format(e), status=401)
 
     return HttpResponse(DEPLOYMENT_ID)
+
+
+def flush_cache(request):
+    if request.GET.get('key', '') == settings.CACHE_KEY:
+        cache.clear()
+
+    return HttpResponseRedirect(request.build_absolute_uri('/'))
