@@ -96,6 +96,17 @@
     <script src="{% static 'lib/popper.min.js' %}"></script>
     <script src="{% static 'lib/bootstrap.min.js' %}"></script>
     <script src="{% static 'lib/fontawesome-all.min.js' %}"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+
+      gtag('js', new Date());
+      gtag('config', 'UA-XXXXXXXX-X');
+    </script>
+
     {% block extra_js %}
     {% endblock %}
   </body>
