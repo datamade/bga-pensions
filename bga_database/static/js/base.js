@@ -105,7 +105,8 @@ class ChartHelper {
                 },
             },
             chart: {
-                plotBackgroundColor: null,
+                backgroundColor: '#f7f7f7',
+                plotBackgroundColor: '#f7f7f7',
                 plotBorderWidth: null,
                 plotShadow: false,
                 type: 'bar',
@@ -154,7 +155,9 @@ class ChartHelper {
     makePieChart (data) {
         Highcharts.chart(data.container, {
             chart: {
-                type: 'pie'
+                type: 'pie',
+                backgroundColor: '#f7f7f7',
+                plotBackgroundColor: '#f7f7f7',
             },
             title: {
                 text: '', // data.name,

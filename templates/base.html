@@ -3,6 +3,8 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <title>{% block title %}{% endblock %} – Illinois Public Pensions Database</title>
+
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -12,10 +14,79 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="{% static 'css/datatables-overrides.css' %}">
 
-    <title>{% block title %}{% endblock %} – Illinois Public Pensions Database</title>
+    <meta content="TK TK TK" />
+    <meta content="Better Government Association" name="author" />
+
+    <!-- Facebook metadata -->
+    <meta content="Illinois Public Pensions Database" property="og:site_name">
+    <meta content="{{ request.title }}" property="og:title">
+    <meta content="website" property="og:type">
+    <meta content="TK TK TK" property="og:description">
+    <meta content="{{ request.build_absolute_uri }}" property="og:url">
+    <meta content="{% static 'img/share_card.jpg' %}" property="og:image">
+
+    <!-- Twitter metadata -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="Illinois Public Pensions Database">
+    <meta name="twitter:creator" content="Better Government Association">
+    <meta name="twitter:title" content="{{ request.title }}">
+    <meta name="twitter:url" content="{{ request.build_absolute_uri }}">
+    <meta name="twitter:description" content="TK TK TK">
+    <meta name="twitter:image" content="{% static 'img/share_card.jpg' %}">
+
+    <link rel="icon" type="image/png" href="{% static 'img/favicon-32x32.png' %}" sizes="32x32" />
+    <link rel="icon" type="image/png" href="{% static 'img/favicon-16x16.png' %}" sizes="16x16" />
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link href="{% static 'css/bga-styles.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap-overrides.css' %}" rel="stylesheet">
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
   </head>
   <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark pl-2 pl-md-4 pt-0 pb-0 mb-3 mb-lg-5">
+      <div class="justify-content-left va-container">
+        <a class="navbar-brand" href="https://www.bettergov.org/data-tools">
+          <img src="{% static 'img/bga_logo.png' %}" alt="Home" class="header__logo-image">
+          <div id="navbar-series" class="d-none d-md-inline-block">
+            Data &<br />Tools
+          </div>
+        </a>
+        <div class="d-inline-block vertical-divider mx-1 mx-sm-2">
+          &nbsp;
+        </div>
+        <a class="navbar-brand" href="/">
+          <div id="navbar-title" class="d-inline-block">
+            <span class="d-none d-sm-inline">Illinois </span>Public Pensions Database
+          </div>
+        </a>
+      </div>
+      <div class="justify-content-right">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse pl-3" id="navbarSupportedContent">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/"><i class="fas fa-home fa-fw"></i> Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fas fa-question"></i> User Guide</a>
+          </li>
+        </ul>
+        <div id="navbar-login" class="ml-auto">
+          {% if not request.user.is_anonymous %}
+            <p class="nav-link m-0 text-light">Hello, {{ request.user.email }}! <a href="{% url 'auth0_logout' %}" class="text-light"><i class="fas fa-sign-out-alt"></i> Log out</a></p>
+          {% else %}
+            <a href="{% url 'social:begin' 'auth0' %}" class="nav-link text-light"><i class="fas fa-sign-in-alt"></i> Log In</a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
     <div class="container-fluid">
+      {% if request.GET.verify_email == 'true' %}
+        <strong>Please verify your email address to use the Pensions Database.</strong>
+      {% endif %}
       {% block content %}{% endblock %}
     </div>
 
@@ -24,6 +95,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="{% static 'lib/popper.min.js' %}"></script>
     <script src="{% static 'lib/bootstrap.min.js' %}"></script>
+    <script src="{% static 'lib/fontawesome-all.min.js' %}"></script>
     {% block extra_js %}
     {% endblock %}
   </body>
