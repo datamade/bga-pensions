@@ -22,7 +22,9 @@ install:
 before_script:
 - mv configs/local_settings.travis.py bga_database/local_settings.py
 
-script: python manage.py migrate
+script:
+  - flake8
+  - python manage.py migrate
 
 deploy:
   - provider: codedeploy

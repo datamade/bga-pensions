@@ -45,8 +45,16 @@ class PensionsController {
         var data = this.get(this.selectedYear)['data_by_fund'][fund];
 
         $('#fundDropdownMenuButton').text(fund);
+        $('.employer-name').text(this.selectedFund);
+        $('.employer-data-year').text(this.selectedYear);
 
-        if ( data !== undefined ) {
+        if ( data.binned_benefit_data !== undefined ) {
+            this.chartHelper.makeDistributionChart(data.binned_benefit_data);
+            $('#median-benefit-amount').text(data.median_benefit);
+            $('#total-benefits').text(data.total_benefits);
+        }
+
+        if ( data.aggregate_funding !== undefined ) {
             $('#fund-detail').show();
             $('#fund-detail-no-data').hide();
 
@@ -55,8 +63,6 @@ class PensionsController {
 
             $('#funding-level').text(data.funding_level + '%');
 
-            $('.employer-name').text(this.selectedFund);
-            $('.employer-data-year').text(this.selectedYear);
             $('#employer-liability-amount').text(data.total_liability);
             $('#employer-contribution-amount').text(data.employer_contribution);
         } else {
@@ -107,7 +113,6 @@ class ChartHelper {
             },
             title: {
                 text: '', // data.name,
-                align: data.name_align ? data.name_align : 'center',
             },
             xAxis: {
                 categories: data.x_axis_categories,
@@ -176,6 +181,105 @@ class ChartHelper {
                 }
             },
             series: [data.series_data],
+        });
+    }
+    makeDistributionChart (data) {
+        var tooltip_format = function(point) {
+            var edges = data[this.x];
+            return this.y.toLocaleString() + ' benefits fall between $' + edges.lower_edge.toLocaleString() + ' and $' + edges.upper_edge.toLocaleString();
+        };
+
+        var axis_format = function() {
+            var penultimate_bin = this.value === data.length - 1;
+            var last_bin = this.value === data.length;
+
+            var edges;
+
+            if ( last_bin ) {
+                edges = data[this.value - 1];
+            } else {
+                edges = data[this.value];
+            }
+
+            var composite_last_bin = edges.upper_edge !== 275000;
+
+            if ( last_bin ) {
+                if ( composite_last_bin ) {
+                    return null;
+                } else {
+                    return '$' + edges.upper_edge.toLocaleString();
+                }
+            } else if ( penultimate_bin ) {
+                if ( composite_last_bin ) {
+                    return '$' + edges.lower_edge.toLocaleString() + '+';
+                } else {
+                    return '$' + edges.lower_edge.toLocaleString();
+                }
+            } else {
+                try {
+                    return '$' + edges.lower_edge.toLocaleString();
+                } catch (err) {
+                    // Occurs when Highcharts wants to add an extra label
+                    return '';
+                }
+            }
+        };
+
+        var end_on_tick;
+
+        if ( data[data.length - 1].upper_edge !== 250000 ) {
+            end_on_tick = false;
+        } else {
+            end_on_tick = true;
+        }
+
+        Highcharts.chart('benefit-distribution-chart', {
+            title: {
+              text: '', // Done in template
+            },
+            plotOptions: {
+              column: {
+                maxPointWidth: 80,
+                minPointLength: 2,
+                dataLabels: {
+                  enabled: true,
+                  color: '#333',
+                },
+                pointPlacement: 'between',
+                pointPadding: 0,
+                groupPadding: 0
+              }
+            },
+            xAxis: {
+                labels: {
+                    enabled: true,
+                    formatter: axis_format,
+                },
+                tickInterval: 0,
+                endOnTick: end_on_tick,
+                title: {
+                    text: 'Benefit range',
+                },
+                allowDecimals: false
+            },
+            yAxis: {
+                title: {
+                    text: 'Number of benefits',
+                },
+            },
+            series: [{
+                type: 'column',
+                data: data,
+                id: 'amounts',
+                tooltip: {
+                  headerFormat: '', // Remove header
+                  pointFormatter: tooltip_format
+                },
+                color: '#294d71',
+            }],
+            legend: {
+                enabled: false,
+            }
         });
     }
 }

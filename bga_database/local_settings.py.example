@@ -30,6 +30,8 @@ DATABASES = {
 
 # Caching
 
+CACHE_KEY = 'some key'
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
