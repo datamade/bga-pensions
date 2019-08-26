@@ -1,6 +1,6 @@
 from urllib.parse import urlencode
 
-from django.contrib.humanize.templatetags.humanize import intword
+from django.contrib.humanize.templatetags.humanize import intword, intcomma
 from django.contrib.auth import logout as log_out
 from django.conf import settings
 from django.core.cache import cache
@@ -29,6 +29,15 @@ class Index(TemplateView):
         context['data_by_year'] = self.data_by_year()
 
         return context
+
+    def _format_large_number(self, number):
+        word = intword(number)
+        try:
+            float(word)
+        except ValueError:
+            return word
+        else:
+            return intcomma(number)
 
     def data_by_year(self):
         data_by_year = {}
@@ -90,8 +99,8 @@ class Index(TemplateView):
                 agg = [a for a in aggregates if a['data_year'] == year]
                 for a in agg:
                     data[year][a['fund__name']] = {
-                        'median': a['median'],
-                        'count': a['count'],
+                        'median': self._format_large_number(a['median']),
+                        'count': self._format_large_number(a['count']),
                     }
 
             cache.set('benefit_aggregates', data, CACHE_TIMEOUT)
@@ -148,8 +157,8 @@ class Index(TemplateView):
 
                         fund_data.append({
                             'y': int(value),  # number of benefits in given bin
-                            'lower_edge': intword(lower),
-                            'upper_edge': intword(upper),
+                            'lower_edge': self._format_large_number(lower),
+                            'upper_edge': self._format_large_number(upper),
                         })
 
                     year_data[fund.name] = fund_data
@@ -208,8 +217,8 @@ class Index(TemplateView):
                 data[annual_report.data_year][fund.name] = {
                     'aggregate_funding': self._make_pie_chart('fund-container', funded_liability, unfunded_liability),
                     'amortization_cost': self._make_bar_chart('amortization-cost', normal_cost, amortization_cost),
-                    'total_liability': intword(int(annual_report.total_liability)),
-                    'employer_contribution': intword(int(annual_report.employer_contribution)),
+                    'total_liability': self._format_large_number(int(annual_report.total_liability)),
+                    'employer_contribution': self._format_large_number(int(annual_report.employer_contribution)),
                     'funding_level': int(annual_report.funded_ratio * 100),
                 }
 
@@ -230,17 +239,17 @@ class Index(TemplateView):
         return {
             'container': container,
             'label_format': r'${point.label}',
-            'total_liability': intword(int(funded_liability + unfunded_liability)),
+            'total_liability': self._format_large_number(int(funded_liability + unfunded_liability)),
             'series_data': {
                 'Name': 'Data',
                 'data': [{
                     'name': 'Funded',
                     'y': funded_liability,
-                    'label': intword(int(funded_liability)),
+                    'label': self._format_large_number(int(funded_liability)),
                 }, {
                     'name': 'Unfunded',
                     'y': unfunded_liability,
-                    'label': intword(int(unfunded_liability)),
+                    'label': self._format_large_number(int(unfunded_liability)),
                 }],
             },
         }
@@ -248,8 +257,8 @@ class Index(TemplateView):
     def _make_bar_chart(self, container, normal_cost, amortization_cost):
         return {
             'container': container,
-            'pretty_amortization_cost': intword(int(amortization_cost)),
-            'pretty_employer_normal_cost': intword(int(normal_cost)),
+            'pretty_amortization_cost': self._format_large_number(int(amortization_cost)),
+            'pretty_employer_normal_cost': self._format_large_number(int(normal_cost)),
             'x_axis_categories': [''],
             'axis_label': 'Dollars',
             'funded': {
@@ -307,14 +316,19 @@ class BenefitListJson(BaseDatatableView):
             json_data.append([
                 item.first_name,
                 item.last_name,
-                item.amount,
+                self._format_currency(item.amount),
                 item.years_of_service,
-                item.final_salary,
+                self._format_currency(item.final_salary),
                 item.start_date,
                 item.status,
             ])
 
         return json_data
+
+    def _format_currency(self, amount):
+        if amount in ('', None, 'None'):
+            return amount
+        return '${}'.format(intcomma(amount))
 
 
 def logout(request):
