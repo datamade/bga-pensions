@@ -295,7 +295,8 @@ class BenefitListJson(BaseDatatableView):
         if search:
             first_name = Q(first_name__istartswith=search)
             last_name = Q(last_name__istartswith=search)
-            qs = qs.filter(first_name | last_name)
+            full_name = Q(full_name__istartswith=search)
+            qs = qs.filter((first_name | last_name) | full_name)
 
         return qs
 

@@ -69,6 +69,7 @@ class Command(BaseCommand):
         for row in reader:
             row['fund'] = self._hydrate_fund(row['fund'])
             row = self._cast_to_none(row)
+            row = self._concatenate_name_fields(row)
             yield Benefit(**row)
 
     def _hydrate_fund(self, fund_key):
@@ -94,4 +95,8 @@ class Command(BaseCommand):
             if row[field] == '':
                 row[field] = None
 
+        return row
+
+    def _concatenate_name_fields(self, row):
+        row['full_name'] = ' '.join([row['first_name'], row['last_name']])
         return row

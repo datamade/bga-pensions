@@ -89,6 +89,7 @@ class Benefit(VintagedModel):
     fund = models.ForeignKey('PensionFund', related_name='benefits', on_delete=models.CASCADE)
     first_name = models.CharField(max_length=256)
     last_name = models.CharField(max_length=256)
+    full_name = models.CharField(max_length=256*2)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     years_of_service = models.IntegerField(null=True, blank=True)
     final_salary = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
