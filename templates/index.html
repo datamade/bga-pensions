@@ -14,7 +14,7 @@
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         {% for year in data_years %}
-          <a class="dropdown-item year-dropdown-item" href="#{{ year }}">{{ year }}</a>
+          <span class="dropdown-item year-dropdown-item">{{ year }}</span>
         {% endfor %}
       </div>
     </div>
@@ -146,7 +146,7 @@
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         {% for fund in pension_funds %}
-          <a class="dropdown-item fund-dropdown-item" href="#{{ fund }}">{{ fund }}</a>
+          <span class="dropdown-item fund-dropdown-item">{{ fund }}</span>
         {% endfor %}
       </div>
     </div>
