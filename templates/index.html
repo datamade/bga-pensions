@@ -27,7 +27,11 @@
   <div class="col-lg-8 offset-lg-2">
     <h3>Illinois Public Pensions Database</h3>
 
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla gravida tristique arcu eget suscipit. Etiam arcu libero, eleifend eu aliquam in, bibendum et magna. In vel arcu nulla. Vivamus lacinia leo justo, in maximus eros feugiat eu.</p>
+    <p class="lead">The pension crisis affecting the state of Illinois, Cook County and the city of Chicago spurs vigorous debate about the reasons it became Illinois’ most vexing problem and little agreement about how to solve it.</p>
+
+    <p>The Better Government Association seeks to provide clarity on this important topic with our updated Illinois Public Pensions Database.</p>
+
+    <p>With this updated database, readers can analyze how well (or how poorly) the 17 largest public-sector pension funds in the state are funded, the percentage of funding levels and how much in liabilities each of the pension funds face.</p>
   </div>
 </div>
 
@@ -35,17 +39,17 @@
   <div class="row pt-5 pb-5">
 
     <div class="col-lg-10 offset-lg-1">
-      <h3 class="pl-2 pb-4"><strong>Pension Liability by System</strong></h3>
+      <h3 class="pb-4"><strong>Pension Liability by System</strong></h3>
     </div>
 
     <div class="col-lg-5 offset-lg-1">
       <div class="row">
         <div class="col-lg-6">
           <h4 class="chart-title">State Pension Liability</h4>
-          <h4 class="chart-subtitle"><span class="data-year"></span></h4>
+          <h5 class="chart-subtitle"><span class="data-year"></span></h4>
         </div>
         <div class="col-lg-6 text-center">
-          <small>TOTAL LIABILITY</small><br />
+          <small class="text-uppercase">Total Liability</small><br />
           <h2>$<span id="total-state-liability"></span></h2>
         </div>
       </div>
@@ -56,10 +60,10 @@
       <div class="row">
         <div class="col-lg-6">
           <h4 class="chart-title">County Pension Liability</h4>
-          <h4 class="chart-subtitle"><span class="data-year"></span></h4>
+          <h5 class="chart-subtitle"><span class="data-year"></span></h4>
         </div>
         <div class="col-lg-6 text-center">
-          <small>TOTAL LIABILITY</small><br />
+          <small class="text-uppercase">Total Liability</small><br />
           <h2>$<span id="total-county-liability"></span></h2>
         </div>
       </div>
@@ -70,10 +74,10 @@
       <div class="row">
         <div class="col-lg-6">
           <h4 class="chart-title">Chicago Municipal Pension Liability</h4>
-          <h4 class="chart-subtitle"><span class="data-year"></span></h4>
+          <h5 class="chart-subtitle"><span class="data-year"></span></h4>
         </div>
         <div class="col-lg-6 text-center">
-          <small>TOTAL LIABILITY</small><br />
+          <small class="text-uppercase">Total Liability</small><br />
           <h2>$<span id="total-chicago-liability"></span></h2>
         </div>
       </div>
@@ -84,10 +88,10 @@
       <div class="row">
         <div class="col-lg-6">
           <h4 class="chart-title">Downstate Municipal Pension Liability</h4>
-          <h4 class="chart-subtitle"><span class="data-year"></span></h4>
+          <h5 class="chart-subtitle"><span class="data-year"></span></h4>
         </div>
         <div class="col-lg-6 text-center">
-          <small>TOTAL LIABILITY</small><br />
+          <small class="text-uppercase">Total Liability</small><br />
           <h2>$<span id="total-downstate-liability"></span></h2>
         </div>
       </div>
@@ -103,13 +107,17 @@
 
 <div class="row">
   <div class="col-lg-8 offset-lg-2">
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a elit lectus. Integer ac sapien leo. Nulla urna ex, semper mollis dictum a, bibendum at augue. Cras odio diam, gravida efficitur elit non, suscipit dignissim tellus.</p>
+    <p>You can also examine a year-by-year, fund-by-fund breakdown of <strong>“employer normal cost”</strong> vs. <strong>“amortization cost.”</strong></p>
 
-    <p>Cras volutpat lectus quis laoreet gravida. Nullam venenatis neque vel pretium efficitur. Mauris accumsan lectus ac eros rutrum, vitae aliquet lorem porta. Duis sit amet neque lectus. Morbi quis nibh est. Sed sed sem non elit venenatis posuere vitae vitae eros. Duis sed elit nec urna ultricies feugiat ac luctus velit. Vestibulum pulvinar malesuada lectus, vitae mattis lacus. Integer ultrices sem quis tortor cursus bibendum. Suspendisse at pretium justo.</p>
+    <p>What does that mean?</p>
 
-    <p>Etiam turpis justo, sodales nec mauris eu, luctus mattis nunc. Vivamus tristique vel purus vel rhoncus. Proin purus justo, aliquet eu tempus eu, eleifend pellentesque sapien. Sed vestibulum gravida vulputate.</p>
+    <p><strong>“Employer normal cost”</strong> is a subset of a pension’s “normal cost” — the estimated price of fully funding the benefits earned by employees in a given year. So “employer normal cost” is the normal cost of the plan minus employee contributions.</p>
 
-    <p><em>Select a fund to explore the present cost of past decisions.</em></p>
+    <p>Employees pay their share through payroll deductions, but employers (the governments) have rarely, if ever, paid their full share, even when more robust payments under a nearly quarter-century financial rescue plan are taken into account.</p>
+
+    <p><strong>“Amortization cost”</strong> is the present cost of making up for insufficient payments in the past.</p>
+
+    <p>Employer normal cost is usually well less than half the total cost government bodies kick in each year to pay for their current and past pension obligations. The disconnect between employer normal cost and the total contribution made by employers is a good measure of how well a pension fund was funded in the past.</p>
   </div>
 </div>
 
@@ -136,10 +144,10 @@
       <div class="row">
         <div class="col-lg-6">
           <h4 class="chart-title">Pension Liability</h4>
-          <h4 class="chart-subtitle"><span class="employer-name"></span> – <span class="employer-data-year"></span></h4>
+          <h5 class="chart-subtitle"><span class="employer-name"></span> – <span class="employer-data-year"></span></h4>
         </div>
         <div class="col-lg-4 text-center my-auto">
-          <small>TOTAL LIABILITY</small><br />
+          <small class="text-uppercase">Total Liability</small><br />
           <h2>$<span id="employer-liability-amount"></span></h2>
         </div>
       </div>
@@ -151,7 +159,7 @@
       <div id="fund-container"></div>
     </div>
     <div class="col-lg-4 my-auto">
-      <small>FUNDING LEVEL</small><br />
+      <small class="text-uppercase">Funding Level</small><br />
       <h1><span id="funding-level" class="badge badge-danger"></span></h1>
     </div>
   </div>
@@ -159,10 +167,10 @@
   <div class="row py-5">
     <div class="col-lg-6 offset-lg-1">
       <h4 class="chart-title">Distribution of Employer Contribution</h4>
-      <h4 class="chart-subtitle"><span class="employer-name"></span> – <span class="employer-data-year"></span></h4>
+      <h5 class="chart-subtitle"><span class="employer-name"></span> – <span class="employer-data-year"></span></h4>
     </div>
     <div class="col-lg-4 text-center my-auto">
-      <small>TOTAL EMPLOYER CONTRIBUTION</small><br />
+      <small class="text-uppercase">Total Employer Contribution</small><br />
       <h2>$<span id="employer-contribution-amount"></span></h2>
     </div>
   </div>
@@ -178,25 +186,35 @@
 </div>
 
 <div class="row pt-5">
+  <div class="col-lg-8 offset-lg-2">
+    <p>What’s more, as the BGA has since 2012, users will be able to track the money paid to thousands of retired public-sector employees in Illinois. This is searchable information from the pension funds, including Chicago, Cook County and statewide. You can use this tool to find out how these break these down on an annual basis.</p>
+
+    <p>PS: This is data only for the 17 largest pension funds in Illinois and does not include the 600+ police and fire pension funds peppered throughout Illinois, many of which are also in fiscal trouble.</p>
+  </div>
+</div>
+
+<div class="row pt-5">
   <div class="col-lg-10 offset-lg-1">
     <h2>Search <span class="employer-data-year"></span> <span class="employer-name"></span> Individual Pension Data</h2>
   </div>
 </div>
 
 <div class="row pt-5">
-  <div class="col-lg-4 offset-lg-1 text-center my-auto">
+  <div class="col-lg-6 offset-lg-1">
+    <h4 class="chart-title">Distribution of Individual Benefits</h4>
+    <h5 class="chart-subtitle pb-2"><span class="employer-name"></span> – <span class="employer-data-year"></span></h4>
+    <div id="benefit-distribution-chart"></div>
+  </div>
+  <div class="col-lg-4 text-center my-auto">
     <p>
-      <small>MEDIAN ANNUAL BENEFIT</small><br />
-      <h2 class="pb-3">$<span id="median-benefit-amount">XXX</span></h2>
+      <small class="text-uppercase">Median Annual Benefit</small><br />
+      <h2 class="pb-3">$<span id="median-benefit-amount"></span></h2>
     </p>
 
     <p>
-      <small>NUMBER OF BENEFITS</small><br />
-      <h2><span id="total-benefits">XXX</span></h2>
+      <small class="text-uppercase">Number of Benefits</small><br />
+      <h2><span id="total-benefits"></span></h2>
     </p>
-  </div>
-  <div class="col-lg-6">
-    <div id="benefit-distribution-chart"></div>
   </div>
 </div>
 

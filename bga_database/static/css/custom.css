@@ -193,3 +193,12 @@ footer, footer a, footer h4 {
 h5 {
   letter-spacing: unset;
 }
+
+.chart-subtitle {
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+#benefit-distribution-chart {
+  min-height: 350px;
+}
