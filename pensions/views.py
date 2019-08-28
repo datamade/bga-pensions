@@ -265,13 +265,13 @@ class Index(TemplateView):
             'funded': {
                 'name': '<strong>Amortization Cost:</strong> Present cost of paying down past debt',
                 'data': [amortization_cost],
-                'color': '#dc3545',
+                'color': '#fd0',
                 'legendIndex': 1,
             },
             'unfunded': {
                 'name': '<strong>Employer Normal Cost:</strong> Projected cost to cover future benefits for current employees',
                 'data': [normal_cost],
-                'color': '#01406c',
+                'color': '#67488b',
                 'legendIndex': 0,
             },
             'stacked': 'true',

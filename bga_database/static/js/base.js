@@ -63,6 +63,23 @@ class PensionsController {
 
             $('#funding-level').text(data.funding_level + '%');
 
+            var fundingLevelClass;
+            var fundingLevel = parseInt(data.funding_level);
+
+            if ( fundingLevel > 90) {
+                fundingLevelClass = 'badge-success';
+            } else if ( fundingLevel > 50 ) {
+                fundingLevelClass = 'badge-warning';
+            } else {
+                fundingLevelClass = 'badge-danger';
+            }
+
+            $('#funding-level').removeClass(function (index, className) {
+                return (className.match (/(^|\s+)badge-\S+/g) || []).join(' ');
+            })
+
+            $('#funding-level').addClass(fundingLevelClass);
+
             $('#employer-liability-amount').text(data.total_liability);
             $('#employer-contribution-amount').text(data.employer_contribution);
         } else {
@@ -282,7 +299,7 @@ class ChartHelper {
                   headerFormat: '', // Remove header
                   pointFormatter: tooltip_format
                 },
-                color: '#294d71',
+                color: '#1a9b5b',
             }],
             legend: {
                 enabled: false,
