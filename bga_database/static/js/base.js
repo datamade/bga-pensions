@@ -240,6 +240,10 @@ class ChartHelper {
             title: {
               text: '', // Done in template
             },
+            chart: {
+                backgroundColor: '#f7f7f7',
+                plotBackgroundColor: '#f7f7f7',
+            },
             plotOptions: {
               column: {
                 maxPointWidth: 80,
