@@ -6,22 +6,22 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<div class="sticky-top float-right pt-5 pr-5">
-  <div id="year-toggle">
-    <div class="dropdown">
-      <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="yearDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{ data_years.0 }}
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        {% for year in data_years %}
-          <span class="dropdown-item year-dropdown-item">{{ year }}</span>
-        {% endfor %}
+<div class="clearfix sticky-top">
+  <div class="pt-5 pr-5 float-right">
+    <div id="year-toggle">
+      <div class="dropdown">
+        <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="yearDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{ data_years.0 }}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          {% for year in data_years %}
+            <span class="dropdown-item year-dropdown-item">{{ year }}</span>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-<div class="clearfix"></div>
 
 <div class="row pt-0">
   <div class="col-lg-8 offset-lg-2">
@@ -139,21 +139,21 @@
   </div>
 </div>
 
-<div class="sticky-top pt-5 pl-5 text-center float-left">
-  <div id="fund-toggle">
-    <div class="dropdown">
-      <button class="btn btn-lg btn-secondary dropdown-toggle" type="button" id="fundDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        {% for fund in pension_funds %}
-          <span class="dropdown-item fund-dropdown-item">{{ fund }}</span>
-        {% endfor %}
+<div class="clearfix sticky-top w-50">
+  <div class="pt-5 pl-5 float-left">
+    <div id="fund-toggle">
+      <div class="dropdown">
+        <button class="btn btn-lg btn-secondary dropdown-toggle" type="button" id="fundDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          {% for fund in pension_funds %}
+            <span class="dropdown-item fund-dropdown-item">{{ fund }}</span>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-<div class="clearfix"></div>
 
 <div id="fund-detail">
 
