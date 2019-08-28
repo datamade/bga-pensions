@@ -305,8 +305,19 @@
       "columnDefs": [{ "orderable": false, "targets": [0, 6] }],
       "processing": true,
       "serverSide": true,
-      "ajax": makeAjaxUrl(controller),
+      "ajax": {
+        type: 'GET',
+        url: makeAjaxUrl(controller),
+        error: function (response, status, code) {
+          if ( response.status === 401 ) {
+            window.location = '{% url "social:begin" "auth0" %}';
+          } else {
+            alert(response.responseText);
+          }
+        },
+      },
       "responsive": true,
+      "searchDelay": 1000,
     });
 
     $('.year-dropdown-item').click(function () {

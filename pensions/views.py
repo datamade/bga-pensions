@@ -1,9 +1,11 @@
+import json
 from urllib.parse import urlencode
 
 from django.contrib.humanize.templatetags.humanize import intword, intcomma
 from django.contrib.auth import logout as log_out
 from django.conf import settings
 from django.core.cache import cache
+from django.core.exceptions import PermissionDenied
 from django.db import connection
 from django.db.models import Q, FloatField, Count
 from django.http import HttpResponse, HttpResponseRedirect
@@ -298,6 +300,28 @@ class BenefitListJson(BaseDatatableView):
     # max number of records returned at a time; protects site from large
     # requests
     max_display_length = 500
+
+    def dispatch(self, *args, **kwargs):
+        try:
+            return super().dispatch(*args, **kwargs)
+        except PermissionDenied as e:
+            return self.get_json_response(str(e), status=401)
+
+    def get(self, *args, **kwargs):
+        '''
+        Kick unauthenticated users to the login screen after five keyword
+        searches and/or result page changes.
+        '''
+        if self.request.GET.get('search[value]', False) or int(self.request.GET.get('start'), 0) > 0:
+            if not self.request.session.get('n_searches'):
+                self.request.session['n_searches'] = 0
+
+            self.request.session['n_searches'] += 1
+
+            if self.request.session['n_searches'] > 5 and self.request.user.is_anonymous:
+                raise PermissionDenied
+
+        return super().get(*args, **kwargs)
 
     def filter_queryset(self, qs):
         qs = qs.filter(fund__name=self.request.GET['fund'],
