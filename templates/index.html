@@ -6,43 +6,40 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<div class="row pt-3 pr-5 text-right">
-  <div class="col-sm-12">
-    <p>
-      {% if not request.user.is_anonymous %}
-        Hello, {{ request.user.email }}! <small><em>Not {{ request.user.email }}? <a href="{% url 'auth0_logout' %}">Log out</a>.</em></small>
-      {% else %}
-        {% if request.GET.verify_email == 'true' %}
-          <strong>Please verify your email address to use the Pensions Database.</strong>
-        {% endif %}
-        <a href="{% url 'social:begin' 'auth0' %}">Log In</a>
-      {% endif %}
-    </p>
-  </div>
-</div>
-
-<div class="sticky-top float-right pt-5 pr-5">
-  <div id="year-toggle">
-    <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="yearDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{ data_years.0 }}
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        {% for year in data_years %}
-          <a class="dropdown-item year-dropdown-item" href="#{{ year }}">{{ year }}</a>
-        {% endfor %}
+<div class="clearfix sticky-top">
+  <div class="pt-5 pr-5 float-right">
+    <div id="year-toggle">
+      <div class="dropdown">
+        <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="yearDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{ data_years.0 }}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          {% for year in data_years %}
+            <span class="dropdown-item year-dropdown-item">{{ year }}</span>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="clearfix"></div>
-
-<div class="row">
+<div class="row pt-0">
   <div class="col-lg-8 offset-lg-2">
     <h3>Illinois Public Pensions Database</h3>
 
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla gravida tristique arcu eget suscipit. Etiam arcu libero, eleifend eu aliquam in, bibendum et magna. In vel arcu nulla. Vivamus lacinia leo justo, in maximus eros feugiat eu.</p>
+    <p class="lead">The pension crisis affecting the state of Illinois, Cook County and the city of Chicago spurs vigorous debate about the reasons it became Illinois’ most vexing problem and little agreement about how to solve it.</p>
+
+    <p>The Better Government Association seeks to provide clarity on this important topic with our updated Illinois Public Pensions Database.</p>
+
+    <p>With this updated database, readers can analyze how well (or how poorly) the 17 largest public-sector pension funds in the state are funded, the percentage of funding levels and, how much in liabilities each of the pension funds face. Readers can also <a href="#search">search individual pension benefits</a>. <a href="https://salary.bettergov.org">The Illinois Public Salaries Database</a> provides complementary data on how much public employees in Illinois are paid.</p>
+
+    <div class="alert alert-secondary my-4" role="alert">
+      <i class="fas fa-info-circle fa-fw"></i> <strong>Use the dropdown menu</strong> at the top right of your screen view data from other years.
+    </div>
+
+    <p class="text-center">
+      <small>Looking for a person? <a href="#search">Jump to individual benefit search <i class="fas fa-arrow-circle-down"></i></a></small>
+    </p>
   </div>
 </div>
 
@@ -50,17 +47,17 @@
   <div class="row pt-5 pb-5">
 
     <div class="col-lg-10 offset-lg-1">
-      <h3 class="pl-2 pb-4"><strong>Pension Liability by System</strong></h3>
+      <h3 class="pb-4"><strong>Pension Liability by System</strong></h3>
     </div>
 
     <div class="col-lg-5 offset-lg-1">
       <div class="row">
         <div class="col-lg-6">
           <h4 class="chart-title">State Pension Liability</h4>
-          <h4 class="chart-subtitle"><span class="data-year"></span></h4>
+          <h5 class="chart-subtitle"><span class="data-year"></span></h4>
         </div>
         <div class="col-lg-6 text-center">
-          <small>TOTAL LIABILITY</small><br />
+          <small class="text-uppercase">Total Liability</small><br />
           <h2>$<span id="total-state-liability"></span></h2>
         </div>
       </div>
@@ -71,10 +68,10 @@
       <div class="row">
         <div class="col-lg-6">
           <h4 class="chart-title">County Pension Liability</h4>
-          <h4 class="chart-subtitle"><span class="data-year"></span></h4>
+          <h5 class="chart-subtitle"><span class="data-year"></span></h4>
         </div>
         <div class="col-lg-6 text-center">
-          <small>TOTAL LIABILITY</small><br />
+          <small class="text-uppercase">Total Liability</small><br />
           <h2>$<span id="total-county-liability"></span></h2>
         </div>
       </div>
@@ -85,10 +82,10 @@
       <div class="row">
         <div class="col-lg-6">
           <h4 class="chart-title">Chicago Municipal Pension Liability</h4>
-          <h4 class="chart-subtitle"><span class="data-year"></span></h4>
+          <h5 class="chart-subtitle"><span class="data-year"></span></h4>
         </div>
         <div class="col-lg-6 text-center">
-          <small>TOTAL LIABILITY</small><br />
+          <small class="text-uppercase">Total Liability</small><br />
           <h2>$<span id="total-chicago-liability"></span></h2>
         </div>
       </div>
@@ -99,10 +96,10 @@
       <div class="row">
         <div class="col-lg-6">
           <h4 class="chart-title">Downstate Municipal Pension Liability</h4>
-          <h4 class="chart-subtitle"><span class="data-year"></span></h4>
+          <h5 class="chart-subtitle"><span class="data-year"></span></h4>
         </div>
         <div class="col-lg-6 text-center">
-          <small>TOTAL LIABILITY</small><br />
+          <small class="text-uppercase">Total Liability</small><br />
           <h2>$<span id="total-downstate-liability"></span></h2>
         </div>
       </div>
@@ -113,36 +110,50 @@
 </div>
 
 <div class="row pt-5 pb-5 hidden" id="funding-by-system-no-data">
-  <div class="col-lg-10 offset-lg-1">No data :-(</div>
+  <div class="col-lg-10 offset-lg-1 text-center my-auto">
+    <h2>Dang! We have no system metadata for <span class="employer-data-year"></span>.</h2>
+    <p>Here's why: tk tk tk.</p>
+    <p class="text-center">
+      <small>Looking for a person? <a href="#search">Jump to individual benefit search <i class="fas fa-arrow-circle-down"></i></a></small>
+    </p>
+  </div>
 </div>
 
 <div class="row">
   <div class="col-lg-8 offset-lg-2">
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a elit lectus. Integer ac sapien leo. Nulla urna ex, semper mollis dictum a, bibendum at augue. Cras odio diam, gravida efficitur elit non, suscipit dignissim tellus.</p>
+    <p>You can also examine a year-by-year, fund-by-fund breakdown of <strong>“employer normal cost”</strong> vs. <strong>“amortization cost.”</strong></p>
 
-    <p>Cras volutpat lectus quis laoreet gravida. Nullam venenatis neque vel pretium efficitur. Mauris accumsan lectus ac eros rutrum, vitae aliquet lorem porta. Duis sit amet neque lectus. Morbi quis nibh est. Sed sed sem non elit venenatis posuere vitae vitae eros. Duis sed elit nec urna ultricies feugiat ac luctus velit. Vestibulum pulvinar malesuada lectus, vitae mattis lacus. Integer ultrices sem quis tortor cursus bibendum. Suspendisse at pretium justo.</p>
+    <p>What does that mean?</p>
 
-    <p>Etiam turpis justo, sodales nec mauris eu, luctus mattis nunc. Vivamus tristique vel purus vel rhoncus. Proin purus justo, aliquet eu tempus eu, eleifend pellentesque sapien. Sed vestibulum gravida vulputate.</p>
+    <p><strong>“Employer normal cost”</strong> is a subset of a pension’s “normal cost” — the estimated price of fully funding the benefits earned by employees in a given year. So “employer normal cost” is the normal cost of the plan minus employee contributions.</p>
 
-    <p><em>Select a fund to explore the present cost of past decisions.</em></p>
-  </div>
-</div>
+    <p>Employees pay their share through payroll deductions, but employers (the governments) have rarely, if ever, paid their full share, even when more robust payments under a nearly quarter-century financial rescue plan are taken into account.</p>
 
-<div class="sticky-top pt-5 pl-5 text-center float-left">
-  <div id="fund-toggle">
-    <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="fundDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        {% for fund in pension_funds %}
-          <a class="dropdown-item fund-dropdown-item" href="#{{ fund }}">{{ fund }}</a>
-        {% endfor %}
-      </div>
+    <p><strong>“Amortization cost”</strong> is the present cost of making up for insufficient payments in the past.</p>
+
+    <p>Employer normal cost is usually well less than half the total cost government bodies kick in each year to pay for their current and past pension obligations. The disconnect between employer normal cost and the total contribution made by employers is a good measure of how well a pension fund was funded in the past.</p>
+
+    <div class="alert alert-secondary" role="alert">
+      <i class="fas fa-info-circle fa-fw"></i> <strong>Use the dropdown menu</strong> at the top left of your screen view data from other funds.
     </div>
   </div>
 </div>
 
-<div class="clearfix"></div>
+<div class="clearfix sticky-top w-50">
+  <div class="pt-5 pl-5 float-left">
+    <div id="fund-toggle">
+      <div class="dropdown">
+        <button class="btn btn-lg btn-secondary dropdown-toggle" type="button" id="fundDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          {% for fund in pension_funds %}
+            <span class="dropdown-item fund-dropdown-item">{{ fund }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div id="fund-detail">
 
@@ -151,10 +162,10 @@
       <div class="row">
         <div class="col-lg-6">
           <h4 class="chart-title">Pension Liability</h4>
-          <h4 class="chart-subtitle"><span class="employer-name"></span> – <span class="employer-data-year"></span></h4>
+          <h5 class="chart-subtitle"><span class="employer-name"></span> – <span class="employer-data-year"></span></h4>
         </div>
         <div class="col-lg-4 text-center my-auto">
-          <small>TOTAL LIABILITY</small><br />
+          <small class="text-uppercase">Total Liability</small><br />
           <h2>$<span id="employer-liability-amount"></span></h2>
         </div>
       </div>
@@ -166,7 +177,7 @@
       <div id="fund-container"></div>
     </div>
     <div class="col-lg-4 my-auto">
-      <small>FUNDING LEVEL</small><br />
+      <small class="text-uppercase">Funding Level</small><br />
       <h1><span id="funding-level" class="badge badge-danger"></span></h1>
     </div>
   </div>
@@ -174,10 +185,10 @@
   <div class="row py-5">
     <div class="col-lg-6 offset-lg-1">
       <h4 class="chart-title">Distribution of Employer Contribution</h4>
-      <h4 class="chart-subtitle"><span class="employer-name"></span> – <span class="employer-data-year"></span></h4>
+      <h5 class="chart-subtitle"><span class="employer-name"></span> – <span class="employer-data-year"></span></h4>
     </div>
     <div class="col-lg-4 text-center my-auto">
-      <small>TOTAL EMPLOYER CONTRIBUTION</small><br />
+      <small class="text-uppercase">Total Employer Contribution</small><br />
       <h2>$<span id="employer-contribution-amount"></span></h2>
     </div>
   </div>
@@ -189,7 +200,23 @@
 </div>
 
 <div class="row pt-5 pb-5 hidden" id="fund-detail-no-data">
-  <div class="col-lg-10 offset-lg-1">No data :-(</div>
+  <div class="col-lg-10 offset-lg-1 text-center my-auto">
+    <h2>Dang! We have no metadata for <span class="employer-name"></span> in <span class="employer-data-year"></span>.</h2>
+    <p>Here's why: tk tk tk.</p>
+    <p class="text-center">
+      <small>Looking for a person? <a href="#search">Jump to individual benefit search <i class="fas fa-arrow-circle-down"></i></a></small>
+    </p>
+  </div>
+</div>
+
+<a name="search"></a>
+
+<div class="row pt-5">
+  <div class="col-lg-8 offset-lg-2">
+    <p>What’s more, as the BGA has since 2012, users will be able to track the money paid to thousands of retired public-sector employees in Illinois. This is searchable information from the pension funds, including Chicago, Cook County and statewide. You can use this tool to find out how these break these down on an annual basis.</p>
+
+    <p>PS: This is data only for the 17 largest pension funds in Illinois and does not include the 600+ police and fire pension funds peppered throughout Illinois, many of which are also in fiscal trouble.</p>
+  </div>
 </div>
 
 <div class="row pt-5">
@@ -199,19 +226,21 @@
 </div>
 
 <div class="row pt-5">
-  <div class="col-lg-4 offset-lg-1 text-center my-auto">
+  <div class="col-lg-6 offset-lg-1">
+    <h4 class="chart-title">Distribution of Individual Benefits</h4>
+    <h5 class="chart-subtitle pb-2"><span class="employer-name"></span> – <span class="employer-data-year"></span></h4>
+    <div id="benefit-distribution-chart"></div>
+  </div>
+  <div class="col-lg-4 text-center my-auto">
     <p>
-      <small>MEDIAN ANNUAL BENEFIT</small><br />
-      <h2 class="pb-3">$<span id="median-benefit-amount">XXX</span></h2>
+      <small class="text-uppercase">Median Annual Benefit</small><br />
+      <h2 class="pb-3">$<span id="median-benefit-amount"></span></h2>
     </p>
 
     <p>
-      <small>NUMBER OF BENEFITS</small><br />
-      <h2><span id="total-benefits">XXX</span></h2>
+      <small class="text-uppercase">Number of Benefits</small><br />
+      <h2><span id="total-benefits"></span></h2>
     </p>
-  </div>
-  <div class="col-lg-6">
-    <div id="benefit-distribution-chart"></div>
   </div>
 </div>
 
@@ -221,30 +250,24 @@
       <small>Search <span class="employer-data-year"></span> individual benefit data by full name, or by first or last name. For example, you can find <strong>John Doe</strong> by querying <em>John Doe</em>, <em>Doe</em>, or <em>John</em>. If searching by full name does not return the desired result, try a less specific first or last name search.</small>
     </p>
 
-    <table class="table table-striped table-bordered" id="benefit-table">
-      <thead>
-        <tr>
-          <th scope="col">First name</th>
-          <th scope="col">Last name</th>
-          <th scope="col">Amount</th>
-          <th scope="col">Years of Service</th>
-          <th scope="col">Final Salary</th>
-          <th scope="col">Benefit Start Date</th>
-          <th scope="col">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<div class="row p-5">
-  <div class="col-lg-4 offset-lg-4 text-center">
-      <p>
-        <a href="https://auth0.com/?utm_source=oss&amp;utm_medium=gp&amp;utm_campaign=oss" target="_blank" alt="Single Sign On &amp; Token Based Authentication - Auth0"><img src="{% static 'img/a0-badge-dark.png' %}" width="150" height="50" /></a>
-      </p>
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered" id="benefit-table">
+        <thead>
+          <tr>
+            <th scope="col">First name</th>
+            <th scope="col">Last name</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Years of Service</th>
+            <th scope="col">Final Salary</th>
+            <th scope="col">Benefit Start Date</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
     </div>
+  </div>
 </div>
 {% endblock %}
 
@@ -273,7 +296,6 @@
     controller.selectYear(selectedYear);
     controller.selectFund(selectedFund);
 
-    // TODO: Maybe don't do this on mobile?
     $('#funding-by-system-no-data').css('min-height', $('#funding-by-system').height());
     $('#fund-detail-no-data').css('min-height', $('#fund-detail').height());
 
@@ -283,7 +305,8 @@
       "columnDefs": [{ "orderable": false, "targets": [0, 6] }],
       "processing": true,
       "serverSide": true,
-      "ajax": makeAjaxUrl(controller)
+      "ajax": makeAjaxUrl(controller),
+      "responsive": true,
     });
 
     $('.year-dropdown-item').click(function () {

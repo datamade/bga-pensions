@@ -1,0 +1,204 @@
+ul.ui-autocomplete > li {
+  font-family: "acumin-pro", Helvetica, Arial, sans-serif;
+}
+
+.ui-autocomplete-category {
+  font-weight: bold;
+  padding: .2em .4em;
+  margin: .8em 0 .2em;
+  line-height: 1.5;
+}
+
+ol.breadcrumb {
+  background-color:unset;
+}
+
+.invalid-feedback {
+  display: unset;
+}
+
+div.row.intro {
+  padding-left: 10px;
+  padding-right: 30px;
+}
+
+div#department-expenditure-chart.col-lg-6 {
+  text-align: right;
+  background-color: grey;
+  height: 225px;
+  width: 470px;
+  padding-right: 30px;
+}
+
+div[id*="chart"] {
+  width: 100%;
+  height: 100%;
+}
+
+.breadcrumb, .lead, .navbar-brand {
+  font-family: "acumin-pro-condensed", "Arial Narrow", Helvetica, sans-serif;
+}
+
+.navbar-brand {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.navbar-brand #navbar-series {
+  line-height: 80%;
+}
+
+.navbar-brand #navbar-title {
+  font-size: 1.75rem;
+  vertical-align: 15%;
+  text-transform: none;
+}
+
+.header__logo-image {
+  height: 35px;
+  -webkit-filter: grayscale(1) brightness(10); /* unapplied in base styles */
+  vertical-align: unset;
+  padding-top: 5px; /* offset top padding for proper alignment */
+}
+
+.badge, small, div#intro-text, .btn, .list-group, .page-link {
+  font-family: "acumin-pro", Helvetica, Arial, sans-serif;
+}
+
+div#intro-text {
+  font-size: 1.2em;
+  letter-spacing: -0.01em;
+}
+
+.header__site-slogan {
+  color: #fff;
+}
+
+.btn-primary:hover {
+  color: #fff200;
+  background-color: #003a63;
+  border-color: #003a63;
+}
+
+.btn-link:hover, .btn-link:focus {
+  background-color: unset;
+  color: #003a63;
+  text-decoration: none;
+}
+
+.search-results > .table {
+  margin: -1px;
+  font-size: unset;
+}
+
+li.list-group-item {
+  margin: unset;
+  margin-top: -1px;
+}
+
+.search-result {
+  font-weight: 700;
+}
+
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+body.viewport-lg {
+  position: absolute;
+}
+
+.vertical-divider {
+  background-color: #fff;
+  width: 2px;
+  overflow: hidden;
+  height: 2rem;
+}
+
+.datamade-logo {
+  -webkit-filter: grayscale(100%) brightness(175%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%) brightness(175%);
+  height: 20px;
+}
+
+.bga-blue-filter {
+  /* Hacky filter from https://codepen.io/sosuke/pen/Pjoqqp */
+  -webkit-filter: brightness(0) saturate(100%) invert(14%) sepia(84%) saturate(1900%) hue-rotate(185deg) brightness(92%) contrast(102%);
+  filter: brightness(0) saturate(100%) invert(14%) sepia(84%) saturate(1900%) hue-rotate(185deg) brightness(92%) contrast(102%);
+}
+
+footer, footer a, footer h4 {
+  color: #fff!important;
+}
+
+.text-smaller {
+  font-size: 85%;
+}
+
+@media screen and (max-width: 576px) {
+  .card {
+    margin-left: -15px;
+    margin-right: -15px;
+    border-radius: 0;
+  }
+
+  .header__logo-image {
+    height: 25px;
+  }
+
+  .vertical-divider {
+    height: unset;
+  }
+
+  .navbar-brand #navbar-title {
+    font-size: 1.3rem;
+    vertical-align: 10%;
+    text-transform: none;
+  }
+
+  .navbar-toggler {
+    font-size: .75rem;
+  }
+}
+
+.va-container > * {
+  vertical-align: middle;
+}
+
+@media screen and (max-width: 992px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  p.lead {
+    font-size: 1.3rem;
+  }
+}
+
+.breadcrumb-item {
+  margin: .25rem 0;
+  line-height: 1.1;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: #fff;
+}
+
+.navbar-brand {
+  margin-right: unset;
+}
+
+h5 {
+  letter-spacing: unset;
+}
+
+.chart-subtitle {
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+#benefit-distribution-chart {
+  min-height: 350px;
+}
