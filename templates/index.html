@@ -9,7 +9,7 @@
 <div class="sticky-top float-right pt-5 pr-5">
   <div id="year-toggle">
     <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="yearDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="yearDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{ data_years.0 }}
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -113,6 +113,9 @@
   <div class="col-lg-10 offset-lg-1 text-center my-auto">
     <h2>Dang! We have no system metadata for <span class="employer-data-year"></span>.</h2>
     <p>Here's why: tk tk tk.</p>
+    <p class="text-center">
+      <small>Looking for a person? <a href="#search">Jump to individual benefit search <i class="fas fa-arrow-circle-down"></i></a></small>
+    </p>
   </div>
 </div>
 
@@ -139,7 +142,7 @@
 <div class="sticky-top pt-5 pl-5 text-center float-left">
   <div id="fund-toggle">
     <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="fundDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button class="btn btn-lg btn-secondary dropdown-toggle" type="button" id="fundDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         {% for fund in pension_funds %}
@@ -200,6 +203,9 @@
   <div class="col-lg-10 offset-lg-1 text-center my-auto">
     <h2>Dang! We have no metadata for <span class="employer-name"></span> in <span class="employer-data-year"></span>.</h2>
     <p>Here's why: tk tk tk.</p>
+    <p class="text-center">
+      <small>Looking for a person? <a href="#search">Jump to individual benefit search <i class="fas fa-arrow-circle-down"></i></a></small>
+    </p>
   </div>
 </div>
 
