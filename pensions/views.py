@@ -277,6 +277,10 @@ class Index(TemplateView):
         }
 
 
+class UserGuide(TemplateView):
+    template_name = 'user-guide.html'
+
+
 class BenefitListJson(BaseDatatableView):
     model = Benefit
 

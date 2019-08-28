@@ -74,7 +74,7 @@
             <a class="nav-link" href="#search"><i class="fas fa-search fa-fw"></i> Search</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"><i class="fas fa-question fa-fw"></i> User Guide</a>
+            <a class="nav-link" href="/user-guide"><i class="fas fa-question fa-fw"></i> User Guide</a>
           </li>
         </ul>
         <div id="navbar-login" class="ml-auto">
@@ -92,6 +92,43 @@
       {% endif %}
       {% block content %}{% endblock %}
     </div>
+    <footer class="footer bg-dark mt-5 pt-5 pb-3">
+      <div class="container-fluid text-center">
+          <h4 class="text-uppercase mb-1">Illinois Public Pensions Database</h4>
+          <p>
+            <a href="/"><i class="fas fa-home fa-fw"></i> Home</a> |
+            <a href="#search"><i class="fas fa-search fa-fw"></i> Search</a> |
+            <a href="/user-guide"><i class="fas fa-question fa-fw"></i> User Guide</a>
+          </p>
+
+          <a href="https://bettergov.org" class="navbar-brand mt-3">
+            <img src="{% static 'img/bga_logo.png' %}" alt="Home" class="header__logo-image" />
+          </a><br />
+          <p>
+            <strong>Better Government Association</strong>
+          </p>
+          <p>
+            223 W Jackson Blvd, Suite 300<br />
+            Chicago, IL 60606<br />
+            TEL (312) 427-8330
+          </p>
+
+          <p>
+            <strong>Other Data & Tools</strong>
+            <h5 class="m-0 p-0">
+               <a href="https://salary.bettergov.org"><i class="fas fa-landmark fa-fw"></i> <strong>Illinois Public Salaries Database</strong></a>
+            </h5>
+          </p>
+
+          <p class="mt-5">
+            Website by <a href="https://datamade.us"><img src="{% static 'img/datamade_logo.png' %}" alt="Home" class="datamade-logo align-top ml-1" /></a>
+          </p>
+
+          <p class="mt-5">
+            <a href="https://auth0.com/?utm_source=oss&amp;utm_medium=gp&amp;utm_campaign=oss" target="_blank" alt="Single Sign On &amp; Token Based Authentication - Auth0"><img src="{% static 'img/a0-badge-dark.png' %}" width="150" height="50" /></a>
+          </p>
+      </div>
+    </footer>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
