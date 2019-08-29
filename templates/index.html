@@ -10,7 +10,7 @@
   <div class="pt-5 pr-5 float-right">
     <div id="year-toggle">
       <div class="dropdown">
-        <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="yearDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="yearDropdownMenuButton" data-toggle="dropdown" data-flip="false" aria-haspopup="true" aria-expanded="false">
           {{ data_years.0 }}
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -143,7 +143,7 @@
   <div class="pt-5 pl-5 float-left">
     <div id="fund-toggle">
       <div class="dropdown">
-        <button class="btn btn-lg btn-secondary dropdown-toggle" type="button" id="fundDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-lg btn-secondary dropdown-toggle" type="button" id="fundDropdownMenuButton" data-toggle="dropdown" data-flip="false" aria-haspopup="true" aria-expanded="false">
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           {% for fund in pension_funds %}
