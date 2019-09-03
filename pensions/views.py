@@ -183,7 +183,8 @@ class Index(TemplateView):
                   data_year,
                   fund_type,
                   SUM(assets) AS funded_liability,
-                  SUM(total_liability - assets) AS unfunded_liability
+                  SUM(total_liability - assets) AS unfunded_liability,
+                  ARRAY_AGG(fund.name) AS member_funds
                 FROM pensions_pensionfund AS fund
                 JOIN pensions_annualreport AS report
                 ON fund.id = report.fund_id
@@ -192,12 +193,17 @@ class Index(TemplateView):
 
             annual_reports = cursor.fetchall()
 
-        for data_year, fund_type, funded_liability, unfunded_liability in annual_reports:
+        for data_year, fund_type, funded_liability, unfunded_liability, member_funds in annual_reports:
             container_name = '{}-container'.format(fund_type.lower())
             funded_liability = float(funded_liability)
             unfunded_liability = float(unfunded_liability)
 
-            data[data_year].append(self._make_pie_chart(container_name, funded_liability, unfunded_liability))
+            chart_data = self._make_pie_chart(container_name, funded_liability, unfunded_liability)
+
+            chart_data['fund_type'] = fund_type.lower()
+            chart_data['member_funds'] = list(member_funds)
+
+            data[data_year].append(chart_data)
 
         return data
 

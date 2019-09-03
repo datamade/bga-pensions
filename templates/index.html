@@ -50,62 +50,21 @@
       <h3 class="pb-4"><strong>Pension Liability by System</strong></h3>
     </div>
 
-    <div class="col-lg-5 offset-lg-1">
-      <div class="row">
-        <div class="col-lg-6">
-          <h4 class="chart-title">State Pension Liability</h4>
-          <h5 class="chart-subtitle"><span class="data-year"></span></h4>
-        </div>
-        <div class="col-lg-6 text-center">
-          <small class="text-uppercase">Total Liability</small><br />
-          <h2>$<span id="total-state-liability"></span></h2>
-        </div>
-      </div>
-      <div id="state-container"></div>
-    </div>
+    {% with fund_type='state' %}
+      {% include 'partials/system-pie-chart.html' %}
+    {% endwith %}
 
-    <div class="col-lg-5">
-      <div class="row">
-        <div class="col-lg-6">
-          <h4 class="chart-title">County Pension Liability</h4>
-          <h5 class="chart-subtitle"><span class="data-year"></span></h4>
-        </div>
-        <div class="col-lg-6 text-center">
-          <small class="text-uppercase">Total Liability</small><br />
-          <h2>$<span id="total-county-liability"></span></h2>
-        </div>
-      </div>
-      <div id="county-container"></div>
-    </div>
+    {% with fund_type='county' %}
+      {% include 'partials/system-pie-chart.html' %}
+    {% endwith %}
 
-    <div class="col-lg-5 offset-lg-1">
-      <div class="row">
-        <div class="col-lg-6">
-          <h4 class="chart-title">Chicago Municipal Pension Liability</h4>
-          <h5 class="chart-subtitle"><span class="data-year"></span></h4>
-        </div>
-        <div class="col-lg-6 text-center">
-          <small class="text-uppercase">Total Liability</small><br />
-          <h2>$<span id="total-chicago-liability"></span></h2>
-        </div>
-      </div>
-      <div id="chicago-container"></div>
-    </div>
+    {% with fund_type='chicago' %}
+      {% include 'partials/system-pie-chart.html' %}
+    {% endwith %}
 
-    <div class="col-lg-5">
-      <div class="row">
-        <div class="col-lg-6">
-          <h4 class="chart-title">Downstate Municipal Pension Liability</h4>
-          <h5 class="chart-subtitle"><span class="data-year"></span></h4>
-        </div>
-        <div class="col-lg-6 text-center">
-          <small class="text-uppercase">Total Liability</small><br />
-          <h2>$<span id="total-downstate-liability"></span></h2>
-        </div>
-      </div>
-      <div id="downstate-container"></div>
-    </div>
-
+    {% with fund_type='downstate' %}
+      {% include 'partials/system-pie-chart.html' %}
+    {% endwith %}
   </div>
 </div>
 
