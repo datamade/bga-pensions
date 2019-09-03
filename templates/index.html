@@ -45,67 +45,25 @@
 
 <div id="funding-by-system">
   <div class="row pt-5 pb-5">
-
     <div class="col-lg-10 offset-lg-1">
       <h3 class="pb-4"><strong>Pension Liability by System</strong></h3>
     </div>
 
-    <div class="col-lg-5 offset-lg-1">
-      <div class="row">
-        <div class="col-lg-6">
-          <h4 class="chart-title">State Pension Liability</h4>
-          <h5 class="chart-subtitle"><span class="data-year"></span></h4>
-        </div>
-        <div class="col-lg-6 text-center">
-          <small class="text-uppercase">Total Liability</small><br />
-          <h2>$<span id="total-state-liability"></span></h2>
-        </div>
-      </div>
-      <div id="state-container"></div>
-    </div>
+    {% with fund_type='state' %}
+      {% include 'partials/system-pie-chart.html' %}
+    {% endwith %}
 
-    <div class="col-lg-5">
-      <div class="row">
-        <div class="col-lg-6">
-          <h4 class="chart-title">County Pension Liability</h4>
-          <h5 class="chart-subtitle"><span class="data-year"></span></h4>
-        </div>
-        <div class="col-lg-6 text-center">
-          <small class="text-uppercase">Total Liability</small><br />
-          <h2>$<span id="total-county-liability"></span></h2>
-        </div>
-      </div>
-      <div id="county-container"></div>
-    </div>
+    {% with fund_type='county' %}
+      {% include 'partials/system-pie-chart.html' %}
+    {% endwith %}
 
-    <div class="col-lg-5 offset-lg-1">
-      <div class="row">
-        <div class="col-lg-6">
-          <h4 class="chart-title">Chicago Municipal Pension Liability</h4>
-          <h5 class="chart-subtitle"><span class="data-year"></span></h4>
-        </div>
-        <div class="col-lg-6 text-center">
-          <small class="text-uppercase">Total Liability</small><br />
-          <h2>$<span id="total-chicago-liability"></span></h2>
-        </div>
-      </div>
-      <div id="chicago-container"></div>
-    </div>
+    {% with fund_type='chicago' %}
+      {% include 'partials/system-pie-chart.html' %}
+    {% endwith %}
 
-    <div class="col-lg-5">
-      <div class="row">
-        <div class="col-lg-6">
-          <h4 class="chart-title">Downstate Municipal Pension Liability</h4>
-          <h5 class="chart-subtitle"><span class="data-year"></span></h4>
-        </div>
-        <div class="col-lg-6 text-center">
-          <small class="text-uppercase">Total Liability</small><br />
-          <h2>$<span id="total-downstate-liability"></span></h2>
-        </div>
-      </div>
-      <div id="downstate-container"></div>
-    </div>
-
+    {% with fund_type='downstate' %}
+      {% include 'partials/system-pie-chart.html' %}
+    {% endwith %}
   </div>
 </div>
 
@@ -209,8 +167,6 @@
   </div>
 </div>
 
-<a name="search"></a>
-
 <div class="row pt-5">
   <div class="col-lg-8 offset-lg-2">
     <p>What’s more, as the BGA has since 2012, users will be able to track the money paid to thousands of retired public-sector employees in Illinois. This is searchable information from the pension funds, including Chicago, Cook County and statewide. You can use this tool to find out how these break these down on an annual basis.</p>
@@ -219,9 +175,11 @@
   </div>
 </div>
 
+<a name="search"></a>
+
 <div class="row pt-5">
   <div class="col-lg-10 offset-lg-1">
-    <h2>Search <span class="employer-data-year"></span> <span class="employer-name"></span> Individual Pension Data</h2>
+    <h2><span class="employer-data-year"></span> <span class="employer-name"></span> Individual Pension Data Search</h2>
   </div>
 </div>
 
@@ -281,7 +239,7 @@
     import { PensionsController, ChartHelper } from "js/base"
 
     var yearData = {{ data_by_year|safe }};
-    var selectedYear = 2018;
+    var selectedYear = 2017;
     var selectedFund = 'Downstate/Suburban Teachers (TRS)';
 
     var chartHelper = new ChartHelper();

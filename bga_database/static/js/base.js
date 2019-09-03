@@ -17,7 +17,7 @@ class PensionsController {
 
         var yearHasData = (data !== undefined &&
             data.hasOwnProperty('aggregate_funding') &&
-            data.aggregate_funding.length > 0);
+            data.aggregate_funding.length === 4);
 
         if ( yearHasData ) {
             $('#funding-by-system').show();
@@ -202,6 +202,10 @@ class ChartHelper {
             },
             series: [data.series_data],
         });
+
+        if ( data.member_funds !== undefined ) {
+            $('#' + data.fund_type + '-members').text(data.member_funds);
+        };
     }
     makeDistributionChart (data) {
         var tooltip_format = function(point) {
