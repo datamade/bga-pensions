@@ -201,7 +201,7 @@ class Index(TemplateView):
             chart_data = self._make_pie_chart(container_name, funded_liability, unfunded_liability)
 
             chart_data['fund_type'] = fund_type.lower()
-            chart_data['member_funds'] = ', '.join([fund for fund in member_funds])
+            chart_data['member_funds'] = ', '.join([fund for fund in sorted(member_funds)])
 
             data[data_year].append(chart_data)
 
