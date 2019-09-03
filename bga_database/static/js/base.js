@@ -17,7 +17,7 @@ class PensionsController {
 
         var yearHasData = (data !== undefined &&
             data.hasOwnProperty('aggregate_funding') &&
-            data.aggregate_funding.length > 0);
+            data.aggregate_funding.length === 4);
 
         if ( yearHasData ) {
             $('#funding-by-system').show();
@@ -26,24 +26,10 @@ class PensionsController {
             // Set local variable for this access within loop.
             var self = this;
 
-            ['state', 'county', 'chicago', 'downstate'].forEach(function (el) {
-                var agg = data.aggregate_funding.filter(obj => {return obj.fund_type == el})[0]
-                if ( agg !== undefined ) {
-                    self.chartHelper.makePieChart(agg);
-                    $('#total-' + agg.fund_type + '-liability').text(agg.total_liability);
-                    $('#' + agg.container + '-no-data').hide();
-                    $('#' + agg.container + '-col').show();
-                } else {
-                    console.log('missing ' + el);
-                    $('#' + el + '-container-col').hide();
-                    $('#' + el + '-container-no-data').show();
-                }
+            data.aggregate_funding.forEach(function (el) {
+                self.chartHelper.makePieChart(el);
+                $('#' + el.container).prev().find('span[id^="total"]').text(el.total_liability);
             })
-
-//            data.aggregate_funding.forEach(function (el) {
-//                self.chartHelper.makePieChart(el);
-//                $('#' + el.container).prev().find('span[id^="total"]').text(el.total_liability);
-//            });
 
             $('span.data-year').text(this.selectedYear);
         } else {
@@ -219,7 +205,7 @@ class ChartHelper {
 
         if ( data.member_funds !== undefined ) {
             $('#' + data.fund_type + '-members').text(data.member_funds);
-        }
+        };
     }
     makeDistributionChart (data) {
         var tooltip_format = function(point) {
