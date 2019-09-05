@@ -55,8 +55,10 @@ class PensionsController {
         }
 
         if ( data.aggregate_funding !== undefined ) {
-            $('#fund-detail').show();
-            $('#fund-detail-no-data').hide();
+            $('[id^="fund-"][id$="-detail"]').show()
+            $('[id^="fund-"][id$="-detail-no-data"]').hide();
+
+
 
             this.chartHelper.makePieChart(data.aggregate_funding);
             this.chartHelper.makeBarChart(data.amortization_cost);
@@ -83,8 +85,8 @@ class PensionsController {
             $('#employer-liability-amount').text(data.total_liability);
             $('#employer-contribution-amount').text(data.employer_contribution);
         } else {
-            $('#fund-detail').hide();
-            $('#fund-detail-no-data').show();
+            $('[id^="fund-"][id$="-detail"]').hide()
+            $('[id^="fund-"][id$="-detail-no-data"]').show();
         };
 
         return data;
