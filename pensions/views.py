@@ -80,6 +80,10 @@ class Index(TemplateView):
 
             cache.set('data_years', data, CACHE_TIMEOUT)
 
+            # This is referenced a bunch of times. Update the local cache, so
+            # this query is only run once.
+            self._cache['data_years'] = data
+
         return data
 
     @property
