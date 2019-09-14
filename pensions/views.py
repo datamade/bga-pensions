@@ -73,8 +73,9 @@ class Index(TemplateView):
         data = self._cache.get('data_years', [])
 
         if not data:
-            data = Benefit.objects.distinct('data_year')\
-                                  .values_list('data_year', flat=True)
+            with connection.cursor() as cursor:
+                cursor.execute('SELECT DISTINCT(data_year) FROM pensions_benefit')
+                data = [year[0] for year in cursor]
 
             cache.set('data_years', data, CACHE_TIMEOUT)
 
