@@ -29,6 +29,7 @@ class Index(TemplateView):
         context['data_years'] = list(self.data_years)
         context['pension_funds'] = self.pension_funds
         context['data_by_year'] = self.data_by_year()
+        context['search_link'] = '#search'
 
         return context
 
@@ -288,6 +289,11 @@ class Index(TemplateView):
 
 class UserGuide(TemplateView):
     template_name = 'user-guide.html'
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context['search_link'] = '/#search'
+        return context
 
 
 class BenefitListJson(BaseDatatableView):
