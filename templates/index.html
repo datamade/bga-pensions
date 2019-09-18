@@ -86,7 +86,7 @@
         <button class="btn btn-lg btn-secondary dropdown-toggle" type="button" id="fundDropdownMenuButton" data-toggle="dropdown" data-flip="false" aria-haspopup="true" aria-expanded="false">
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          {% for fund in pension_funds %}
+          {% for fund in pension_funds|dictsort:'name' %}
             <span class="dropdown-item fund-dropdown-item">{{ fund }}</span>
           {% endfor %}
         </div>

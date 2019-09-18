@@ -76,7 +76,7 @@ class Index(TemplateView):
         if not data:
             with connection.cursor() as cursor:
                 cursor.execute('SELECT DISTINCT(data_year) FROM pensions_benefit')
-                data = [year[0] for year in cursor]
+                data = sorted([year[0] for year in cursor])
 
             cache.set('data_years', data, CACHE_TIMEOUT)
 
