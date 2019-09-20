@@ -22,7 +22,7 @@ DATABASES = {
         'NAME': 'bga_pensions',
         'USER': 'postgres',
         'PASSWORD': '',
-        'HOST': 'localhost',
+        'HOST': 'postgres',
         'PORT': '5432',
     }
 }
