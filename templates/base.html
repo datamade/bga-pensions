@@ -81,7 +81,7 @@
           {% if not request.user.is_anonymous %}
             <p class="nav-link m-0 text-light">Hello, {{ request.user.email }}! <a href="{% url 'auth0_logout' %}" class="text-light"><i class="fas fa-sign-out-alt"></i> Log out</a></p>
           {% else %}
-            <a href="{% url 'social:begin' 'auth0' %}" class="nav-link text-light"><i class="fas fa-sign-in-alt"></i> Log In</a>
+            <a href="{% url 'salsa_auth:login' %}" class="nav-link text-light"><i class="fas fa-sign-in-alt"></i> Log In</a>
           {% endif %}
         </div>
       </div>

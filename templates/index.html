@@ -25,6 +25,13 @@
 
 <div class="row pt-0">
   <div class="col-lg-8 offset-lg-2">
+    {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}" role="alert">
+            <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i> {{ message }}
+          </div>
+        {% endfor %}
+    {% endif %}
     <h3>Illinois Public Pensions Database</h3>
 
     <p class="lead">The pension crisis affecting the state of Illinois, Cook County and the city of Chicago spurs vigorous debate about the reasons it became Illinois’ most vexing problem and little agreement about how to solve it.</p>
@@ -316,7 +323,8 @@
         url: makeAjaxUrl(controller),
         error: function (response, status, code) {
           if ( response.status === 401 ) {
-            window.location = '{% url "social:begin" "auth0" %}';
+            // window.location = '';
+            $.noop();
           } else {
             alert(response.responseText);
           }

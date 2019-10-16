@@ -19,7 +19,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -27,10 +26,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'social_django',
     'pensions',
     'compressor',
     'compressor_toolkit',
+    'salsa_auth',
     'debug_toolbar',
 ]
 
@@ -45,15 +44,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-AUTHENTICATION_BACKENDS = [
-    'pensions.auth0backend.Auth0',
-    'django.contrib.auth.backends.ModelBackend'
-]
-
 ROOT_URLCONF = 'bga_database.urls'
-
-LOGIN_URL = '/login/auth0/'
-LOGIN_REDIRECT_URL = '/'
 
 TEMPLATES = [
     {
@@ -66,8 +57,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -84,26 +73,6 @@ COMPRESS_ES6_COMPILER_CMD = (
     '{browserify_bin} "{infile}" -o "{outfile}" '
     '-t [ "{node_modules}/babelify" --presets="{node_modules}/babel-preset-env" ]'
 )
-
-
-# Password validation
-# https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -136,3 +105,5 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'compressor.finders.CompressorFinder',
 )
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
