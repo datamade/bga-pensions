@@ -8,4 +8,4 @@ flake8==3.7.8
 gunicorn==19.9.0
 csvkit==1.0.4
 requests==2.22.0
-# -e django-salsa-auth
+git+https://github.com/hancush/django-salsa-auth.git@scaffolding
