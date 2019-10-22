@@ -47,17 +47,12 @@ CACHES = {
     }
 }
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'host'
+EMAIL_HOST_USER = 'user'
+EMAIL_HOST_PASSWORD = 'password'
+EMAIL_PORT = 587
 
-# Auth0
+SALSA_API_KEY = 'some key'
 
-SOCIAL_AUTH_TRAILING_SLASH = True  # Expect trailing slash in URLs
-SOCIAL_AUTH_AUTH0_DOMAIN = 'your-domain'
-SOCIAL_AUTH_AUTH0_KEY = 'your-key'
-SOCIAL_AUTH_AUTH0_SECRET = 'your-secret'
-
-SOCIAL_AUTH_AUTH0_SCOPE = [
-    'openid',
-    'profile'
-]
-
-SOCIAL_AUTH_POSTGRES_JSONFIELD = True
