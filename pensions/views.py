@@ -1,7 +1,4 @@
-from urllib.parse import urlencode
-
 from django.contrib.humanize.templatetags.humanize import intword, intcomma
-from django.contrib.auth import logout as log_out
 from django.conf import settings
 from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
