@@ -12,6 +12,9 @@ ALLOWED_HOSTS = [
     '*.datamade.us',
 ]
 
+import socket
+import os
+
 # Add dynamically generated Docker IP
 # Don't do this in production!
 hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
