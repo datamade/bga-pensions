@@ -20,8 +20,32 @@ from pensions.models import PensionFund, Benefit
 CACHE_TIMEOUT = 60*60*24*7
 
 
-class Index(TemplateView):
+class CacheMixin:
+    cache_keys = []
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._cache = cache.get_many(self.cache_keys)
+        self.initial_keys = self._cache.keys()
+
+    def _update_cache(self):
+        new_keys = {k: v for k, v in self._cache.items() if k not in self.initial_keys}
+        if new_keys:
+            cache.set_many(new_keys, CACHE_TIMEOUT)
+
+    def render_to_response(self, *args, **kwargs):
+        self._update_cache()
+        return super().render_to_response(*args, **kwargs)
+
+
+class Index(CacheMixin, TemplateView):
     template_name = 'index.html'
+    cache_keys = [
+        'data_years',
+        'benefit_aggregates',
+        'binned_benefit_data',
+        'funding_aggregates',
+    ]
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -59,26 +83,13 @@ class Index(TemplateView):
         return data_by_year
 
     @property
-    def _cache(self):
-        if not hasattr(self, '_kache'):
-            self._kache = cache.get_many([
-                'data_years',
-                'benefit_aggregates',
-                'binned_benefit_data'
-            ])
-
-        return self._kache
-
-    @property
     def data_years(self):
-        data = self._cache.get('data_years', [])
+        data = self._cache.get('data_years', None)
 
-        if not data:
+        if data is None:
             with connection.cursor() as cursor:
                 cursor.execute('SELECT DISTINCT(data_year) FROM pensions_benefit')
                 data = sorted([year[0] for year in cursor])
-
-            cache.set('data_years', data, CACHE_TIMEOUT)
 
             # This is referenced a bunch of times. Update the local cache, so
             # this query is only run once.
@@ -89,14 +100,14 @@ class Index(TemplateView):
     @property
     def pension_funds(self):
         if not hasattr(self, '_pension_funds'):
-            self._pension_funds = PensionFund.objects.all()
+            self._pension_funds = PensionFund.objects.all().order_by('name')
         return self._pension_funds
 
     @property
     def benefit_aggregates(self):
-        data = self._cache.get('benefit_aggregates', {})
+        data = self._cache.get('benefit_aggregates', None)
 
-        if not data:
+        if data is None:
             aggregates = Benefit.objects\
                                 .values('fund__name', 'data_year')\
                                 .annotate(median=Percentile('amount', 0.5, output_field=FloatField()), count=Count('id'))
@@ -111,15 +122,15 @@ class Index(TemplateView):
                         'count': self._format_large_number(a['count']),
                     }
 
-            cache.set('benefit_aggregates', data, CACHE_TIMEOUT)
+            self._cache['benefit_aggregates'] = data
 
         return data
 
     @property
     def binned_benefit_data(self):
-        data = self._cache.get('binned_benefit_data', {})
+        data = self._cache.get('binned_benefit_data', None)
 
-        if not data:
+        if data is None:
             DISTRIBUTION_BIN_NUM = 10
             DISTRIBUTION_MAX = 250000
 
@@ -173,7 +184,7 @@ class Index(TemplateView):
 
                 data[year] = year_data
 
-            cache.set('binned_benefit_data', data, CACHE_TIMEOUT)
+            self._cache['binned_benefit_data'] = data
 
         return data
 
@@ -182,35 +193,40 @@ class Index(TemplateView):
         '''
         {2017: [list, of, level, data]}
         '''
-        data = {year: [] for year in self.data_years}
+        data = self._cache.get('funding_aggregates', None)
 
-        with connection.cursor() as cursor:
-            cursor.execute('''
-                SELECT
-                  data_year,
-                  fund_type,
-                  SUM(assets) AS funded_liability,
-                  SUM(total_liability - assets) AS unfunded_liability,
-                  ARRAY_AGG(fund.name) AS member_funds
-                FROM pensions_pensionfund AS fund
-                JOIN pensions_annualreport AS report
-                ON fund.id = report.fund_id
-                GROUP BY data_year, fund_type
-            ''')
+        if data is None:
+            data = {year: [] for year in self.data_years}
 
-            annual_reports = cursor.fetchall()
+            with connection.cursor() as cursor:
+                cursor.execute('''
+                    SELECT
+                      data_year,
+                      fund_type,
+                      SUM(assets) AS funded_liability,
+                      SUM(total_liability - assets) AS unfunded_liability,
+                      ARRAY_AGG(fund.name) AS member_funds
+                    FROM pensions_pensionfund AS fund
+                    JOIN pensions_annualreport AS report
+                    ON fund.id = report.fund_id
+                    GROUP BY data_year, fund_type
+                ''')
 
-        for data_year, fund_type, funded_liability, unfunded_liability, member_funds in annual_reports:
-            container_name = '{}-container'.format(fund_type.lower())
-            funded_liability = float(funded_liability)
-            unfunded_liability = float(unfunded_liability)
+                annual_reports = cursor.fetchall()
 
-            chart_data = self._make_pie_chart(container_name, funded_liability, unfunded_liability)
+            for data_year, fund_type, funded_liability, unfunded_liability, member_funds in annual_reports:
+                container_name = '{}-container'.format(fund_type.lower())
+                funded_liability = float(funded_liability)
+                unfunded_liability = float(unfunded_liability)
 
-            chart_data['fund_type'] = fund_type.lower()
-            chart_data['member_funds'] = '; '.join([fund for fund in sorted(member_funds)])
+                chart_data = self._make_pie_chart(container_name, funded_liability, unfunded_liability)
 
-            data[data_year].append(chart_data)
+                chart_data['fund_type'] = fund_type.lower()
+                chart_data['member_funds'] = '; '.join([fund for fund in sorted(member_funds)])
+
+                data[data_year].append(chart_data)
+
+            self._cache['funding_aggregates'] = data
 
         return data
 
