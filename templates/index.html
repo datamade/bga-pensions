@@ -25,13 +25,6 @@
 
 <div class="row pt-0">
   <div class="col-lg-8 offset-lg-2">
-    {% if messages %}
-        {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}" role="alert">
-            <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i> {{ message }}
-          </div>
-        {% endfor %}
-    {% endif %}
     <h3>Illinois Public Pensions Database</h3>
 
     <p class="lead">The pension crisis affecting the state of Illinois, Cook County and the city of Chicago spurs vigorous debate about the reasons it became Illinois’ most vexing problem and little agreement about how to solve it.</p>
@@ -281,12 +274,23 @@
     </div>
   </div>
 </div>
+
+{% include 'auth_modals.html' %}
+
 {% endblock %}
 
 {% block extra_js %}
 <script src="{% static 'lib/highcharts.js' %}"></script>
 <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+<script src="{% static 'js/render_salsa_auth.js' %}"></script>
+
+{% if messages %}
+<script type="text/javascript">
+  $('#messageModal').modal()
+</script>
+{% endif %}
+
 {% compress js %}
   <script type="module" src="{% static 'js/base.js' %}"></script>
   <script type="module">
@@ -323,8 +327,7 @@
         url: makeAjaxUrl(controller),
         error: function (response, status, code) {
           if ( response.status === 401 ) {
-            // window.location = '';
-            $.noop();
+            $('#loginModal').modal();
           } else {
             alert(response.responseText);
           }
