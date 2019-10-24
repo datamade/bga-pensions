@@ -80,9 +80,6 @@
       </div>
     </nav>
     <div class="container-fluid">
-      {% if request.GET.verify_email == 'true' %}
-        <strong>Please verify your email address to use the Pensions Database.</strong>
-      {% endif %}
       {% block content %}{% endblock %}
     </div>
     <footer class="footer bg-dark mt-5 pt-5 pb-3">
