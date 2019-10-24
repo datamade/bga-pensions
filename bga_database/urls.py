@@ -25,11 +25,10 @@ urlpatterns = [
     path('user-guide/', pension_views.UserGuide.as_view()),
     path('benefits/', pension_views.BenefitListJson.as_view(), name='benefit_list_json'),
     path('admin/', admin.site.urls),
-    path('logout/', pension_views.logout, name='auth0_logout'),
-    path('', include('django.contrib.auth.urls')),
-    path('', include('social_django.urls')),
     path('pong/', pension_views.pong),
     path('flush/', pension_views.flush_cache),
+    path('salsa/', include('salsa_auth.urls')),
+    path('', include('django.contrib.auth.urls')),
 ]
 
 if settings.DEBUG:

@@ -1,7 +1,4 @@
-from urllib.parse import urlencode
-
 from django.contrib.humanize.templatetags.humanize import intword, intcomma
-from django.contrib.auth import logout as log_out
 from django.conf import settings
 from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
@@ -345,14 +342,16 @@ class BenefitListJson(BaseDatatableView):
         Kick unauthenticated users to the login screen after five keyword
         searches and/or result page changes.
         '''
-#        if self.request.GET.get('search[value]', False) or int(self.request.GET.get('start'), 0) > 0:
-#            if not self.request.session.get('n_searches'):
-#                self.request.session['n_searches'] = 0
-#
-#            self.request.session['n_searches'] += 1
-#
-#            if self.request.session['n_searches'] > 5 and self.request.user.is_anonymous:
-#                raise PermissionDenied
+        if self.request.GET.get('search[value]', False) or int(self.request.GET.get('start'), 0) > 0:
+            if not self.request.session.get('n_searches'):
+                self.request.session['n_searches'] = 0
+
+            self.request.session['n_searches'] += 1
+
+            anonymous_user = settings.SALSA_AUTH_COOKIE_NAME not in self.request.COOKIES
+
+            if anonymous_user and self.request.session['n_searches'] > 5:
+                raise PermissionDenied
 
         return super().get(*args, **kwargs)
 
@@ -390,14 +389,6 @@ class BenefitListJson(BaseDatatableView):
         if amount in ('', None, 'None'):
             return amount
         return '${}'.format(intcomma(amount))
-
-
-def logout(request):
-    log_out(request)
-    return_to = urlencode({'returnTo': request.build_absolute_uri('/')})
-    logout_url = 'https://%s/v2/logout?client_id=%s&%s' % \
-                 (settings.SOCIAL_AUTH_AUTH0_DOMAIN, settings.SOCIAL_AUTH_AUTH0_KEY, return_to)
-    return HttpResponseRedirect(logout_url)
 
 
 def pong(request):

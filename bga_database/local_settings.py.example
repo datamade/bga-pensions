@@ -12,6 +12,14 @@ ALLOWED_HOSTS = [
     '*.datamade.us',
 ]
 
+import socket
+import os
+
+# Add dynamically generated Docker IP
+# Don't do this in production!
+hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+INTERNAL_IPS = [ip[:-1] + '1' for ip in ips] + ['127.0.0.1']
+
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -22,7 +30,7 @@ DATABASES = {
         'NAME': 'bga_pensions',
         'USER': 'postgres',
         'PASSWORD': '',
-        'HOST': 'localhost',
+        'HOST': 'postgres',
         'PORT': '5432',
     }
 }
@@ -47,17 +55,13 @@ CACHES = {
 #     }
 # }
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'host'
+EMAIL_HOST_USER = 'user'
+EMAIL_HOST_PASSWORD = 'password'
+EMAIL_PORT = 587
 
-# Auth0
-
-SOCIAL_AUTH_TRAILING_SLASH = True  # Expect trailing slash in URLs
-SOCIAL_AUTH_AUTH0_DOMAIN = 'your-domain'
-SOCIAL_AUTH_AUTH0_KEY = 'your-key'
-SOCIAL_AUTH_AUTH0_SECRET = 'your-secret'
-
-SOCIAL_AUTH_AUTH0_SCOPE = [
-    'openid',
-    'profile'
-]
-
-SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+SALSA_AUTH_API_KEY = ''
+SALSA_AUTH_COOKIE_NAME = ''
+SALSA_AUTH_COOKIE_DOMAIN = ''
+SALSA_AUTH_REDIRECT_LOCATION = ''
