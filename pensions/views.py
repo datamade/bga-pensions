@@ -342,14 +342,16 @@ class BenefitListJson(BaseDatatableView):
         Kick unauthenticated users to the login screen after five keyword
         searches and/or result page changes.
         '''
-#        if self.request.GET.get('search[value]', False) or int(self.request.GET.get('start'), 0) > 0:
-#            if not self.request.session.get('n_searches'):
-#                self.request.session['n_searches'] = 0
-#
-#            self.request.session['n_searches'] += 1
-#
-#            if self.request.session['n_searches'] > 5 and self.request.user.is_anonymous:
-#                raise PermissionDenied
+        if self.request.GET.get('search[value]', False) or int(self.request.GET.get('start'), 0) > 0:
+            if not self.request.session.get('n_searches'):
+                self.request.session['n_searches'] = 0
+
+            self.request.session['n_searches'] += 1
+
+            anonymous_user = settings.SALSA_AUTH_COOKIE_NAME not in self.request.COOKIES
+
+            if anonymous_user and self.request.session['n_searches'] > 5:
+                raise PermissionDenied
 
         return super().get(*args, **kwargs)
 
