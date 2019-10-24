@@ -12,6 +12,11 @@ ALLOWED_HOSTS = [
     '*.datamade.us',
 ]
 
+# Add dynamically generated Docker IP
+# Don't do this in production!
+hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+INTERNAL_IPS = [ip[:-1] + '1' for ip in ips] + ['127.0.0.1']
+
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -40,22 +45,21 @@ CACHES = {
 }
 
 # Uncomment for local development
+#
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+#     }
+# }
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-    }
-}
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'host'
 EMAIL_HOST_USER = 'user'
 EMAIL_HOST_PASSWORD = 'password'
 EMAIL_PORT = 587
 
-SALSA_API_KEY = ''
-
-AUTH_COOKIE_NAME = ''
-AUTH_COOKIE_DOMAIN = ''
-AUTH_REDIRECT_LOCATION = ''
+SALSA_AUTH_API_KEY = ''
+SALSA_AUTH_DEBUG = False
+SALSA_AUTH_COOKIE_NAME = ''
+SALSA_AUTH_COOKIE_DOMAIN = ''
+SALSA_AUTH_REDIRECT_LOCATION = ''

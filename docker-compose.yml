@@ -13,7 +13,7 @@ services:
       # Map ports on your computer to ports on your container. This allows you,
       # e.g., to visit your containerized application in a browser on your
       # computer.
-      - 8001:8000
+      - 8000:8000
     depends_on:
       postgres:
         condition: service_healthy
@@ -39,7 +39,7 @@ services:
     volumes:
       # These should generally be the same as your application volumes.
       - .:/app
-      - ${PWD}/bga_database/local_settings.py.example:/app/bga_database/local_settings.py
+      # - ${PWD}/bga_database/local_settings.py.example:/app/bga_database/local_settings.py
       - /Users/hannah/projects/django-salsa-auth:/app/django-salsa-auth
     command: python manage.py migrate
 
@@ -65,7 +65,7 @@ services:
       # volumes: https://linuxhint.com/run_postgresql_docker_compose/
       - bga-pensions-db-data:/var/lib/postgresql/data
     ports:
-      - 32002:5432
+      - 32001:5432
 
 volumes:
   # Declare your named volume for Postgres.
