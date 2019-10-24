@@ -26,7 +26,7 @@ class CacheMixin:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._cache = cache.get_many(self.cache_keys)
-        self.initial_keys = self._cache.keys()
+        self.initial_keys = list(self._cache.keys())
 
     def _update_cache(self):
         new_keys = {k: v for k, v in self._cache.items() if k not in self.initial_keys}
