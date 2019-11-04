@@ -81,16 +81,20 @@ class Index(CacheMixin, TemplateView):
 
     @property
     def data_years(self):
-        data = self._cache.get('data_years', None)
+        if settings.DEBUG:
+            # For local development without individual data
+            data = sorted([year for year in range(2012, 2020)])
+        else:
+            data = self._cache.get('data_years', None)
 
-        if data is None:
-            with connection.cursor() as cursor:
-                cursor.execute('SELECT DISTINCT(data_year) FROM pensions_benefit')
-                data = sorted([year[0] for year in cursor])
+            if data is None:
+                with connection.cursor() as cursor:
+                    cursor.execute('SELECT DISTINCT(data_year) FROM pensions_benefit')
+                    data = sorted([year[0] for year in cursor])
 
-            # This is referenced a bunch of times. Update the local cache, so
-            # this query is only run once.
-            self._cache['data_years'] = data
+                # This is referenced a bunch of times. Update the local cache, so
+                # this query is only run once.
+                self._cache['data_years'] = data
 
         return data
 
@@ -289,13 +293,13 @@ class Index(CacheMixin, TemplateView):
             'x_axis_categories': [''],
             'axis_label': 'Dollars',
             'funded': {
-                'name': '<strong>Amortization Cost:</strong> Present cost of paying down past debt',
+                'name': '<strong>Amortization Cost:</strong> Cost of borrowing to pay back underfunding',
                 'data': [amortization_cost],
                 'color': '#fd0',
                 'legendIndex': 1,
             },
             'unfunded': {
-                'name': '<strong>Employer Normal Cost:</strong> Projected cost to cover future benefits for current employees',
+                'name': '<strong>Employer Normal Cost:</strong> Cost to taxpayers to cover pension benefits',
                 'data': [normal_cost],
                 'color': '#67488b',
                 'legendIndex': 0,
