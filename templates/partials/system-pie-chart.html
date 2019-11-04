@@ -1,7 +1,7 @@
  <div class="col-lg-5{% if fund_type in 'state,chicago' %} offset-lg-1{% endif %} mb-3" id="{{ fund_type }}-container-col">
   <div class="row">
     <div class="col-lg-6">
-      <h4 class="chart-title">{% if fund_type == 'county' %}Cook {% endif %}{{ fund_type|title }}{% if fund_type == 'chicago' or fund_type == 'downstate' %} Municipal{% endif %}<br />Pension Liability</h4>
+      <h4 class="chart-title">{% if fund_type == 'county' %}Cook {% endif %}{{ fund_type|title }}{% if fund_type == 'chicago' or fund_type == 'downstate' %} Municipal{% endif %} Funds</h4>
       <h5 class="chart-subtitle"><span class="data-year"></span></h4>
     </div>
     <div class="col-lg-6 text-center">
@@ -15,7 +15,7 @@
   </div>
   <div class="row">
     <div class="col-lg-12">
-      <small class="text-secondary"><strong>Funds represented:</strong> <span id="{{ fund_type }}-members"></span></small>
+      <small class="text-secondary"><strong>Funds represented:</strong> <span id="{{ fund_type }}-members"></span>{% if fund_type == 'downstate' %}; Does not include police and fire pension funds for individual cities{% endif %}</small>
     </div>
   </div>
 </div>

@@ -58,8 +58,6 @@ class PensionsController {
             $('[id^="fund-"][id$="-detail"]').show()
             $('[id^="fund-"][id$="-detail-no-data"]').hide();
 
-
-
             this.chartHelper.makePieChart(data.aggregate_funding);
             this.chartHelper.makeBarChart(data.amortization_cost);
 
