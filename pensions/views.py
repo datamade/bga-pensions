@@ -299,7 +299,7 @@ class Index(CacheMixin, TemplateView):
                 'legendIndex': 1,
             },
             'unfunded': {
-                'name': '<strong>Employer Normal Cost:</strong> Cost to taxpayers to cover pension benefits',
+                'name': '<strong>Employer Normal Cost:</strong> Cost for pension benefits in a year',
                 'data': [normal_cost],
                 'color': '#67488b',
                 'legendIndex': 0,
