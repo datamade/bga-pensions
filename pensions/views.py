@@ -51,6 +51,7 @@ class Index(CacheMixin, TemplateView):
         context['pension_funds'] = self.pension_funds
         context['data_by_year'] = self.data_by_year()
         context['search_link'] = '#search'
+        context['title'] = 'Home'
 
         return context
 
@@ -314,6 +315,7 @@ class UserGuide(TemplateView):
     def get_context_data(self):
         context = super().get_context_data()
         context['search_link'] = '/#search'
+        context['title'] = 'User Guide'
         return context
 
 
