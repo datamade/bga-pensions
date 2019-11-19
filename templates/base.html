@@ -23,7 +23,7 @@
     <meta content="website" property="og:type">
     <meta content="Searchable information from the largest public-sector pension funds in Illinois." property="og:description">
     <meta content="{{ request.build_absolute_uri }}" property="og:url">
-    <meta content="{% static 'img/share_card.jpg' %}" property="og:image">
+    <meta content="{{ request.scheme }}://{{ request.get_host }}{% static 'img/share_card.jpg' %}" property="og:image">
 
     <!-- Twitter metadata -->
     <meta name="twitter:card" content="summary_large_image">
@@ -32,7 +32,7 @@
     <meta name="twitter:title" content="{{ title }}">
     <meta name="twitter:url" content="{{ request.build_absolute_uri }}">
     <meta name="twitter:description" content="Searchable information from the largest public-sector pension funds in Illinois.">
-    <meta name="twitter:image" content="{% static 'img/share_card.jpg' %}">
+    <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'img/share_card.jpg' %}">
 
     <link rel="icon" type="image/png" href="{% static 'img/favicon-32x32.png' %}" sizes="32x32" />
     <link rel="icon" type="image/png" href="{% static 'img/favicon-16x16.png' %}" sizes="16x16" />
