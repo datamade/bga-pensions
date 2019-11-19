@@ -16,13 +16,12 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
-from django.views.decorators.cache import cache_page
 
 from pensions import views as pension_views
 
 
 urlpatterns = [
-    path('', cache_page(pension_views.CACHE_TIMEOUT)(pension_views.Index.as_view())),
+    path('', pension_views.Index.as_view()),
     path('user-guide/', pension_views.UserGuide.as_view()),
     path('benefits/', pension_views.BenefitListJson.as_view(), name='benefit_list_json'),
     path('admin/', admin.site.urls),

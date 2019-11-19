@@ -394,6 +394,73 @@ class BenefitListJson(BaseDatatableView):
             return amount
         return '${}'.format(intcomma(amount))
 
+    def get_context_data(self, *args, **kwargs):
+        '''
+        Override this in order to access the cached total records value.
+        '''
+        try:
+            self.initialize(*args, **kwargs)
+
+            # prepare columns data (for DataTables 1.10+)
+            self.columns_data = self.extract_datatables_column_data()
+
+            # determine the response type based on the 'data' field passed from JavaScript
+            # https://datatables.net/reference/option/columns.data
+            # col['data'] can be an integer (return list) or string (return dictionary)
+            # we only check for the first column definition here as there is no way to return list and dictionary
+            # at once
+            self.is_data_list = True
+            if self.columns_data:
+                self.is_data_list = False
+                try:
+                    int(self.columns_data[0]['data'])
+                    self.is_data_list = True
+                except ValueError:
+                    pass
+
+            # prepare list of columns to be returned
+            self._columns = self.get_columns()
+
+            # prepare initial queryset
+            qs = self.get_initial_queryset()
+
+            # store the total number of records (before filtering)
+            # TODO: Cache this, rather than hardcoding
+            total_records = 3713872
+
+            # apply filters
+            qs = self.filter_queryset(qs)
+
+            # number of records after filtering
+            total_display_records = qs.count()
+
+            # apply ordering
+            qs = self.ordering(qs)
+
+            # apply pagintion
+            qs = self.paging(qs)
+
+            # prepare output data
+            if self.pre_camel_case_notation:
+                aaData = self.prepare_results(qs)
+
+                ret = {'sEcho': int(self._querydict.get('sEcho', 0)),
+                       'iTotalRecords': total_records,
+                       'iTotalDisplayRecords': total_display_records,
+                       'aaData': aaData
+                       }
+            else:
+                data = self.prepare_results(qs)
+
+                ret = {'draw': int(self._querydict.get('draw', 0)),
+                       'recordsTotal': total_records,
+                       'recordsFiltered': total_display_records,
+                       'data': data
+                       }
+            return ret
+        except Exception as e:
+            return self.handle_exception(e)
+
 
 def pong(request):
     try:
