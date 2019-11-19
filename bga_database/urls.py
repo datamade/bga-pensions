@@ -22,7 +22,7 @@ from pensions import views as pension_views
 
 
 urlpatterns = [
-    path('', cache_page(60*60*24*7)(pension_views.Index.as_view())),
+    path('', cache_page(pension_views.CACHE_TIMEOUT)(pension_views.Index.as_view())),
     path('user-guide/', pension_views.UserGuide.as_view()),
     path('benefits/', pension_views.BenefitListJson.as_view(), name='benefit_list_json'),
     path('admin/', admin.site.urls),
