@@ -84,7 +84,7 @@ class Index(CacheMixin, TemplateView):
     def data_years(self):
         if settings.DEBUG:
             # For local development without individual data
-            data = sorted([year for year in range(2012, 2020)])
+            data = sorted([year for year in range(2012, 2021)])
         else:
             data = self._cache.get('data_years', None)
 
@@ -383,7 +383,7 @@ class BenefitListJson(BaseDatatableView):
                 item.first_name,
                 item.last_name,
                 self._format_currency(item.amount),
-                item.years_of_service,
+                self._format_years_of_service(item.years_of_service),
                 self._format_currency(item.final_salary),
                 item.start_date,
                 item.status,
@@ -395,6 +395,12 @@ class BenefitListJson(BaseDatatableView):
         if amount in ('', None, 'None'):
             return amount
         return '${}'.format(intcomma(amount))
+
+    def _format_years_of_service(self, years):
+        if years:
+            return years.normalize()
+
+        return years
 
     def get_context_data(self, *args, **kwargs):
         '''

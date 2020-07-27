@@ -81,7 +81,6 @@ class Benefit(VintagedModel):
     Beneficiaries are not linked year over year, i.e., Beneficiary objects
     across years may refer to the same person.
 
-
     Starting in 2018, data contain benefit status, e.g., "retiree", "widow/er",
     or "disability".
     '''
@@ -91,7 +90,7 @@ class Benefit(VintagedModel):
     last_name = models.CharField(max_length=256)
     full_name = models.CharField(max_length=256*2)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    years_of_service = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    years_of_service = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     final_salary = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     start_date = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=256, null=True, blank=True)
