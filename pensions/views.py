@@ -398,8 +398,7 @@ class BenefitListJson(BaseDatatableView):
 
     def _format_years_of_service(self, years):
         if years:
-            return years.normalize()
-
+            return round(years)
         return years
 
     def get_context_data(self, *args, **kwargs):
