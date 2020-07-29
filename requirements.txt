@@ -1,4 +1,4 @@
-django==2.2.2
+django==2.2.13
 psycopg2==2.8.3
 django-compressor-toolkit==0.6.0
 django-datatables-view==1.18.0
