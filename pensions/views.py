@@ -84,8 +84,7 @@ class Index(CacheMixin, TemplateView):
     @property
     def default_year(self):
         '''
-        Select the max year where there is an annual report for at least one
-        fund for each of the four systems, i.e., the lead charts will show.
+        Show the most recent year where there is an annual report for all funds.
         '''
         with connection.cursor() as cursor:
             cursor.execute('''
@@ -93,14 +92,12 @@ class Index(CacheMixin, TemplateView):
                 FROM (
                   SELECT
                     data_year,
-                    COUNT(DISTINCT(fund_type)) AS system_count
+                    COUNT(*) AS fund_count
                   FROM pensions_annualreport AS report
-                  JOIN pensions_pensionfund AS fund
-                  ON report.fund_id = fund.id
                   GROUP BY data_year
                 ) x
-                WHERE system_count = (
-                  SELECT COUNT(DISTINCT(fund_type))
+                WHERE fund_count = (
+                  SELECT COUNT(*)
                   FROM pensions_pensionfund
                 )
             ''')
