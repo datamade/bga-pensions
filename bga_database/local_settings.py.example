@@ -47,13 +47,12 @@ CACHES = {
     }
 }
 
-# Uncomment for local development
-#
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-#     }
-# }
+# Comment out to test the cache
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'host'

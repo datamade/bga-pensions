@@ -48,6 +48,7 @@ class Index(CacheMixin, TemplateView):
         context = super().get_context_data(*args, **kwargs)
 
         context['data_years'] = list(self.data_years)
+        context['default_year'] = self.default_year
         context['pension_funds'] = self.pension_funds
         context['data_by_year'] = self.data_by_year()
         context['search_link'] = '#search'
@@ -79,6 +80,35 @@ class Index(CacheMixin, TemplateView):
             data_by_year[year] = year_data
 
         return data_by_year
+
+    @property
+    def default_year(self):
+        '''
+        Select the max year where there is an annual report for at least one
+        fund for each of the four systems, i.e., the lead charts will show.
+        '''
+        with connection.cursor() as cursor:
+            cursor.execute('''
+                SELECT MAX(data_year)
+                FROM (
+                  SELECT
+                    data_year,
+                    COUNT(DISTINCT(fund_type)) AS system_count
+                  FROM pensions_annualreport AS report
+                  JOIN pensions_pensionfund AS fund
+                  ON report.fund_id = fund.id
+                  GROUP BY data_year
+                ) x
+                WHERE system_count = (
+                  SELECT COUNT(DISTINCT(fund_type))
+                  FROM pensions_pensionfund
+                )
+            ''')
+
+            result, = cursor
+            default_year, = result
+
+            return default_year
 
     @property
     def data_years(self):

@@ -325,7 +325,7 @@
     import { PensionsController, ChartHelper } from "js/base"
 
     var yearData = {{ data_by_year|safe }};
-    var selectedYear = 2017;
+    var selectedYear = {{ default_year }};
     var selectedFund = 'Downstate/Suburban Teachers (TRS)';
 
     var chartHelper = new ChartHelper();
