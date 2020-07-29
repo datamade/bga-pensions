@@ -40,13 +40,15 @@ install the Node requirements.
     cp bga_database/local_settings.py.example bga_database/local_settings.py
     ```
 
-5. Create your database, add a superuser, and load the `PensionFund` fixtures.
+5. Create your database, add a superuser, and load the `PensionFund` and
+`AnnualReport` fixtures.
 
 
     ```bash
     createdb bga_pensions && python manage.py migrate
     python manage.py createsuperuser  # complete the prompts
     python manage.py loaddata data/fixtures/pension_fund.json
+    python manage.py loaddata data/fixures/annual_report.json
     ```
 
 6. Run the application.
