@@ -8,7 +8,7 @@ writer = csv.DictWriter(sys.stdout, fieldnames=reader.fieldnames)
 
 writer.writeheader()
 
-DATE_FORMATS = ('%m/%d/%Y', '%m/%d/%y')
+DATE_FORMATS = ('%m/%d/%Y', '%m/%d/%y', '%Y-%m-%d')
 
 for row in reader:
     converted = False
