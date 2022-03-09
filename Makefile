@@ -19,8 +19,14 @@ import : $(patsubst %, import_%, $(DATA_YEARS))
 clean :
 	rm data/finished/*
 
-import_% : data/finished/pensions_%.csv
+import_% : data/finished/pensions_%.csv fixtures
 	python manage.py import_data $(realpath $<) $* --delete=$(DELETE_EXISTING)
+	touch $@
+
+fixtures :
+	python manage.py loaddata data/fixtures/pension_fund.json
+	python manage.py loaddata data/fixtures/annual_report.json
+	touch $@
 
 data/finished/pensions_%.csv : pensions_%.renamed.csv
 	# 1. Omit rows without an amount.
