@@ -1,5 +1,5 @@
-DATA_YEARS=2012 2013 2014 2015 2016 2017 2018 2019
-RAW_YEARS=2012-2017 2018 2019
+DATA_YEARS=2012 2013 2014 2015 2016 2017 2018 2019 2020 2021
+RAW_YEARS=2012-2017 2018 2019 2020 2021
 
 DELETE_EXISTING=True
 
@@ -23,10 +23,16 @@ import_% : data/finished/pensions_%.csv fixtures
 	python manage.py import_data $(realpath $<) $* --delete=$(DELETE_EXISTING)
 	touch $@
 
-fixtures :
-	python manage.py loaddata data/fixtures/pension_fund.json
-	python manage.py loaddata data/fixtures/annual_report.json
+fixtures : data/fixtures/pension_fund.json data/fixtures/annual_report.json
+	python manage.py loaddata $<
+	python manage.py loaddata $(word 2,$^)
 	touch $@
+
+data/fixtures/pension_fund.json :
+	python manage.py dumpdata pensions.PensionFund --indent 4 > $@
+
+data/fixtures/annual_report.json :
+	python manage.py dumpdata pensions.AnnualReport --indent 4 > $@
 
 data/finished/pensions_%.csv : pensions_%.renamed.csv
 	# 1. Omit rows without an amount.

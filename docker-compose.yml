@@ -23,7 +23,6 @@ services:
       - .:/app
       # Mount example configs as live configs in the container.
       - ${PWD}/bga_database/local_settings.py.example:/app/bga_database/local_settings.py
-      - /Users/hannah/projects/django-salsa-auth:/app/django-salsa-auth
     command: python manage.py runserver 0.0.0.0:8000
 
 
@@ -40,7 +39,6 @@ services:
       # These should generally be the same as your application volumes.
       - .:/app
       # - ${PWD}/bga_database/local_settings.py.example:/app/bga_database/local_settings.py
-      - /Users/hannah/projects/django-salsa-auth:/app/django-salsa-auth
     command: python manage.py migrate
 
 
@@ -58,6 +56,7 @@ services:
       # any additional code. Specify the name of your database, and any other
       # variables, here. https://hub.docker.com/_/postgres/#environment-variables
       - POSTGRES_DB=bga_pensions
+      - POSTGRES_HOST_AUTH_METHOD=trust      
     volumes:
       # By default, Postgres instantiates an anonymous volume. Use a named
       # one, so your data persists beyond the life of the container. See this
