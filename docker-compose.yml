@@ -2,10 +2,9 @@ version: '2.4'
 
 services:
   app:
-    image: bga-pensions
+    image: ghcr.io/datamade/bga-pensions:latest
     container_name: bga-pensions
     restart: always
-    build: .
     # Allow container to be attached to, e.g., to access the pdb shell
     stdin_open: true
     tty: true
@@ -21,6 +20,10 @@ services:
       # Mount the development directory as a volume into the container, so
       # Docker automatically recognizes your changes.
       - .:/app
+      # This line allows the image's node_modules to not get overrwriten
+      # by what we have locally. if you want to have local changes to
+      # node_modules to be reflected, comment out this line
+      - /app/node_modules/      
       # Mount example configs as live configs in the container.
       - ${PWD}/bga_database/local_settings.py.example:/app/bga_database/local_settings.py
     command: python manage.py runserver 0.0.0.0:8000
@@ -38,7 +41,7 @@ services:
     volumes:
       # These should generally be the same as your application volumes.
       - .:/app
-      # - ${PWD}/bga_database/local_settings.py.example:/app/bga_database/local_settings.py
+      - ${PWD}/bga_database/local_settings.py.example:/app/bga_database/local_settings.py
     command: python manage.py migrate
 
 
