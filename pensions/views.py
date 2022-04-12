@@ -109,20 +109,16 @@ class Index(CacheMixin, TemplateView):
 
     @property
     def data_years(self):
-        if settings.DEBUG:
-            # For local development without individual data
-            data = sorted([year for year in range(2012, 2021)])
-        else:
-            data = self._cache.get('data_years', None)
+        data = self._cache.get('data_years', None)
 
-            if data is None:
-                with connection.cursor() as cursor:
-                    cursor.execute('SELECT DISTINCT(data_year) FROM pensions_benefit')
-                    data = sorted([year[0] for year in cursor])
+        if data is None:
+            with connection.cursor() as cursor:
+                cursor.execute('SELECT DISTINCT(data_year) FROM pensions_benefit')
+                data = sorted([year[0] for year in cursor])
 
-                # This is referenced a bunch of times. Update the local cache, so
-                # this query is only run once.
-                self._cache['data_years'] = data
+            # This is referenced a bunch of times. Update the local cache, so
+            # this query is only run once.
+            self._cache['data_years'] = data
 
         return data
 
@@ -238,8 +234,9 @@ class Index(CacheMixin, TemplateView):
                     FROM pensions_pensionfund AS fund
                     JOIN pensions_annualreport AS report
                     ON fund.id = report.fund_id
+                    WHERE data_year IN %s
                     GROUP BY data_year, fund_type
-                ''')
+                ''', [tuple(data.keys())])
 
                 annual_reports = cursor.fetchall()
 
@@ -267,7 +264,7 @@ class Index(CacheMixin, TemplateView):
         median_benefits = self.benefit_aggregates
 
         for fund in self.pension_funds.prefetch_related('annual_reports'):
-            for annual_report in fund.annual_reports.all():
+            for annual_report in fund.annual_reports.filter(data_year__in=data.keys()):
                 funded_liability = float(annual_report.assets)
                 unfunded_liability = float(annual_report.unfunded_liability)
                 normal_cost = float(annual_report.employer_normal_cost)
