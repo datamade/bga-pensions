@@ -1,3 +1,5 @@
+SHELL = bash
+
 DATA_YEARS=2012 2013 2014 2015 2016 2017 2018 2019 2020 2021
 RAW_YEARS=2012-2017 2018 2019 2020 2021
 
@@ -64,3 +66,10 @@ data/raw/pensions_%.csv : data/raw/pensions_%.tar
 data/raw/pensions_%.tar :
 	wget --no-use-server-timestamps \
 		https://bga-pensions-database.s3.amazonaws.com/raw/$(notdir $@) -O $@
+
+pensions_%.tar : data/raw/pensions_%.csv
+	cd $(dir $<) && tar -czvf $@ $(notdir $<)
+	cp data/raw/$@ $@
+
+upload_s3 : $(patsubst %, pensions_%.tar, $(RAW_YEARS))
+	for f in $^; do aws s3 cp $$f s3://bga-pensions-database/raw/; done
