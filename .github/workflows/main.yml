@@ -21,8 +21,8 @@ jobs:
       postgres:
         image: postgres:10.19
         env:
-          POSTGRES_DB: ${POSTGRES_DATABASE}
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: travis
+          POSTGRES_HOST_AUTH_METHOD: trust    
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
