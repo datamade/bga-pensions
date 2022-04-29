@@ -40,10 +40,11 @@ jobs:
         python-version: '3.6.9'
     - name: Install dependencies
       run: |
-        # 🚨 Need PostGIS? Uncomment these lines to install GDAL.
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: Test with pytest
+    - name: set up settings
+      run: mv configs/local_settings.travis.py bga_database/local_settings.py 
+    - name: Tests
       # 🚨 Swap in the correct filenames for your test and application configs
       run: |
         flake8
