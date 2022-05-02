@@ -25,7 +25,7 @@ chown -R datamade.www-data $VENV_DIR
 # that we rely upon will use more recent packaging methods than the ones
 # understood by the versions of pip and setuptools that ship with the operating
 # system packages.
-sudo -H -u datamade $VENV_DIR/bin/pip install --upgrade pip
+sudo -H -u datamade $VENV_DIR/bin/pip install --upgrade 'pip<21.0'
 sudo -H -u datamade $VENV_DIR/bin/pip install --upgrade setuptools
 
 # Install the project requirements into the deployment specific virtual

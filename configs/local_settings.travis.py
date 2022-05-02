@@ -20,7 +20,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'travis',
-        'USER': '',
+        'USER': 'postgres',
         'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '5432',
