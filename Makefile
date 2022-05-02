@@ -72,4 +72,4 @@ pensions_%.tar : data/raw/pensions_%.csv
 	cp data/raw/$@ $@
 
 upload_s3 : $(patsubst %, pensions_%.tar, $(RAW_YEARS))
-	for f in $^; do aws s3 cp $$f s3://bga-pensions-database/raw/; done
+	for f in $^; do aws s3 cp $$f s3://bga-pensions-database/raw/ --acl public-read; done
