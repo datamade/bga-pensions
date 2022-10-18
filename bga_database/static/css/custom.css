@@ -61,8 +61,8 @@ div[id*="chart"] {
   padding-top: 5px; /* offset top padding for proper alignment */
 }
 
-.badge, small, div#intro-text, .btn, .list-group, .page-link {
-  font-family: "acumin-pro", Helvetica, Arial, sans-serif;
+.badge, small, div#intro-text, .btn, .list-group, .page-link, .header-bottom p, tspan {
+  font-family: "halyard-text", Helvetica, Arial, sans-serif;
 }
 
 div#intro-text {
@@ -129,7 +129,7 @@ body.viewport-lg {
   filter: brightness(0) saturate(100%) invert(14%) sepia(84%) saturate(1900%) hue-rotate(185deg) brightness(92%) contrast(102%);
 }
 
-footer, footer a, footer h4 {
+footer, footer a, footer h4, .header-bottom p {
   color: #fff!important;
 }
 
@@ -215,7 +215,7 @@ header {
 
 hr {
   color: white;
-  border-top:  1px solid rgb(255 255 255 / 50%);
+  border-top: 1px solid rgb(255 255 255 / 50%);
   margin: 0;
 }
 
@@ -232,16 +232,31 @@ hr {
   margin: auto;
 }
 
-.donate-btn, .search-btn {
+.support-btn, .search-btn {
   display: inline-block;
   height: 56px;
-  text-align:  center;
+  text-align: center;
   line-height: 56px;
 }
 
-.donate-btn {
+.fill-btn {
   background-color: #FAC346;
-  width:  141px;
+  font-family: "halyard-display", Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  color: black;
+  letter-spacing: 2px;
+}
+
+.transparent-btn { /* not used as of yet, intended for buttons on light bg's */
+  border: 2px solid #FAC346;
+  font-family: "halyard-display", Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  color: black;
+  letter-spacing: 2px;
+}
+
+#donate-header {
+  width: 141px;
 }
 
 .search-btn {
@@ -249,4 +264,14 @@ hr {
   color: white;
   width: 56px;
   margin-right: 10px;
+}
+
+.header-bottom h1 {
+  font-family: "ivypresto-display", Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  color: white;
+}
+
+.navbar {
+  font-family: "halyard-text", Helvetica, Arial, sans-serif;
 }
