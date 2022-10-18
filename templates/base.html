@@ -46,42 +46,55 @@
     {% endblock %}
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark pl-2 pl-md-4 pt-0 pb-0 mb-3 mb-lg-5">
-      <div class="justify-content-left va-container">
+    <header>
+      <div class="header-top va-container"> <!-- top div -->
         <a class="navbar-brand" href="https://www.bettergov.org/data-tools">
-          <img src="{% static 'img/bga_logo.png' %}" alt="Home" class="header__logo-image">
-          <div id="navbar-series" class="d-none d-md-inline-block">
-            Data &<br />Tools
-          </div>
+          <img src="{% static 'img/logo-subtitled.svg' %}" alt="Home" class="header__logo-image">
         </a>
-        <div class="d-inline-block vertical-divider mx-1 mx-sm-2">
-          &nbsp;
+        <div>
+          <a href="{{ search_link }}" class="search-btn"><i class="fas fa-search fa-fw"></i></a>
+          <a href="/" class="donate-btn">Donate</a>
         </div>
-        <a class="navbar-brand" href="/">
-          <div id="navbar-title" class="d-inline-block">
-            <span class="d-none d-sm-inline">Illinois </span>Public Pensions Database
+        
+      </div>
+      <nav class="navbar navbar-expand-lg navbar-dark pl-2 pl-md-4 pt-0 pb-0 mb-3 mb-lg-5">
+        <div> <!-- middle div -->
+          <div class="justify-content-right">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
           </div>
-        </a>
+          <div class="collapse navbar-collapse pl-3" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="/">Investigations</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/">Solutions</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/">Opinion</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/">Databases</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/">Newsletters</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/">Events</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <hr>
+      <div class="header-bottom">
+          <h1>Illinois Public Pensions Database</h1>
+        <p>Search Illinois Public Employee Pension Data</p>
       </div>
-      <div class="justify-content-right">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      </div>
-      <div class="collapse navbar-collapse pl-3" id="navbarSupportedContent">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="/"><i class="fas fa-home fa-fw"></i> Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ search_link }}"><i class="fas fa-search fa-fw"></i> Search</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/user-guide"><i class="fas fa-question fa-fw"></i> User Guide</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+      
+    </header>
     <div class="container-fluid">
       {% block content %}{% endblock %}
     </div>

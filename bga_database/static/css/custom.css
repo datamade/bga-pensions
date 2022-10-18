@@ -55,7 +55,7 @@ div[id*="chart"] {
 }
 
 .header__logo-image {
-  height: 35px;
+  height: 6rem;
   -webkit-filter: grayscale(1) brightness(10); /* unapplied in base styles */
   vertical-align: unset;
   padding-top: 5px; /* offset top padding for proper alignment */
@@ -201,4 +201,52 @@ h5 {
 
 #benefit-distribution-chart {
   min-height: 350px;
+}
+
+header {
+  height: 309px;
+  background: url("../img/bga-header.jpeg");
+  background-size: cover;
+  background-position: 50% 35%;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-flow: column;
+}
+
+hr {
+  color: white;
+  border-top:  1px solid rgb(255 255 255 / 50%);
+  margin: 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.header-bottom {
+  width: fit-content;
+  margin: auto;
+}
+
+.donate-btn, .search-btn {
+  display: inline-block;
+  height: 56px;
+  text-align:  center;
+  line-height: 56px;
+}
+
+.donate-btn {
+  background-color: #FAC346;
+  width:  141px;
+}
+
+.search-btn {
+  background-color: #003282;
+  color: white;
+  width: 56px;
+  margin-right: 10px;
 }
