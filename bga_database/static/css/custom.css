@@ -36,7 +36,7 @@ div[id*="chart"] {
 }
 
 .breadcrumb, .lead, .navbar-brand {
-  font-family: "acumin-pro-condensed", "Arial Narrow", Helvetica, sans-serif;
+  font-family: "halyard-text", "Arial Narrow", Helvetica, sans-serif;
 }
 
 .navbar-brand {
@@ -275,3 +275,17 @@ hr {
 .navbar {
   font-family: "halyard-text", Helvetica, Arial, sans-serif;
 }
+
+.alert-primary a {
+  background-color: #FAC346;
+  font-family: "halyard-display", Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  color: black;
+  letter-spacing: 2px;
+  border: none;
+  border-radius: 0;
+}
+
+.header-top .header__logo-image {
+  filter: none;
+} 
