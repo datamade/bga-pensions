@@ -288,4 +288,9 @@ hr {
 
 .header-top .header__logo-image {
   filter: none;
-} 
+}
+
+footer {
+  background-color: #003282 !important;
+  font-family: "halyard-text", Helvetica, Arial, sans-serif;;
+}
