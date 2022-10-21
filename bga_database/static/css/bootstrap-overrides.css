@@ -55,7 +55,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
   margin: 0;
-  font-family: "acumin-pro", Helvetica, Arial, sans-serif;
+  font-family: "ibm-plex-serif", Helvetica, Arial, sans-serif;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -300,13 +300,13 @@ template {
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
   margin-bottom: 0.5rem;
-  font-family: "acumin-pro-condensed", "Arial Narrow", Helvetica, sans-serif;
-  font-weight: bold;
+  font-family: "halyard-display", "Arial Narrow", Helvetica, sans-serif;
+  font-weight: 600;
   line-height: 1.2;
-  color: #003a63; }
+  color: #003282; }
 
 h1, .h1 {
-  font-size: 2.5rem; }
+  font-size: 3rem; }
 
 h2, .h2 {
   font-size: 2rem; }
@@ -1783,8 +1783,8 @@ fieldset:disabled a.btn {
 
 .btn-secondary {
   color: #fff;
-  background-color: #6c757d;
-  border-color: #6c757d; }
+  background-color: #464B50;
+  border-color: #464B50; }
   .btn-secondary:hover {
     color: #fff;
     background-color: #5a6268;
@@ -2998,7 +2998,7 @@ input[type="button"].btn-block {
 @media (min-width: 992px) {
   .navbar-expand-lg {
     flex-flow: row nowrap;
-    justify-content: flex-start; }
+    justify-content: flex-end; }
     .navbar-expand-lg .navbar-nav {
       flex-direction: row; }
       .navbar-expand-lg .navbar-nav .dropdown-menu {
@@ -3357,8 +3357,8 @@ input[type="button"].btn-block {
 .page-item.active .page-link {
   z-index: 1;
   color: #fff;
-  background-color: #003a63;
-  border-color: #003a63; }
+  background-color: #003282;
+  border-color: #003282; }
 .page-item.disabled .page-link {
   color: #6c757d;
   pointer-events: none;
@@ -3512,7 +3512,7 @@ input[type="button"].btn-block {
 
 .alert-primary {
   color: #001e33;
-  background-color: #ccd8e0;
+  background-color: #D8E3FC;
   border-color: #b8c8d3; }
   .alert-primary hr {
     border-top-color: #a8bcc9; }
@@ -3521,7 +3521,7 @@ input[type="button"].btn-block {
 
 .alert-secondary {
   color: #383d41;
-  background-color: #e2e3e5;
+  background-color: #F3F5F6;
   border-color: #d6d8db; }
   .alert-secondary hr {
     border-top-color: #c8cbcf; }
@@ -6167,7 +6167,7 @@ button.bg-dark:focus {
 
   .mb-lg-5,
   .my-lg-5 {
-    margin-bottom: 3rem !important; }
+    margin-bottom: 0rem !important; }
 
   .ml-lg-5,
   .mx-lg-5 {
