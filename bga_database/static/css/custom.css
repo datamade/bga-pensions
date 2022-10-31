@@ -35,7 +35,7 @@ div[id*="chart"] {
   height: 100%;
 }
 
-.breadcrumb, .lead, .navbar-brand {
+.breadcrumb, .lead, .navbar-brand, .modal {
   font-family: "halyard-text", "Arial Narrow", Helvetica, sans-serif;
 }
 
@@ -232,7 +232,7 @@ header hr {
   margin: auto;
 }
 
-.support-btn, .search-btn {
+.support-btn, .btn-newsletter {
   display: inline-block;
   height: 56px;
   text-align: center;
@@ -247,6 +247,10 @@ header hr {
   letter-spacing: 2px;
 }
 
+.bg-blue {
+  background-color: #003282;
+}
+
 .transparent-btn { /* not used as of yet, intended for buttons on light bg's */
   border: 2px solid #FAC346;
   font-family: "halyard-display", Helvetica, Arial, sans-serif;
@@ -259,11 +263,13 @@ header hr {
   width: 141px;
 }
 
-.search-btn {
+.btn-newsletter {
   background-color: #003282;
+  font-family: "halyard-display", Helvetica, Arial, sans-serif;
+  font-weight: 600;
   color: white;
-  width: 56px;
-  margin-right: 10px;
+  width: fit-content;
+  letter-spacing: 2px;
 }
 
 .header-bottom h1 {
@@ -284,6 +290,13 @@ header hr {
   letter-spacing: 2px;
   border: none;
   border-radius: 0;
+}
+
+.dropdown-button {
+  background-color: white;
+  color: gray;
+  border-radius: 0px;
+  border-color: #C7CCCD;
 }
 
 footer {
@@ -348,4 +361,27 @@ footer .transparent-btn {
 footer .fill-btn {
   border: 2px solid transparent; /* keeps the two buttons at the same height */
   color: black !important;
+}
+
+@media (max-width: 768px) {
+  .header-buttons {
+    display: none;
+  }
+
+  footer .transparent-btn {
+    margin-right: 0;
+  }
+
+  .footer-middle {
+    flex-direction: column;
+  }
+
+  .footer-middle .navbar-brand{
+    margin: auto;
+  }
+
+  .footer-nav {
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
 }

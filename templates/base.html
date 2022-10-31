@@ -52,9 +52,9 @@
         <a class="navbar-brand" href="https://www.bettergov.org/data-tools">
           <img src="{% static 'img/logo-subtitled.svg' %}" alt="Home" class="header__logo-image">
         </a>
-        <div>
-          <a href="{{ search_link }}" class="search-btn"><i class="fas fa-search fa-fw"></i></a>
-          <a href="https://bettergov.salsalabs.org/donationform/index.html" class="support-btn fill-btn text-uppercase" id="donate-header">Donate</a>
+        <div class="header-buttons">
+          <a href="https://bettergov.salsalabs.org/donationform/index.html" class="support-btn fill-btn text-uppercase mr-3" id="donate-header">Donate</a>
+          <a href="https://www.bettergov.org/sign-up-for-e-alerts/" class="btn-newsletter text-uppercase px-3">Newsletter</a>
         </div>
         
       </div>
@@ -122,7 +122,7 @@
               <img src="{% static 'img/logo-no-subtitle.svg' %}" alt="Home" class="footer__logo-image">
             </a>
             <div>
-              <ul class="navbar-nav text-uppercase">
+              <ul class="navbar-nav text-uppercase footer-nav">
                 <li class="nav-item">
                   <a class="nav-link" href="/">Investigations</a>
                 </li>
