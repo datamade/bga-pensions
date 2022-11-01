@@ -204,7 +204,6 @@ h5 {
 }
 
 header {
-  height: 309px;
   background: url("../img/bga-header.jpeg");
   background-size: cover;
   background-position: 50% 35%;
@@ -305,8 +304,8 @@ footer {
 }
 
 .footer-top + hr {
-  margin-left: -50px;
-  margin-right:  -50px;
+  margin-left: -15px;
+  margin-right:  -15px;
   margin-top: 25px;
 }
 
@@ -366,6 +365,11 @@ footer .fill-btn {
 @media (max-width: 768px) {
   .header-buttons {
     display: none;
+  }
+
+  .header-bottom {
+    margin-left: 25px;
+    margin-right: 25px;
   }
 
   footer .transparent-btn {
