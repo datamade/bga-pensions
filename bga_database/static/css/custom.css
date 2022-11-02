@@ -35,7 +35,7 @@ div[id*="chart"] {
   height: 100%;
 }
 
-.breadcrumb, .lead, .navbar-brand, .modal {
+.breadcrumb, .lead, .navbar, .navbar-brand, .modal {
   font-family: "halyard-text", "Arial Narrow", Helvetica, sans-serif;
 }
 
@@ -61,7 +61,7 @@ div[id*="chart"] {
   padding-top: 5px; /* offset top padding for proper alignment */
 }
 
-.badge, small, div#intro-text, .btn, .list-group, .page-link, .header-bottom p, tspan {
+.badge, small, div#intro-text, .btn, .list-group, tspan {
   font-family: "halyard-text", Helvetica, Arial, sans-serif;
 }
 
@@ -277,8 +277,8 @@ header hr {
   color: white;
 }
 
-.navbar {
-  font-family: "halyard-text", Helvetica, Arial, sans-serif;
+.display-sans-serif, .page-link {
+  font-family: "halyard-display", Helvetica, Arial, sans-serif;
 }
 
 .alert-primary a {
@@ -300,6 +300,9 @@ header hr {
 
 footer {
   background-color: #003282 !important;
+  background-image: url("../img/footer-bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
   font-family: "halyard-text", Helvetica, Arial, sans-serif;;
 }
 
