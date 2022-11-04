@@ -39,6 +39,28 @@ div[id*="chart"] {
   font-family: "halyard-text", "Arial Narrow", Helvetica, sans-serif;
 }
 
+header {
+  background-image: 
+    linear-gradient(
+      rgba(0, 0, 0, 0.9),
+      rgba(0, 0, 0, 0.6),
+      rgba(0, 0, 0, 0.4) 25%,
+      rgba(0, 0, 0, 0.6),
+      rgba(0, 0, 0, 0.9)
+    ),
+    url("../img/state-capitol.jpg");
+  background-size: cover;
+  background-position: 50% 35%;
+  background-repeat: no-repeat;
+  background: 
+  display: flex;
+  flex-flow: column;
+}
+
+.navbar .nav-link {
+  font-weight: 500;
+}
+
 .navbar-brand {
   text-transform: uppercase;
   font-weight: bold;
@@ -52,6 +74,12 @@ div[id*="chart"] {
   font-size: 1.75rem;
   vertical-align: 15%;
   text-transform: none;
+}
+
+.collapse.show, .collapsing {
+  background-color: #003282;
+  position: absolute;
+  z-index: 1;
 }
 
 .header__logo-image {
@@ -203,15 +231,6 @@ h5 {
   min-height: 350px;
 }
 
-header {
-  background: url("../img/bga-header.jpeg");
-  background-size: cover;
-  background-position: 50% 35%;
-  background-repeat: no-repeat;
-  display: flex;
-  flex-flow: column;
-}
-
 header hr {
   color: white;
   border-top: 1px solid rgb(255 255 255 / 50%);
@@ -300,8 +319,9 @@ header hr {
 
 footer {
   background-color: #003282 !important;
-  background-image: url("../img/footer-bg.png");
-  background-size: cover;
+  background-image: url("../img/background-footer-btm-crop.png");
+  background-size: auto 115%;
+  background-position: 107% bottom;
   background-repeat: no-repeat;
   font-family: "halyard-text", Helvetica, Arial, sans-serif;;
 }
@@ -363,6 +383,13 @@ footer .transparent-btn {
 footer .fill-btn {
   border: 2px solid transparent; /* keeps the two buttons at the same height */
   color: black !important;
+}
+
+@media (max-width: 605px) {
+  footer {
+    background-size: 120% auto;
+    background-position: 0 bottom;
+  }
 }
 
 @media (max-width: 768px) {
