@@ -52,7 +52,6 @@ header {
   background-size: cover;
   background-position: 50% 35%;
   background-repeat: no-repeat;
-  background: /*come back to fix this*/
   display: flex;
   flex-flow: column;
 }
@@ -235,6 +234,11 @@ header hr {
   color: white;
   border-top: 1px solid rgb(255 255 255 / 50%);
   margin: 0;
+}
+
+.support-btn:hover, .btn-newsletter:hover {
+  filter: brightness(85%);
+  transition: filter 150ms ease-in-out;
 }
 
 .header-top {
