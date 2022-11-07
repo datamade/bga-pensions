@@ -35,8 +35,29 @@ div[id*="chart"] {
   height: 100%;
 }
 
-.breadcrumb, .lead, .navbar-brand, .modal {
+.breadcrumb, .lead, .navbar, .navbar-brand, .modal {
   font-family: "halyard-text", "Arial Narrow", Helvetica, sans-serif;
+}
+
+header {
+  background-image: 
+    linear-gradient(
+      rgba(0, 0, 0, 0.9),
+      rgba(0, 0, 0, 0.6),
+      rgba(0, 0, 0, 0.4) 25%,
+      rgba(0, 0, 0, 0.6),
+      rgba(0, 0, 0, 0.9)
+    ),
+    url("../img/state-capitol.jpg");
+  background-size: cover;
+  background-position: 50% 35%;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-flow: column;
+}
+
+.navbar .nav-link {
+  font-weight: 500;
 }
 
 .navbar-brand {
@@ -54,6 +75,12 @@ div[id*="chart"] {
   text-transform: none;
 }
 
+.collapse.show, .collapsing {
+  background-color: #486DAB;
+  position: absolute;
+  z-index: 1;
+}
+
 .header__logo-image {
   height: 6rem;
   -webkit-filter: none; /* unapplied in base styles */
@@ -61,7 +88,7 @@ div[id*="chart"] {
   padding-top: 5px; /* offset top padding for proper alignment */
 }
 
-.badge, small, div#intro-text, .btn, .list-group, .page-link, .header-bottom p, tspan {
+.badge, small, div#intro-text, .btn, .list-group, tspan {
   font-family: "halyard-text", Helvetica, Arial, sans-serif;
 }
 
@@ -203,20 +230,15 @@ h5 {
   min-height: 350px;
 }
 
-header {
-  height: 309px;
-  background: url("../img/bga-header.jpeg");
-  background-size: cover;
-  background-position: 50% 35%;
-  background-repeat: no-repeat;
-  display: flex;
-  flex-flow: column;
-}
-
 header hr {
   color: white;
   border-top: 1px solid rgb(255 255 255 / 50%);
   margin: 0;
+}
+
+.support-btn:hover, .btn-newsletter:hover {
+  filter: brightness(85%);
+  transition: filter 150ms ease-in-out;
 }
 
 .header-top {
@@ -278,8 +300,8 @@ header hr {
   color: white;
 }
 
-.navbar {
-  font-family: "halyard-text", Helvetica, Arial, sans-serif;
+.display-sans-serif, .page-link {
+  font-family: "halyard-display", Helvetica, Arial, sans-serif;
 }
 
 .alert-primary a {
@@ -301,12 +323,16 @@ header hr {
 
 footer {
   background-color: #003282 !important;
-  font-family: "halyard-text", Helvetica, Arial, sans-serif;;
+  background-image: url("../img/background-footer-btm-crop.png");
+  background-size: auto 115%;
+  background-position: 107% bottom;
+  background-repeat: no-repeat;
+  font-family: "halyard-text", Helvetica, Arial, sans-serif;
 }
 
 .footer-top + hr {
-  margin-left: -50px;
-  margin-right:  -50px;
+  margin-left: -15px;
+  margin-right:  -15px;
   margin-top: 25px;
 }
 
@@ -363,9 +389,21 @@ footer .fill-btn {
   color: black !important;
 }
 
+@media (max-width: 605px) {
+  footer {
+    background-size: 120% auto;
+    background-position: 0 bottom;
+  }
+}
+
 @media (max-width: 768px) {
   .header-buttons {
     display: none;
+  }
+
+  .header-bottom {
+    margin-left: 25px;
+    margin-right: 25px;
   }
 
   footer .transparent-btn {
