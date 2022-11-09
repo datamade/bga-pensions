@@ -20,3 +20,6 @@ branch_config:
 
   deploy:
     deploymentGroupName: production
+
+  illinoisanswers:
+    deploymentGroupName: illinoisanswers
