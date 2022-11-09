@@ -1,7 +1,11 @@
+configs/bga-pensions-illinoisanswers.conf.nginx
+configs/bga-pensions-illinoisanswers.supervisor
 configs/bga-pensions-production.conf.nginx
 configs/bga-pensions-production.conf.supervisor
 configs/bga-pensions-staging.conf.nginx
 configs/bga-pensions-staging.conf.supervisor
+configs/illinoisanswers-config.conf
+configs/local_settings.illinoisanswers.py
 configs/local_settings.production.py
 configs/local_settings.staging.py
 configs/production-config.conf
