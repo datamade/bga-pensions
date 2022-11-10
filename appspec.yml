@@ -18,8 +18,5 @@ branch_config:
   main:
     deploymentGroupName: staging
 
-  deploy:
-    deploymentGroupName: production
-
   illinoisanswers:
     deploymentGroupName: illinoisanswers
