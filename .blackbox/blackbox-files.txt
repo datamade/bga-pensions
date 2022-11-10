@@ -6,5 +6,4 @@ configs/illinoisanswers-config.conf
 configs/local_settings.illinoisanswers.py
 configs/local_settings.production.py
 configs/local_settings.staging.py
-configs/production-config.conf
 configs/staging-config.conf

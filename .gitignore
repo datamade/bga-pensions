@@ -145,4 +145,3 @@ data/finished/*
 # Dev files
 static/*
 /configs/local_settings.production.py
-/configs/production-config.conf
