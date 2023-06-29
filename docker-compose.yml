@@ -31,7 +31,7 @@ services:
 
   migration:
     container_name: bga-pensions-migration
-    image: bga-pensions:latest
+    image: ghcr.io/datamade/bga-pensions:latest
     depends_on:
       # Declaring this dependency ensures that your application image is built
       # before migrations are run, and that your application and migrations can
