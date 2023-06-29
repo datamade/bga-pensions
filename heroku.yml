@@ -14,13 +14,5 @@ release:
 # The command that runs your application. Replace 'app' with the name of your app.
 run:
   web: gunicorn -t 180 --log-level debug bga_database.wsgi:application
-environments:
-  review:
-    addons:
-      - plan: heroku-postgresql:hobby-basic
-formation:
-  web:
-    quantity: 1
-    size: hobby
-
+ 
   
