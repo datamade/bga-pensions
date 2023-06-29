@@ -378,7 +378,7 @@ class BenefitListJson(BaseDatatableView):
 
             self.request.session['n_searches'] += 1
 
-            anonymous_user = settings.SALSA_AUTH_COOKIE_NAME not in self.request.COOKIES
+            anonymous_user = settings.MAILCHIMP_AUTH_COOKIE_NAME not in self.request.COOKIES
 
             if anonymous_user and self.request.session['n_searches'] > 5:
                 raise PermissionDenied

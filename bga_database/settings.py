@@ -10,9 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+import environ
 import os
 
-from .local_settings import *  # noqa
+
+env = environ.Env(
+    ALLOWED_HOSTS=(list, []),
+    DJANGO_DEBUG=(bool, False),
+)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,13 +34,14 @@ INSTALLED_APPS = [
     'pensions',
     'compressor',
     'compressor_toolkit',
-    'salsa_auth',
+    'mailchimp_auth',
     'debug_toolbar',
 ]
 
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -110,3 +116,79 @@ STATICFILES_FINDERS = (
 # Sessions
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+
+# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = env('DJANGO_SECRET_KEY', default='foobar')
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = env('DJANGO_DEBUG')
+
+ALLOWED_HOSTS = env('ALLOWED_HOSTS', [])
+
+
+# Database
+# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+
+DATABASES = {
+    'default': env.db(default='postgres://postgres:postgres@postgres:5432/bga_pensions')
+}
+
+
+# Caching
+
+CACHE_KEY = env('CACHE_KEY', default='whatever')
+
+cache_backend = "dummy.DummyCache" if DEBUG is True else "db.DatabaseCache"
+CACHES = {
+    "default": {
+        "BACKEND": f"django.core.cache.backends.{cache_backend}",
+        "LOCATION": "site_cache",
+        "TIMEOUT": 86400,  # 24 hours
+    }
+}
+
+# The email() method is an alias for email_url().
+EMAIL_CONFIG = env.email(
+    'EMAIL_URL',
+    default='smtp://user:password@localhost:25'
+)
+
+vars().update(EMAIL_CONFIG)
+
+MAILCHIMP_LIST_ID = env('MAILCHIMP_LIST_ID', default='')
+MAILCHIMP_API_KEY = env('MAILCHIMP_API_KEY', default='')
+MAILCHIMP_SERVER = env('MAILCHIMP_SERVER', default='')
+MAILCHIMP_AUTH_COOKIE_NAME = env('MAILCHIMP_AUTH_COOKIE_NAME', default='')
+MAILCHIMP_AUTH_COOKIE_DOMAIN = env('MAILCHIMP_AUTH_COOKIE_DOMAIN', default='')
+MAILCHIMP_AUTH_REDIRECT_LOCATION = '/search'
+
+
+# Configure Sentry for error logging
+if env("SENTRY_DSN", default=''):
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+
+    sentry_sdk.init(
+        dsn=env("SENTRY_DSN"),
+        integrations=[DjangoIntegration()],
+    )
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,  # Preserve default loggers
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+        },
+    },
+}

@@ -27,7 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('pong/', pension_views.pong),
     path('flush/', pension_views.flush_cache),
-    path('salsa/', include('salsa_auth.urls')),
+    path('mailchimp/', include('mailchimp_auth.urls')),
     path('', include('django.contrib.auth.urls')),
 ]
 

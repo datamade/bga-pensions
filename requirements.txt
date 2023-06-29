@@ -7,6 +7,8 @@ django-postgres-stats==1.0.0
 flake8==3.7.8
 gunicorn==19.9.0
 csvkit==1.0.4
-git+https://github.com/hancush/django-salsa-auth.git
+https://github.com/datamade/django-mailchimp-auth/archive/refs/heads/master.zip
 sentry-sdk==0.13.1
 email-normalize==0.2.1
+django-environ
+whitenoise
