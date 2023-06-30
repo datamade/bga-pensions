@@ -117,7 +117,7 @@ COMPRESS_OUTPUT_DIR = 'compressor'
 
 STATICFILES_STORAGE = env(
     "DJANGO_STATICFILES_STORAGE",
-    default="whitenoise.storage.CompresseStaticFilesStorage"
+    default="whitenoise.storage.CompressedStaticFilesStorage"
 )
 
 STATICFILES_FINDERS = (
