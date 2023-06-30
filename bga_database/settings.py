@@ -13,11 +13,16 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import environ
 import os
 
+from django.templatetags.static import static
+
 
 env = environ.Env(
     ALLOWED_HOSTS=(list, []),
     DJANGO_DEBUG=(bool, False),
 )
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = env('DJANGO_DEBUG')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -80,6 +85,14 @@ COMPRESS_ES6_COMPILER_CMD = (
     '-t [ "{node_modules}/babelify" --presets="{node_modules}/babel-preset-env" ]'
 )
 
+COMPRESS_ENABLED = True
+
+# Enable offline compression in production only
+COMPRESS_OFFLINE = not DEBUG
+
+# Make sure Django compressor can generate static paths
+COMPRESS_OFFLINE_CONTEXT = {"static": static}
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -102,9 +115,10 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 COMPRESS_OUTPUT_DIR = 'compressor'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'bga_database', 'static'),
-]
+STATICFILES_STORAGE = env(
+    "DJANGO_STATICFILES_STORAGE",
+    default="whitenoise.storage.CompressedManifestStaticFilesStorage"
+)
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -122,9 +136,6 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('DJANGO_SECRET_KEY', default='foobar')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DJANGO_DEBUG')
 
 ALLOWED_HOSTS = env('ALLOWED_HOSTS', [])
 
