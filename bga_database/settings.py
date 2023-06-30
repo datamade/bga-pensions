@@ -117,7 +117,7 @@ COMPRESS_OUTPUT_DIR = 'compressor'
 
 STATICFILES_STORAGE = env(
     "DJANGO_STATICFILES_STORAGE",
-    default="whitenoise.storage.CompressedManifestStaticFilesStorage"
+    default="whitenoise.storage.CompresseStaticFilesStorage"
 )
 
 STATICFILES_FINDERS = (
@@ -203,3 +203,9 @@ LOGGING = {
         },
     },
 }
+
+
+# Enforce SSL in production
+if DEBUG is False:
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_SSL_REDIRECT = True
