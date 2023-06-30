@@ -31,4 +31,4 @@ COPY . /app
 # Bogus env var to make sure that we can run 'collectstatic' later on
 ENV DJANGO_SECRET_KEY 'foobar'
 # Bake static files into the container
-RUN python manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput && python manage.py compress
