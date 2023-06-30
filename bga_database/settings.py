@@ -139,13 +139,13 @@ DATABASES = {
 
 # Caching
 
-CACHE_KEY = env('CACHE_KEY', default='whatever')
+CACHE_KEY = 'bga-pensions'
 
 cache_backend = "dummy.DummyCache" if DEBUG is True else "db.DatabaseCache"
 CACHES = {
     "default": {
         "BACKEND": f"django.core.cache.backends.{cache_backend}",
-        "LOCATION": "site_cache",
+        "LOCATION": "pensions_cache",
         "TIMEOUT": 86400,  # 24 hours
     }
 }
@@ -188,7 +188,7 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'level': env('DJANGO_LOG_LEVEL', default='INFO'),
         },
     },
 }
