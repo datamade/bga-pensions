@@ -1,8 +1,0 @@
-configs/bga-pensions-staging.conf.nginx
-configs/bga-pensions-staging.conf.supervisor
-configs/ia-pensions-illinoisanswers.conf.nginx
-configs/ia-pensions-illinoisanswers.conf.supervisor
-configs/illinoisanswers-config.conf
-configs/local_settings.illinoisanswers.py
-configs/local_settings.staging.py
-configs/staging-config.conf
