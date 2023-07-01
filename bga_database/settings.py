@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pensions',
+    'bga_database',
     'compressor',
     'compressor_toolkit',
     'mailchimp_auth',
@@ -75,24 +76,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bga_database.wsgi.application'
 
-COMPRESS_PRECOMPILERS = (
-    ('module', 'compressor_toolkit.precompilers.ES6Compiler'),
-)
-
-COMPRESS_ES6_COMPILER_CMD = (
-    'export NODE_PATH="{paths}" && '
-    '{browserify_bin} "{infile}" -o "{outfile}" '
-    '-t [ "{node_modules}/babelify" --presets="{node_modules}/babel-preset-env" ]'
-)
-
-COMPRESS_ENABLED = True
-
-# Enable offline compression in production only
-COMPRESS_OFFLINE = not DEBUG
-
-# Make sure Django compressor can generate static paths
-COMPRESS_OFFLINE_CONTEXT = {"static": static}
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -112,12 +95,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-COMPRESS_OUTPUT_DIR = 'compressor'
+STATIC_ROOT = '/static'
 
 STATICFILES_STORAGE = env(
     "DJANGO_STATICFILES_STORAGE",
-    default="whitenoise.storage.CompressedStaticFilesStorage"
+    default="django.contrib.staticfiles.storage.ManifestStaticFilesStorage" #"whitenoise.storage.CompressedManifestStaticFilesStorage"
 )
 
 STATICFILES_FINDERS = (
@@ -126,6 +108,18 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
+COMPRESS_URL = STATIC_URL
+COMPRESS_OUTPUT_DIR = 'compressor'
+
+COMPRESS_PRECOMPILERS = (
+    ('module', 'compressor_toolkit.precompilers.ES6Compiler'),
+)
+
+COMPRESS_ES6_COMPILER_CMD = (
+    'export NODE_PATH="{paths}" && '
+    '{browserify_bin} "{infile}" -o "{outfile}" '
+    '-t [ "{node_modules}/babelify" --presets="{node_modules}/babel-preset-env" ]'
+)
 
 # Sessions
 

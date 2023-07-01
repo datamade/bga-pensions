@@ -1386,7 +1386,6 @@ blockquote.pullquote cite {
 .more-link__help-icon,
 .more-help-link a {
   padding: 1px 0 1px 20px;
-  background-image: url(../sass/navigation/more-link/more-link__help-icon.svg);
   background-position: 0 50%;
   background-repeat: no-repeat;
 }
@@ -1398,26 +1397,22 @@ blockquote.pullquote cite {
 
 .nav-menu__item,
 .menu__item {
-  list-style-image: url(../sass/navigation/nav-menu/leaf.svg);
   list-style-type: square;
 }
 
 .nav-menu__item.is-expanded, .nav-menu__item--is-expanded,
 .is-expanded.menu__item,
 .menu__item.is-expanded {
-  list-style-image: url(../sass/navigation/nav-menu/expanded.svg);
   list-style-type: circle;
 }
 
 .nav-menu__item.is-collapsed, .nav-menu__item--is-collapsed,
 .is-collapsed.menu__item,
 .menu__item.is-collapsed {
-  list-style-image: url(../sass/navigation/nav-menu/collapsed.svg);
   list-style-type: disc;
 }
 
 [dir="rtl"] .nav-menu__item.is-collapsed, [dir="rtl"] .nav-menu__item--is-collapsed, [dir="rtl"] .is-collapsed.menu__item, [dir="rtl"] .menu__item.is-collapsed {
-  list-style-image: url(../sass/navigation/nav-menu/collapsed-rtl.svg);
 }
 
 .nav-menu__link.is-active, .nav-menu__link--is-active,
@@ -1619,7 +1614,6 @@ blockquote.pullquote cite {
 
 .autocomplete,
 .form-autocomplete {
-  background-image: url(../sass/forms/autocomplete/throbber-inactive.png);
   background-position: 100% center;
   background-repeat: no-repeat;
 }
@@ -1662,7 +1656,6 @@ blockquote.pullquote cite {
 .autocomplete.is-throbbing, .autocomplete--is-throbbing,
 .is-throbbing.form-autocomplete,
 .form-autocomplete.throbbing {
-  background-image: url(../sass/forms/autocomplete/throbber-active.gif);
 }
 
 .collapsible-fieldset,
@@ -1674,7 +1667,6 @@ blockquote.pullquote cite {
 .collapsible .fieldset-legend {
   display: block;
   padding-left: 15px;
-  background-image: url(../sass/forms/collapsible-fieldset/expanded.svg);
   background-position: 4px 50%;
   background-repeat: no-repeat;
 }
@@ -1711,12 +1703,10 @@ blockquote.pullquote cite {
 .is-collapsed.collapsible .collapsible-fieldset__legend,
 .collapsible.collapsed .fieldset-legend, .collapsible-fieldset.is-collapsed .collapsible .fieldset-legend, .collapsible .collapsible-fieldset.is-collapsed .fieldset-legend,
 .is-collapsed.collapsible .fieldset-legend {
-  background-image: url(../sass/forms/collapsible-fieldset/collapsed.svg);
   background-position: 4px 50%;
 }
 
 [dir="rtl"] .collapsible-fieldset.is-collapsed .collapsible-fieldset__legend, [dir="rtl"] .collapsible-fieldset--is-collapsed__legend, [dir="rtl"] .is-collapsed.collapsible .collapsible-fieldset__legend, [dir="rtl"] .collapsible.collapsed .fieldset-legend, .collapsible.collapsed [dir="rtl"] .fieldset-legend, [dir="rtl"] .collapsible-fieldset.is-collapsed .collapsible .fieldset-legend, .collapsible [dir="rtl"] .collapsible-fieldset.is-collapsed .fieldset-legend, [dir="rtl"] .is-collapsed.collapsible .fieldset-legend {
-  background-image: url(../sass/forms/collapsible-fieldset/collapsed-rtl.svg);
   background-position: right 4px top 50%;
 }
 
@@ -1806,7 +1796,6 @@ label.option {
 .progress .filled {
   height: 1.5em;
   width: 5px;
-  background: #4580bb url(../sass/forms/progress-bar/progress-bar.gif) repeat 0 0;
 }
 
 .progress-bar__percentage,
@@ -1839,7 +1828,6 @@ label.option {
 
 .progress-throbber__widget,
 .ajax-progress .throbber {
-  background: url(../sass/forms/progress-throbber/progress-throbber.gif) no-repeat 0 -18px transparent;
   float: left;
   height: 15px;
   margin: 2px;
@@ -1868,7 +1856,6 @@ tr .ajax-progress .throbber {
 
 .resizable-textarea__grippie,
 .resizable-textarea .grippie {
-  background: url(../sass/forms/resizable-textarea/grippie.png) no-repeat center 2px #eaebee;
   border: 1px solid #cccccc;
   border-top-width: 0;
   cursor: s-resize;
