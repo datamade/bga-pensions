@@ -319,13 +319,16 @@
 </script>
 {% endif %}
 
+<div id='yearData' data="{{ data_by_year }}"></div>
+<div id='selectedYear' data="{{ default_year }}"></div>
+
 {% compress js %}
   <script type="module" src="{% static 'js/base.js' %}"></script>
   <script type="module">
     import { PensionsController, ChartHelper } from "js/base"
 
-    var yearData = {{ data_by_year|safe }};
-    var selectedYear = {{ default_year }};
+    var yearData = JSON.parse($('#yearData').attr('data'));
+    var selectedYear = $('#selectedYear').attr('data')
     var selectedFund = 'Downstate/Suburban Teachers (TRS)';
 
     var chartHelper = new ChartHelper();

@@ -95,7 +95,7 @@ STATIC_ROOT = '/static'
 
 STATICFILES_STORAGE = env(
     "DJANGO_STATICFILES_STORAGE",
-    default="django.contrib.staticfiles.storage.ManifestStaticFilesStorage" #"whitenoise.storage.CompressedManifestStaticFilesStorage"
+    default="django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 )
 
 STATICFILES_FINDERS = (
@@ -103,6 +103,8 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'compressor.finders.CompressorFinder',
 )
+
+COMPRESS_OFFLINE = True
 
 COMPRESS_PRECOMPILERS = (
     ('module', 'compressor_toolkit.precompilers.ES6Compiler'),
@@ -193,6 +195,6 @@ LOGGING = {
 
 
 # Enforce SSL in production
-#if DEBUG is False:
-#    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-#    SECURE_SSL_REDIRECT = True
+if DEBUG is False:
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_SSL_REDIRECT = True

@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.humanize.templatetags.humanize import intword, intcomma
 from django.conf import settings
 from django.core.cache import cache
@@ -50,7 +52,7 @@ class Index(CacheMixin, TemplateView):
         context['data_years'] = list(self.data_years)
         context['default_year'] = self.default_year
         context['pension_funds'] = self.pension_funds
-        context['data_by_year'] = self.data_by_year()
+        context['data_by_year'] = json.dumps(self.data_by_year())
         context['search_link'] = '#search'
         context['title'] = 'Home'
 
