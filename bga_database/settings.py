@@ -13,9 +13,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import environ
 import os
 
-from django.templatetags.static import static
-
-
 env = environ.Env(
     ALLOWED_HOSTS=(list, []),
     DJANGO_DEBUG=(bool, False),
@@ -94,7 +91,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
 STATIC_ROOT = '/static'
 
 STATICFILES_STORAGE = env(
@@ -107,9 +103,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'compressor.finders.CompressorFinder',
 )
-
-COMPRESS_URL = STATIC_URL
-COMPRESS_OUTPUT_DIR = 'compressor'
 
 COMPRESS_PRECOMPILERS = (
     ('module', 'compressor_toolkit.precompilers.ES6Compiler'),
@@ -146,7 +139,8 @@ DATABASES = {
 
 CACHE_KEY = 'bga-pensions'
 
-cache_backend = "dummy.DummyCache" if DEBUG is True else "db.DatabaseCache"
+cache_backend = "dummy.DummyCache" if DEBUG else "db.DatabaseCache"
+cache_backend = "dummy.DummyCache"
 CACHES = {
     "default": {
         "BACKEND": f"django.core.cache.backends.{cache_backend}",
@@ -200,6 +194,6 @@ LOGGING = {
 
 
 # Enforce SSL in production
-if DEBUG is False:
-    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-    SECURE_SSL_REDIRECT = True
+#if DEBUG is False:
+#    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+#    SECURE_SSL_REDIRECT = True
