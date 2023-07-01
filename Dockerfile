@@ -29,4 +29,4 @@ RUN npm install
 COPY . /app
 
 # Bake static files into the container
-RUN DJANGO_DEBUG=False python manage.py collectstatic --noinput
+RUN DJANGO_DEBUG=False python manage.py collectstatic --noinput && mkdir /static/compressor
