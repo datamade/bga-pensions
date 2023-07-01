@@ -23,7 +23,7 @@ jobs:
         image: postgres:10.19
         env:
           POSTGRES_DB: travis
-          POSTGRES_HOST_AUTH_METHOD: trust    
+          POSTGRES_PASSWORD: postgres
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -32,7 +32,7 @@ jobs:
         ports:
           - 5432:5432
     env:
-      DATABASE_URL: postgres://postgres@localhost:5432/travis
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/travis
     steps:
     - uses: actions/checkout@v2
     - name: Tests
