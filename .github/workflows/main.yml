@@ -32,7 +32,7 @@ jobs:
         ports:
           - 5432:5432
     env:
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/travis
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/travis
     steps:
     - uses: actions/checkout@v2
     - name: Tests
