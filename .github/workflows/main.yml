@@ -34,6 +34,7 @@ jobs:
     env:
       DATABASE_URL: postgres://postgres@localhost:5432/travis
     steps:
+    - uses: actions/checkout@v2
     - name: Tests
       # 🚨 Swap in the correct filenames for your test and application configs
       run: |
