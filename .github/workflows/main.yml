@@ -15,6 +15,8 @@ jobs:
     # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
     # for supported versions.
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/datamade/bga-pensions:latest
     services:
       # 🚨 Update the Postgres version and database name to match your app environment and test config
       postgres:
@@ -29,38 +31,11 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
+    env:
+      DATABASE_URL: postgres://postgres@localhost:5432/travis
     steps:
-    - uses: actions/checkout@v2
-    # 🚨 Update the Python version to match your app environment
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        # Semantic version range syntax or exact version of a Python version
-        python-version: '3.6'
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: set up settings
-      run: mv configs/local_settings.travis.py bga_database/local_settings.py 
     - name: Tests
       # 🚨 Swap in the correct filenames for your test and application configs
       run: |
         flake8
         python manage.py migrate
-  deploy:
-    needs: test
-    name: Deploy to AWS
-    runs-on: ubuntu-latest
-    steps:
-      - uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-      - uses: actions/checkout@v2
-      - id: deploy
-        uses: webfactory/create-aws-codedeploy-deployment@0.2.2
-        with:
-          # 🚨 Swap in your CodeDeploy application name, which is usually the same as the repository name
-          application: bga-pensions
