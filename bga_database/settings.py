@@ -140,7 +140,6 @@ DATABASES = {
 CACHE_KEY = 'bga-pensions'
 
 cache_backend = "dummy.DummyCache" if DEBUG else "db.DatabaseCache"
-cache_backend = "dummy.DummyCache"
 CACHES = {
     "default": {
         "BACKEND": f"django.core.cache.backends.{cache_backend}",
