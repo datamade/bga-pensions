@@ -4,6 +4,7 @@ services:
   app:
     image: ghcr.io/datamade/bga-pensions:latest
     container_name: bga-pensions
+    env_file: .env.example
     restart: always
     # Allow container to be attached to, e.g., to access the pdb shell
     stdin_open: true
@@ -25,13 +26,13 @@ services:
       # node_modules to be reflected, comment out this line
       - /app/node_modules/      
       # Mount example configs as live configs in the container.
-      - ${PWD}/bga_database/local_settings.py.example:/app/bga_database/local_settings.py
     command: python manage.py runserver 0.0.0.0:8000
 
 
   migration:
     container_name: bga-pensions-migration
     image: ghcr.io/datamade/bga-pensions:latest
+    env_file: .env.example
     depends_on:
       # Declaring this dependency ensures that your application image is built
       # before migrations are run, and that your application and migrations can
