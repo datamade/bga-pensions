@@ -41,8 +41,7 @@ You can also define specific years to format and import. Simply define a custom
 you wish to import, separated by spaces.
 
 ```bash
-export DATA_YEARS="2018 2019"
-docker-compose run app make -e
+docker-compose run -e DATA_YEARS="2018 2019" app make -e
 ```
 
 If you wish to make the data without importing it, specify the `data` target.
