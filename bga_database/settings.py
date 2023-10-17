@@ -158,6 +158,13 @@ EMAIL_CONFIG = env.email(
 
 vars().update(EMAIL_CONFIG)
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = env('EMAIL_HOST', default='')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='')
+
 MAILCHIMP_LIST_ID = env('MAILCHIMP_LIST_ID', default='')
 MAILCHIMP_API_KEY = env('MAILCHIMP_API_KEY', default='')
 MAILCHIMP_SERVER = env('MAILCHIMP_SERVER', default='')
