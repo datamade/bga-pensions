@@ -49,3 +49,7 @@ If you wish to make the data without importing it, specify the `data` target.
 ```bash
 docker-compose run app make data -e
 ```
+
+## Updating Pension Fund and Annual reports
+
+1. TK use recipe from makefile to update fixtures from production

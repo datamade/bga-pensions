@@ -120,8 +120,8 @@
         "eligible_for_social_security": false,
         "total_liability": "13100000000.00",
         "assets": "3100000000.00",
-        "employer_contribution": "494500000.00",
-        "employer_normal_cost": "1154000000.00",
+        "employer_contribution": "1154000000.00",
+        "employer_normal_cost": "494500000.00",
         "reporting_period": "CALENDAR"
     }
 },
@@ -330,8 +330,8 @@
         "eligible_for_social_security": false,
         "total_liability": "12856600000.00",
         "assets": "3052100000.00",
-        "employer_contribution": "281600000.00",
-        "employer_normal_cost": "1150400000.00",
+        "employer_contribution": "1150400000.00",
+        "employer_normal_cost": "281600000.00",
         "reporting_period": "CALENDAR"
     }
 },
@@ -498,8 +498,8 @@
         "eligible_for_social_security": false,
         "total_liability": "11288200000.00",
         "assets": "3186400000.00",
-        "employer_contribution": "582300000.00",
-        "employer_normal_cost": "1074300000.00",
+        "employer_contribution": "1074300000.00",
+        "employer_normal_cost": "582300000.00",
         "reporting_period": "CALENDAR"
     }
 },
@@ -680,8 +680,8 @@
         "eligible_for_social_security": false,
         "total_liability": "11334800000.00",
         "assets": "2954300000.00",
-        "employer_contribution": "187000000.00",
-        "employer_normal_cost": "1015400000.00",
+        "employer_contribution": "1015400000.00",
+        "employer_normal_cost": "187000000.00",
         "reporting_period": "CALENDAR"
     }
 },
@@ -1002,8 +1002,8 @@
         "eligible_for_social_security": false,
         "total_liability": "10282300000.00",
         "assets": "3053900000.00",
-        "employer_contribution": "188900000.00",
-        "employer_normal_cost": "1015200000.00",
+        "employer_contribution": "1015200000.00",
+        "employer_normal_cost": "188900000.00",
         "reporting_period": "CALENDAR"
     }
 },
@@ -1240,8 +1240,8 @@
         "eligible_for_social_security": false,
         "total_liability": "10051800000.00",
         "assets": "3148900000.00",
-        "employer_contribution": "207200000.00",
-        "employer_normal_cost": "1034400000.00",
+        "employer_contribution": "1034400000.00",
+        "employer_normal_cost": "207200000.00",
         "reporting_period": "CALENDAR"
     }
 },
@@ -1506,8 +1506,8 @@
         "eligible_for_social_security": false,
         "total_liability": "13214700000.00",
         "assets": "3145100000.00",
-        "employer_contribution": "588000000.00",
-        "employer_normal_cost": "1205300000.00",
+        "employer_contribution": "1205300000.00",
+        "employer_normal_cost": "588000000.00",
         "reporting_period": "CALENDAR"
     }
 },
@@ -1632,8 +1632,8 @@
         "eligible_for_social_security": false,
         "total_liability": "14269800000.00",
         "assets": "3179500000.00",
-        "employer_contribution": "582000000.00",
-        "employer_normal_cost": "1229000000.00",
+        "employer_contribution": "1229000000.00",
+        "employer_normal_cost": "582000000.00",
         "reporting_period": "CALENDAR"
     }
 },
@@ -1646,8 +1646,8 @@
         "eligible_for_social_security": false,
         "total_liability": "3583900000.00",
         "assets": "1833400000.00",
-        "employer_contribution": "121700000.00",
-        "employer_normal_cost": "203000000.00",
+        "employer_contribution": "281000000.00",
+        "employer_normal_cost": "135800000.00",
         "reporting_period": "CALENDAR"
     }
 },
@@ -1660,9 +1660,9 @@
         "eligible_for_social_security": false,
         "total_liability": "18293100000.00",
         "assets": "11186900000.00",
-        "employer_contribution": "530300000.00",
-        "employer_normal_cost": "668000000.00",
-        "reporting_period": "CALENDAR"
+        "employer_contribution": "668000000.00",
+        "employer_normal_cost": "530300000.00",
+        "reporting_period": "FISCAL"
     }
 },
 {
@@ -1674,8 +1674,8 @@
         "eligible_for_social_security": false,
         "total_liability": "6256100000.00",
         "assets": "1137100000.00",
-        "employer_contribution": "255900000.00",
-        "employer_normal_cost": "464200000.00",
+        "employer_contribution": "464200000.00",
+        "employer_normal_cost": "255900000.00",
         "reporting_period": "CALENDAR"
     }
 },
@@ -1688,9 +1688,9 @@
         "eligible_for_social_security": true,
         "total_liability": "47357900000.00",
         "assets": "42936200000.00",
-        "employer_contribution": "2420000000.00",
-        "employer_normal_cost": "3200000000.00",
-        "reporting_period": "CALENDAR"
+        "employer_contribution": "3200000000.00",
+        "employer_normal_cost": "2420000000.00",
+        "reporting_period": "FISCAL"
     }
 },
 {
@@ -1770,8 +1770,8 @@
         "data_year": 2019,
         "fund": 15,
         "eligible_for_social_security": false,
-        "total_liability": "5032728.00",
-        "assets": "3003081.00",
+        "total_liability": "113762700.00",
+        "assets": "111733053.00",
         "employer_contribution": "4580872.00",
         "employer_normal_cost": "3107853.00",
         "reporting_period": "CALENDAR"
@@ -1830,6 +1830,244 @@
         "assets": "19617000000.00",
         "employer_contribution": "1854700000.00",
         "employer_normal_cost": "378100000.00",
+        "reporting_period": "FISCAL"
+    }
+},
+{
+    "model": "pensions.annualreport",
+    "pk": 139,
+    "fields": {
+        "data_year": 2019,
+        "fund": 14,
+        "eligible_for_social_security": false,
+        "total_liability": "363746296.00",
+        "assets": "313025896.00",
+        "employer_contribution": "13884605.00",
+        "employer_normal_cost": "5000000.00",
+        "reporting_period": "CALENDAR"
+    }
+},
+{
+    "model": "pensions.annualreport",
+    "pk": 140,
+    "fields": {
+        "data_year": 2020,
+        "fund": 5,
+        "eligible_for_social_security": false,
+        "total_liability": "3670700000.00",
+        "assets": "1955300000.00",
+        "employer_contribution": "289200000.00",
+        "employer_normal_cost": "135800000.00",
+        "reporting_period": "FISCAL"
+    }
+},
+{
+    "model": "pensions.annualreport",
+    "pk": 141,
+    "fields": {
+        "data_year": 2020,
+        "fund": 16,
+        "eligible_for_social_security": false,
+        "total_liability": "18421000000.00",
+        "assets": "11765600000.00",
+        "employer_contribution": "951100000.00",
+        "employer_normal_cost": "509200000.00",
+        "reporting_period": "FISCAL"
+    }
+},
+{
+    "model": "pensions.annualreport",
+    "pk": 142,
+    "fields": {
+        "data_year": 2020,
+        "fund": 1,
+        "eligible_for_social_security": false,
+        "total_liability": "6570500000.00",
+        "assets": "1275900000.00",
+        "employer_contribution": "529200000.00",
+        "employer_normal_cost": "369500000.00",
+        "reporting_period": "FISCAL"
+    }
+},
+{
+    "model": "pensions.annualreport",
+    "pk": 143,
+    "fields": {
+        "data_year": 2020,
+        "fund": 6,
+        "eligible_for_social_security": false,
+        "total_liability": "48922900000.00",
+        "assets": "46017400000.00",
+        "employer_contribution": "2494300000.00",
+        "employer_normal_cost": "927600000.00",
+        "reporting_period": "FISCAL"
+    }
+},
+{
+    "model": "pensions.annualreport",
+    "pk": 144,
+    "fields": {
+        "data_year": 2020,
+        "fund": 13,
+        "eligible_for_social_security": false,
+        "total_liability": "2735500000.00",
+        "assets": "1175400000.00",
+        "employer_contribution": "165400000.00",
+        "employer_normal_cost": "73700000.00",
+        "reporting_period": "FISCAL"
+    }
+},
+{
+    "model": "pensions.annualreport",
+    "pk": 145,
+    "fields": {
+        "data_year": 2020,
+        "fund": 9,
+        "eligible_for_social_security": false,
+        "total_liability": "2714200000.00",
+        "assets": "1556100000.00",
+        "employer_contribution": "175000000.00",
+        "employer_normal_cost": "107900000.00",
+        "reporting_period": "FISCAL"
+    }
+},
+{
+    "model": "pensions.annualreport",
+    "pk": 146,
+    "fields": {
+        "data_year": 2020,
+        "fund": 8,
+        "eligible_for_social_security": false,
+        "total_liability": "17847200000.00",
+        "assets": "3977000000.00",
+        "employer_contribution": "950000000.00",
+        "employer_normal_cost": "498600000.00",
+        "reporting_period": "FISCAL"
+    }
+},
+{
+    "model": "pensions.annualreport",
+    "pk": 147,
+    "fields": {
+        "data_year": 2020,
+        "fund": 2,
+        "eligible_for_social_security": false,
+        "total_liability": "1190400000.00",
+        "assets": "342100000.00",
+        "employer_contribution": "77800000.00",
+        "employer_normal_cost": "33900000.00",
+        "reporting_period": "FISCAL"
+    }
+},
+{
+    "model": "pensions.annualreport",
+    "pk": 148,
+    "fields": {
+        "data_year": 2020,
+        "fund": 3,
+        "eligible_for_social_security": false,
+        "total_liability": "14703100000.00",
+        "assets": "3400000000.00",
+        "employer_contribution": "1125000000.00",
+        "employer_normal_cost": "739400000.00",
+        "reporting_period": "FISCAL"
+    }
+},
+{
+    "model": "pensions.annualreport",
+    "pk": 149,
+    "fields": {
+        "data_year": 2020,
+        "fund": 4,
+        "eligible_for_social_security": false,
+        "total_liability": "24073500000.00",
+        "assets": "11240200000.00",
+        "employer_contribution": "1502700000.00",
+        "employer_normal_cost": "802500000.00",
+        "reporting_period": "FISCAL"
+    }
+},
+{
+    "model": "pensions.annualreport",
+    "pk": 150,
+    "fields": {
+        "data_year": 2020,
+        "fund": 14,
+        "eligible_for_social_security": false,
+        "total_liability": "485642584.80",
+        "assets": "363746296.00",
+        "employer_contribution": "28800000.00",
+        "employer_normal_cost": "18400000.00",
+        "reporting_period": "CALENDAR"
+    }
+},
+{
+    "model": "pensions.annualreport",
+    "pk": 151,
+    "fields": {
+        "data_year": 2020,
+        "fund": 15,
+        "eligible_for_social_security": false,
+        "total_liability": "119551558.00",
+        "assets": "120978282.00",
+        "employer_contribution": "5552088.00",
+        "employer_normal_cost": "3491354.00",
+        "reporting_period": "CALENDAR"
+    }
+},
+{
+    "model": "pensions.annualreport",
+    "pk": 152,
+    "fields": {
+        "data_year": 2021,
+        "fund": 11,
+        "eligible_for_social_security": false,
+        "total_liability": "13891430000.00",
+        "assets": "5897990000.00",
+        "employer_contribution": "2406400000.00",
+        "employer_normal_cost": "917700000.00",
+        "reporting_period": "FISCAL"
+    }
+},
+{
+    "model": "pensions.annualreport",
+    "pk": 153,
+    "fields": {
+        "data_year": 2021,
+        "fund": 10,
+        "eligible_for_social_security": false,
+        "total_liability": "51828500000.00",
+        "assets": "21323200000.00",
+        "employer_contribution": "2478200000.00",
+        "employer_normal_cost": "280600000.00",
+        "reporting_period": "FISCAL"
+    }
+},
+{
+    "model": "pensions.annualreport",
+    "pk": 154,
+    "fields": {
+        "data_year": 2021,
+        "fund": 12,
+        "eligible_for_social_security": false,
+        "total_liability": "48898500000.00",
+        "assets": "23768300000.00",
+        "employer_contribution": "1995800000.00",
+        "employer_normal_cost": "387000000.00",
+        "reporting_period": "FISCAL"
+    }
+},
+{
+    "model": "pensions.annualreport",
+    "pk": 155,
+    "fields": {
+        "data_year": 2021,
+        "fund": 7,
+        "eligible_for_social_security": false,
+        "total_liability": "3294300000.00",
+        "assets": "1299600000.00",
+        "employer_contribution": "175900000.00",
+        "employer_normal_cost": "15800000.00",
         "reporting_period": "FISCAL"
     }
 }

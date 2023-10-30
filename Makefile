@@ -31,10 +31,10 @@ fixtures : data/fixtures/pension_fund.json data/fixtures/annual_report.json
 	touch $@
 
 data/fixtures/pension_fund.json :
-	python manage.py dumpdata pensions.PensionFund --indent 4 > $@
+	 heroku run python manage.py dumpdata pensions.PensionFund --indent 4 -a $$(HEROKU_APP) > $@
 
 data/fixtures/annual_report.json :
-	python manage.py dumpdata pensions.AnnualReport --indent 4 > $@
+	heroku run python manage.py dumpdata pensions.AnnualReport --indent 4 -a $$(HEROKU_APP) > $@
 
 data/finished/pensions_%.csv : pensions_%.renamed.csv
 	# 1. Omit rows without an amount.
