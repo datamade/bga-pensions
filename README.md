@@ -53,3 +53,9 @@ docker-compose run app make data -e
 ## Updating Pension Fund and Annual reports
 
 1. TK use recipe from makefile to update fixtures from production
+
+### Infrastructure model
+![Infrastructure main model](.infragenie/infrastructure_main_model.svg)
+- [bga-pensions component model](.infragenie/bga-pensions_component_model.svg)
+
+---
